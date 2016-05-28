@@ -5,15 +5,15 @@ package shiver.me.timbers.http.mock;
  */
 public class HttpMock {
 
-    public static HttpMockStub givenHttp(HttpGetStubbing stubbing) {
-        throw new UnsupportedOperationException();
+    public static HttpMockStub givenHttp(HttpStubbing stubbing) {
+        return new HttpMockStub(stubbing);
     }
 
     public static MockHttpResponse status(int statusCode) {
-        throw new UnsupportedOperationException();
+        return new MockHttpResponse(statusCode);
     }
 
-    public static HttpMockVerify thenHttp(HttpMockServer server) {
-        throw new UnsupportedOperationException();
+    public static HttpMockThen thenHttp(HttpMockServer server) {
+        return new HttpMockThen(server.getService());
     }
 }

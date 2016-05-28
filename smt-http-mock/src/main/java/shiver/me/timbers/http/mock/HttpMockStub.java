@@ -5,7 +5,13 @@ package shiver.me.timbers.http.mock;
  */
 public class HttpMockStub {
 
-    public void willResponed(MockHttpResponse response) {
-        throw new UnsupportedOperationException();
+    private final HttpStubbing stubbing;
+
+    HttpMockStub(HttpStubbing stubbing) {
+        this.stubbing = stubbing;
+    }
+
+    public void willRespond(MockHttpResponse response) {
+        stubbing.setResponse(response);
     }
 }

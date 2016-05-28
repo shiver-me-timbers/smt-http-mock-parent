@@ -1,5 +1,6 @@
 package shiver.me.timbers.http.mock.integration;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.http.mock.HttpMockServer;
@@ -24,17 +25,22 @@ public class ITHttpRequest {
         server = new HttpMockServer();
     }
 
+    @After
+    public void tearDown() {
+        server.stop();
+    }
+
     @Test
     public void Can_mock_an_http_request() {
 
         // Given
-        givenHttp(server.get()).willResponed(status(OK));
+        givenHttp(server.get()).willRespond(status(OK));
 
         // When
         final Response actual = createClient(server).get();
 
         // Then
-        thenHttp(server).get();
+        thenHttp(server).should().get();
         assertThat(actual.getStatus(), is(OK));
     }
 }
