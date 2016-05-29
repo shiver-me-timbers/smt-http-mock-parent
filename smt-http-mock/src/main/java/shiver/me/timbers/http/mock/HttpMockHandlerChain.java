@@ -2,8 +2,9 @@ package shiver.me.timbers.http.mock;
 
 import shiver.me.timbers.http.Request;
 
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * @author Karl Bennett
@@ -15,14 +16,16 @@ class HttpMockHandlerChain {
     private final List<HttpMockRequestHandler> requestHandlers;
 
     HttpMockHandlerChain() {
-        this(Arrays.<HttpMockRequestHandler>asList(
+        this(asList(
             new HttpMockGetRequestHandler(),
             new HttpMockPostRequestHandler(),
             new HttpMockPutRequestHandler(),
+            new HttpMockPatchRequestHandler(),
             new HttpMockDeleteRequestHandler(),
             new HttpMockOptionsRequestHandler(),
             new HttpMockHeadRequestHandler(),
-            new HttpMockTraceRequestHandler()
+            new HttpMockTraceRequestHandler(),
+            new HttpMockOtherRequestHandler()
         ));
     }
 

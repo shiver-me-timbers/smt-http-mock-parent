@@ -8,10 +8,10 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class HttpMockHeadRequestHandlerTest {
+public class HttpMockPatchRequestHandlerTest {
 
     @Test
-    public void Can_handle_a_head_request() {
+    public void Can_handle_a_patch_request() {
 
         final HttpMockHandler handler = mock(HttpMockHandler.class);
         final Request request = mock(Request.class);
@@ -19,11 +19,11 @@ public class HttpMockHeadRequestHandlerTest {
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
-        given(request.getMethod()).willReturn("HEAD");
-        given(handler.head()).willReturn(expected);
+        given(request.getMethod()).willReturn("PATCH");
+        given(handler.patch()).willReturn(expected);
 
         // When
-        final HttpMockResponse actual = new HttpMockHeadRequestHandler().handle(handler, request);
+        final HttpMockResponse actual = new HttpMockPatchRequestHandler().handle(handler, request);
 
         // Then
         assertThat(actual, is(expected));

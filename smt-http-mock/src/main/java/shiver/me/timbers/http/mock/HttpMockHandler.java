@@ -18,4 +18,8 @@ public interface HttpMockHandler {
     HttpMockResponse head();
 
     HttpMockResponse trace();
+
+    HttpMockResponse patch();
+
+    HttpMockResponse request(String method);
 }

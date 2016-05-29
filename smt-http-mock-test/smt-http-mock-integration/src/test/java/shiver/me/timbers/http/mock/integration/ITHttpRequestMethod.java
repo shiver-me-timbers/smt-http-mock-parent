@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
 
 public class ITHttpRequestMethod {
@@ -84,6 +85,23 @@ public class ITHttpRequestMethod {
     }
 
     @Test
+    public void Can_mock_an_http_patch_request() {
+
+        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockResponse response = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.patch()).willReturn(response);
+        given(response.getStatus()).willReturn(OK);
+
+        // When
+        final Response actual = createClient(http).method("PATCH");
+
+        // Then
+        assertThat(actual.getStatus(), is(OK));
+    }
+
+    @Test
     public void Can_mock_an_http_delete_request() {
 
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
@@ -146,6 +164,25 @@ public class ITHttpRequestMethod {
 
         // When
         final Response actual = createClient(http).trace();
+
+        // Then
+        assertThat(actual.getStatus(), is(OK));
+    }
+
+    @Test
+    public void Can_mock_a_non_standard_http_request() {
+
+        final String method = someAlphaString(5);
+
+        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockResponse response = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.request(method)).willReturn(response);
+        given(response.getStatus()).willReturn(OK);
+
+        // When
+        final Response actual = createClient(http).method(method);
 
         // Then
         assertThat(actual.getStatus(), is(OK));
