@@ -9,6 +9,6 @@ class HttpMockOtherRequestHandler implements HttpMockRequestHandler {
 
     @Override
     public HttpMockResponse handle(HttpMockHandler handler, Request request) {
-        return handler.request(request.getMethod());
+        return handler.request(request.getMethod(), request.getPath());
     }
 }

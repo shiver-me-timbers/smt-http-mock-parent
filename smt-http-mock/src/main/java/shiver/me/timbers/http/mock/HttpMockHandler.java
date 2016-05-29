@@ -7,19 +7,19 @@ public interface HttpMockHandler {
 
     HttpMockResponse get(String path);
 
-    HttpMockResponse post();
+    HttpMockResponse post(String path);
 
-    HttpMockResponse put();
+    HttpMockResponse put(String path);
 
-    HttpMockResponse delete();
+    HttpMockResponse delete(String path);
 
-    HttpMockResponse options();
+    HttpMockResponse options(String path);
 
-    HttpMockResponse head();
+    HttpMockResponse head(String path);
 
-    HttpMockResponse trace();
+    HttpMockResponse trace(String path);
 
-    HttpMockResponse patch();
+    HttpMockResponse patch(String path);
 
-    HttpMockResponse request(String method);
+    HttpMockResponse request(String method, String path);
 }

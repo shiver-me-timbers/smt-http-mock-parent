@@ -11,6 +11,6 @@ class HttpMockDeleteRequestHandler extends HttpMockMethodRequestHandler {
 
     @Override
     protected HttpMockResponse handleMethod(HttpMockHandler handler, String path) {
-        return handler.delete();
+        return handler.delete(path);
     }
 }

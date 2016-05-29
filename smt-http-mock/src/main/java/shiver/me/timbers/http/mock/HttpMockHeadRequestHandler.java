@@ -11,6 +11,6 @@ class HttpMockHeadRequestHandler extends HttpMockMethodRequestHandler {
 
     @Override
     protected HttpMockResponse handleMethod(HttpMockHandler handler, String path) {
-        return handler.head();
+        return handler.head(path);
     }
 }

@@ -38,7 +38,6 @@ public class ITHttpRequest {
     public void Can_mock_an_http_get_request() {
 
         final String path = somePath();
-
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
@@ -56,15 +55,16 @@ public class ITHttpRequest {
     @Test
     public void Can_mock_an_http_post_request() {
 
+        final String path = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.post()).willReturn(response);
+        given(handler.post(path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).request().post(text(null), Response.class);
+        final Response actual = createClient(http).path(path).request().post(text(null), Response.class);
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -73,15 +73,16 @@ public class ITHttpRequest {
     @Test
     public void Can_mock_an_http_put_request() {
 
+        final String path = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.put()).willReturn(response);
+        given(handler.put(path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).request().put(text(""));
+        final Response actual = createClient(http).path(path).request().put(text(""));
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -90,15 +91,16 @@ public class ITHttpRequest {
     @Test
     public void Can_mock_an_http_patch_request() {
 
+        final String path = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.patch()).willReturn(response);
+        given(handler.patch(path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).request().method("PATCH");
+        final Response actual = createClient(http).path(path).request().method("PATCH");
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -107,15 +109,16 @@ public class ITHttpRequest {
     @Test
     public void Can_mock_an_http_delete_request() {
 
+        final String path = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.delete()).willReturn(response);
+        given(handler.delete(path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).request().delete();
+        final Response actual = createClient(http).path(path).request().delete();
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -124,15 +127,16 @@ public class ITHttpRequest {
     @Test
     public void Can_mock_an_http_options_request() {
 
+        final String path = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.options()).willReturn(response);
+        given(handler.options(path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).request().options();
+        final Response actual = createClient(http).path(path).request().options();
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -141,15 +145,16 @@ public class ITHttpRequest {
     @Test
     public void Can_mock_an_http_head_request() {
 
+        final String path = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.head()).willReturn(response);
+        given(handler.head(path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).request().head();
+        final Response actual = createClient(http).path(path).request().head();
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -158,15 +163,16 @@ public class ITHttpRequest {
     @Test
     public void Can_mock_an_http_trace_request() {
 
+        final String path = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.trace()).willReturn(response);
+        given(handler.trace(path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).request().trace();
+        final Response actual = createClient(http).path(path).request().trace();
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -175,17 +181,18 @@ public class ITHttpRequest {
     @Test
     public void Can_mock_a_non_standard_http_request() {
 
+        final String path = somePath();
         final String method = someAlphaString(5);
 
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.request(method)).willReturn(response);
+        given(handler.request(method, path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).request().method(method);
+        final Response actual = createClient(http).path(path).request().method(method);
 
         // Then
         assertThat(actual.getStatus(), is(OK));

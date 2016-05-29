@@ -18,12 +18,14 @@ public class HttpMockOtherRequestHandlerTest {
         final Request request = mock(Request.class);
 
         final String method = someString();
+        final String path = someString();
 
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
         given(request.getMethod()).willReturn(method);
-        given(handler.request(method)).willReturn(expected);
+        given(request.getPath()).willReturn(path);
+        given(handler.request(method, path)).willReturn(expected);
 
         // When
         final HttpMockResponse actual = new HttpMockOtherRequestHandler().handle(handler, request);

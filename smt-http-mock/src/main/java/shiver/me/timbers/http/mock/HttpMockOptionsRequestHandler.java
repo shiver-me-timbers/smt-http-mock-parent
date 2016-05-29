@@ -11,6 +11,6 @@ class HttpMockOptionsRequestHandler extends HttpMockMethodRequestHandler {
 
     @Override
     protected HttpMockResponse handleMethod(HttpMockHandler handler, String path) {
-        return handler.options();
+        return handler.options(path);
     }
 }

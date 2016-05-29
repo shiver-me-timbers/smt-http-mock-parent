@@ -11,6 +11,6 @@ class HttpMockPutRequestHandler extends HttpMockMethodRequestHandler {
 
     @Override
     protected HttpMockResponse handleMethod(HttpMockHandler handler, String path) {
-        return handler.put();
+        return handler.put(path);
     }
 }

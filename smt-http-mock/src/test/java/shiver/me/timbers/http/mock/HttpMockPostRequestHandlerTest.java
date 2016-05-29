@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class HttpMockPostRequestHandlerTest {
 
@@ -16,11 +17,14 @@ public class HttpMockPostRequestHandlerTest {
         final HttpMockHandler handler = mock(HttpMockHandler.class);
         final Request request = mock(Request.class);
 
+        final String path = someString();
+
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
         given(request.getMethod()).willReturn("POST");
-        given(handler.post()).willReturn(expected);
+        given(request.getPath()).willReturn(path);
+        given(handler.post(path)).willReturn(expected);
 
         // When
         final HttpMockResponse actual = new HttpMockPostRequestHandler().handle(handler, request);

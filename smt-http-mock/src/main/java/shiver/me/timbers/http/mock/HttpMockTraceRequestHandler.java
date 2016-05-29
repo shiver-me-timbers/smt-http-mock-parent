@@ -11,6 +11,6 @@ class HttpMockTraceRequestHandler extends HttpMockMethodRequestHandler {
 
     @Override
     protected HttpMockResponse handleMethod(HttpMockHandler handler, String path) {
-        return handler.trace();
+        return handler.trace(path);
     }
 }
