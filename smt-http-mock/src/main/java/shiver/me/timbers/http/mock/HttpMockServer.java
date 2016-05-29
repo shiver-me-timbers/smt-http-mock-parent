@@ -12,10 +12,14 @@ public class HttpMockServer {
     private final HttpMockService service;
 
     public HttpMockServer() {
-        this(new TomcatContainer(), new HttpMockService());
+        this(0);
     }
 
-    public HttpMockServer(Container container, HttpMockService service) {
+    private HttpMockServer(int port) {
+        this(new TomcatContainer(port), new HttpMockService());
+    }
+
+    HttpMockServer(Container container, HttpMockService service) {
         this.container = container;
         this.service = service;
         container.register(service);

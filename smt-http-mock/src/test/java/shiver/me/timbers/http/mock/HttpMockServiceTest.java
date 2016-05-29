@@ -13,10 +13,12 @@ import static org.mockito.Mockito.mock;
 public class HttpMockServiceTest {
 
     private HttpMockService service;
+    private HttpMockHandlerChain handlerChain;
 
     @Before
     public void setUp() {
-        service = new HttpMockService();
+        handlerChain = mock(HttpMockHandlerChain.class);
+        service = new HttpMockService(handlerChain);
     }
 
     @Test
@@ -43,15 +45,16 @@ public class HttpMockServiceTest {
     public void Can_call_the_http_mock_service() {
 
         final HttpMockHandler handler = mock(HttpMockHandler.class);
+        final Request request = mock(Request.class);
 
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.get()).willReturn(expected);
+        given(handlerChain.handle(handler, request)).willReturn(expected);
 
         // When
         service.registerHandler(handler);
-        final Response actual = service.call(mock(Request.class));
+        final Response actual = service.call(request);
 
         // Then
         assertThat(actual, is((Response) expected));

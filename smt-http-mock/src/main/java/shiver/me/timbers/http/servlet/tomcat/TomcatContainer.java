@@ -27,18 +27,29 @@ public class TomcatContainer implements Container {
     private final ServiceToServletConverter converter;
     private final Context context;
 
-    public TomcatContainer() {
-        this(new Tomcat(), new HashGenerator(), new ServiceToServletConverter());
+    public TomcatContainer(int port) {
+        this(new PortGenerator(port), new Tomcat(), new HashGenerator(), new ServiceToServletConverter());
     }
 
-    TomcatContainer(Tomcat tomcat, HashGenerator hashGenerator, ServiceToServletConverter converter) {
-        this(setUniqueEngineName(tomcat, hashGenerator), converter, createContext(tomcat));
+    TomcatContainer(
+        PortGenerator portGenerator,
+        Tomcat tomcat,
+        HashGenerator hashGenerator,
+        ServiceToServletConverter converter
+    ) {
+        this(
+            portGenerator.generatePort(),
+            setUniqueEngineName(tomcat, hashGenerator),
+            converter,
+            createContext(tomcat)
+        );
     }
 
-    TomcatContainer(Tomcat tomcat, ServiceToServletConverter converter, Context context) {
+    TomcatContainer(int port, Tomcat tomcat, ServiceToServletConverter converter, Context context) {
         this.tomcat = tomcat;
         this.converter = converter;
         this.context = context;
+        tomcat.setPort(port);
         context.setJarScanner(new NullJarScanner());
     }
 

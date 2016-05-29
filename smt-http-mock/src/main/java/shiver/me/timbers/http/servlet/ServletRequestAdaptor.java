@@ -14,4 +14,9 @@ class ServletRequestAdaptor implements Request {
     ServletRequestAdaptor(HttpServletRequest servletRequest) {
         this.servletRequest = servletRequest;
     }
+
+    @Override
+    public String getMethod() {
+        return servletRequest.getMethod();
+    }
 }

@@ -33,6 +33,7 @@ public class TomcatContainerTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
+    private Integer port;
     private Tomcat tomcat;
     private ServiceToServletConverter converter;
     private Context context;
@@ -40,17 +41,20 @@ public class TomcatContainerTest {
 
     @Before
     public void setUp() {
+        port = someInteger();
         tomcat = mock(Tomcat.class);
         converter = mock(ServiceToServletConverter.class);
         context = mock(Context.class);
-        container = new TomcatContainer(tomcat, converter, context);
+        container = new TomcatContainer(port, tomcat, converter, context);
     }
 
     @Test
     public void Can_create_a_tomcat_container() {
 
+        final PortGenerator portGenerator = mock(PortGenerator.class);
         final HashGenerator hashGenerator = mock(HashGenerator.class);
 
+        final int port = someInteger();
         final Engine engine = mock(Engine.class);
         final String engineName = someString();
         final int hash = someInteger();
@@ -58,6 +62,7 @@ public class TomcatContainerTest {
         final Context context = mock(Context.class);
 
         // Given
+        given(portGenerator.generatePort()).willReturn(port);
         given(tomcat.getEngine()).willReturn(engine);
         given(engine.getName()).willReturn(engineName);
         given(hashGenerator.generate(tomcat)).willReturn(hash);
@@ -65,11 +70,25 @@ public class TomcatContainerTest {
         given(tomcat.addWebapp(host, "", "/")).willReturn(context);
 
         // When
-        new TomcatContainer(tomcat, hashGenerator, converter);
+        new TomcatContainer(portGenerator, tomcat, hashGenerator, converter);
 
         // Then
+        then(tomcat).should().setPort(port);
         then(engine).should().setName(format("%s%d", engineName, hash));
         then(context).should().setJarScanner((NullJarScanner) argThat(instanceOf(NullJarScanner.class)));
+    }
+
+    @Test
+    public void Can_set_the_port_of_a_tomcat_container() {
+
+        // Given
+        final Tomcat tomcat = mock(Tomcat.class);
+
+        // When
+        new TomcatContainer(port, tomcat, converter, context);
+
+        // Then
+        then(tomcat).should().setPort(port);
     }
 
     @Test

@@ -7,9 +7,18 @@ import shiver.me.timbers.http.Service;
 /**
  * @author Karl Bennett
  */
-public class HttpMockService implements Service {
+class HttpMockService implements Service {
 
+    private final HttpMockHandlerChain handlerChain;
     private HttpMockHandler handler;
+
+    HttpMockService() {
+        this(new HttpMockHandlerChain());
+    }
+
+    HttpMockService(HttpMockHandlerChain handlerChain) {
+        this.handlerChain = handlerChain;
+    }
 
     @Override
     public String getName() {
@@ -23,10 +32,10 @@ public class HttpMockService implements Service {
 
     @Override
     public Response call(Request request) {
-        return handler.get();
+        return handlerChain.handle(handler, request);
     }
 
-    public HttpMockHandler registerHandler(HttpMockHandler handler) {
+    HttpMockHandler registerHandler(HttpMockHandler handler) {
         return this.handler = handler;
     }
 }
