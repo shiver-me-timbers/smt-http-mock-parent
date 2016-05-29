@@ -6,4 +6,6 @@ package shiver.me.timbers.http;
 public interface Response {
 
     int getStatus();
+
+    String getBodyAsString();
 }

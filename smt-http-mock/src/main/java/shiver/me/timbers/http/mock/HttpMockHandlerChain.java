@@ -4,14 +4,14 @@ import shiver.me.timbers.http.Request;
 
 import java.util.List;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 
 /**
  * @author Karl Bennett
  */
 class HttpMockHandlerChain {
-
-    private static final int NOT_FOUND = 404;
 
     private final List<HttpMockRequestHandler> requestHandlers;
 
@@ -33,7 +33,7 @@ class HttpMockHandlerChain {
         this.requestHandlers = requestHandlers;
     }
 
-    public HttpMockResponse handle(HttpMockHandler handler, Request request) {
+    public HttpMockResponse handle(HttpMockHandler handler, final Request request) {
         for (HttpMockRequestHandler requestHandler : requestHandlers) {
             final HttpMockResponse response = requestHandler.handle(handler, request);
             if (response != null) {
@@ -45,6 +45,15 @@ class HttpMockHandlerChain {
             @Override
             public int getStatus() {
                 return NOT_FOUND;
+            }
+
+            @Override
+            public String getBodyAsString() {
+                return format(
+                    "The %s request with path (%s) has not been mocked.",
+                    request.getMethod(),
+                    request.getPath()
+                );
             }
         };
     }
