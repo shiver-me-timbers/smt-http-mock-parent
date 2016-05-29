@@ -7,8 +7,8 @@ import shiver.me.timbers.http.Response;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static shiver.me.timbers.data.random.RandomShorts.someShort;
 
 public class HttpMockServiceTest {
 
@@ -20,7 +20,7 @@ public class HttpMockServiceTest {
     }
 
     @Test
-    public void Can_get_the_services_name() {
+    public void Can_get_the_http_mock_services_name() {
 
         // When
         final String actual = service.getName();
@@ -30,43 +30,43 @@ public class HttpMockServiceTest {
     }
 
     @Test
-    public void Can_get_the_services_path() {
+    public void Can_get_the_http_mock_services_path() {
 
         // When
         final String actual = service.getPath();
 
         // Then
-        assertThat(actual, is("/"));
+        assertThat(actual, is("/mock"));
     }
 
     @Test
-    public void Can_record_a_get_request() {
+    public void Can_call_the_http_mock_service() {
+
+        final HttpMockHandler handler = mock(HttpMockHandler.class);
+
+        final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
-        final Request request = mock(Request.class);
-        final int expected = someShort();
+        given(handler.get()).willReturn(expected);
 
         // When
-        for (int i = 0; i < expected; i++) {
-            service.call(request);
-        }
-        final int actual = service.getNumberOfGetRequests();
-
-        // Then
-        assertThat(actual, is(expected));
-    }
-
-    @Test
-    public void Can_set_the_get_response() {
-
-        // Given
-        final MockHttpResponse expected = mock(MockHttpResponse.class);
-
-        // When
-        service.setGetResponse(expected);
+        service.registerHandler(handler);
         final Response actual = service.call(mock(Request.class));
 
         // Then
         assertThat(actual, is((Response) expected));
+    }
+
+    @Test
+    public void Can_get_the_http_mock_handler() {
+
+        // Given
+        final HttpMockHandler expected = mock(HttpMockHandler.class);
+
+        // When
+        final HttpMockHandler actual = service.registerHandler(expected);
+
+        // Then
+        assertThat(actual, is(expected));
     }
 }

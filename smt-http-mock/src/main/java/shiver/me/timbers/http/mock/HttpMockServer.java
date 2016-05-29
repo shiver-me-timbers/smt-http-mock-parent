@@ -15,7 +15,7 @@ public class HttpMockServer {
         this(new TomcatContainer(), new HttpMockService());
     }
 
-    HttpMockServer(Container container, HttpMockService service) {
+    public HttpMockServer(Container container, HttpMockService service) {
         this.container = container;
         this.service = service;
         container.register(service);
@@ -26,12 +26,8 @@ public class HttpMockServer {
         return container.getPort();
     }
 
-    public HttpMockService getService() {
-        return service;
-    }
-
-    public HttpGetStubbing get() {
-        return new HttpGetStubbing(service);
+    public HttpMockHandler mock(HttpMockHandler handler) {
+        return service.registerHandler(handler);
     }
 
     public void stop() {

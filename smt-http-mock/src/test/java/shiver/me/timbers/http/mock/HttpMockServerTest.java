@@ -12,7 +12,6 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
-import static shiver.me.timbers.matchers.Matchers.hasField;
 
 public class HttpMockServerTest {
 
@@ -28,11 +27,7 @@ public class HttpMockServerTest {
     }
 
     @Test
-    public void Can_create_a_server() {
-
-        // Given
-        final Container container = mock(Container.class);
-        final HttpMockService service = mock(HttpMockService.class);
+    public void Can_create_a_mock_http_server() {
 
         // When
         new HttpMockServer(container, service);
@@ -44,9 +39,34 @@ public class HttpMockServerTest {
     }
 
     @Test
-    public void Can_get_the_port() {
+    public void Can_stop_a_mock_http_server() {
 
-        final int expected = someInteger();
+        // When
+        server.stop();
+
+        // Then
+        then(container).should().stop();
+    }
+
+    @Test
+    public void Can_create_a_mock_http_handler() {
+
+        final HttpMockHandler expected = mock(HttpMockHandler.class);
+
+        // Given
+        given(service.registerHandler(expected)).willReturn(expected);
+
+        // When
+        final HttpMockHandler actual = server.mock(expected);
+
+        // Then
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_get_the_servers_port() {
+
+        final Integer expected = someInteger();
 
         // Given
         given(container.getPort()).willReturn(expected);
@@ -56,25 +76,5 @@ public class HttpMockServerTest {
 
         // Then
         assertThat(actual, is(expected));
-    }
-
-    @Test
-    public void Can_stub_a_get_request() {
-
-        // When
-        final HttpGetStubbing actual = server.get();
-
-        // Then
-        assertThat(actual, hasField("service", service));
-    }
-
-    @Test
-    public void Can_stop_the_server() {
-
-        // When
-        server.stop();
-
-        // Then
-        then(container).should().stop();
     }
 }
