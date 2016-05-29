@@ -29,7 +29,6 @@ public class TomcatContainerTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private Integer port;
     private Tomcat tomcat;
     private ServiceToServletConverter converter;
     private Context context;
@@ -37,7 +36,6 @@ public class TomcatContainerTest {
 
     @Before
     public void setUp() {
-        port = someInteger();
         tomcat = mock(Tomcat.class);
         converter = mock(ServiceToServletConverter.class);
         context = mock(Context.class);

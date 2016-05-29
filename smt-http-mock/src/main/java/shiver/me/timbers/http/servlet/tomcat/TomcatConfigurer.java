@@ -9,21 +9,21 @@ import static java.lang.String.format;
 /**
  * @author Karl Bennett
  */
-public class TomcatConfigurer {
+class TomcatConfigurer {
 
     private final PortGenerator portGenerator;
     private final HashGenerator hashGenerator;
 
-    public TomcatConfigurer(int port) {
+    TomcatConfigurer(int port) {
         this(new PortGenerator(port), new HashGenerator());
     }
 
-    public TomcatConfigurer(PortGenerator portGenerator, HashGenerator hashGenerator) {
+    TomcatConfigurer(PortGenerator portGenerator, HashGenerator hashGenerator) {
         this.portGenerator = portGenerator;
         this.hashGenerator = hashGenerator;
     }
 
-    public Context configure(Tomcat tomcat) {
+    Context configure(Tomcat tomcat) {
         tomcat.setPort(portGenerator.generatePort());
         tomcat.getConnector().setAllowTrace(true);
         final Engine engine = tomcat.getEngine();
