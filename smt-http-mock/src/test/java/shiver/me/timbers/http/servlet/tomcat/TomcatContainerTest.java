@@ -1,8 +1,6 @@
 package shiver.me.timbers.http.servlet.tomcat;
 
 import org.apache.catalina.Context;
-import org.apache.catalina.Engine;
-import org.apache.catalina.Host;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
@@ -16,17 +14,15 @@ import shiver.me.timbers.http.servlet.ServiceToServletConverter;
 
 import javax.servlet.Servlet;
 
-import static java.lang.String.format;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.matchers.Matchers.hasField;
 
 public class TomcatContainerTest {
 
@@ -45,50 +41,22 @@ public class TomcatContainerTest {
         tomcat = mock(Tomcat.class);
         converter = mock(ServiceToServletConverter.class);
         context = mock(Context.class);
-        container = new TomcatContainer(port, tomcat, converter, context);
+        container = new TomcatContainer(tomcat, converter, context);
     }
 
     @Test
     public void Can_create_a_tomcat_container() {
 
-        final PortGenerator portGenerator = mock(PortGenerator.class);
-        final HashGenerator hashGenerator = mock(HashGenerator.class);
-
-        final int port = someInteger();
-        final Engine engine = mock(Engine.class);
-        final String engineName = someString();
-        final int hash = someInteger();
-        final Host host = mock(Host.class);
-        final Context context = mock(Context.class);
+        final TomcatConfigurer configurer = mock(TomcatConfigurer.class);
 
         // Given
-        given(portGenerator.generatePort()).willReturn(port);
-        given(tomcat.getEngine()).willReturn(engine);
-        given(engine.getName()).willReturn(engineName);
-        given(hashGenerator.generate(tomcat)).willReturn(hash);
-        given(tomcat.getHost()).willReturn(host);
-        given(tomcat.addWebapp(host, "", "/")).willReturn(context);
+        given(configurer.configure(tomcat)).willReturn(context);
 
         // When
-        new TomcatContainer(portGenerator, tomcat, hashGenerator, converter);
+        final TomcatContainer actual = new TomcatContainer(configurer, tomcat, converter);
 
         // Then
-        then(tomcat).should().setPort(port);
-        then(engine).should().setName(format("%s%d", engineName, hash));
-        then(context).should().setJarScanner((NullJarScanner) argThat(instanceOf(NullJarScanner.class)));
-    }
-
-    @Test
-    public void Can_set_the_port_of_a_tomcat_container() {
-
-        // Given
-        final Tomcat tomcat = mock(Tomcat.class);
-
-        // When
-        new TomcatContainer(port, tomcat, converter, context);
-
-        // Then
-        then(tomcat).should().setPort(port);
+        assertThat(actual, hasField("context", context));
     }
 
     @Test

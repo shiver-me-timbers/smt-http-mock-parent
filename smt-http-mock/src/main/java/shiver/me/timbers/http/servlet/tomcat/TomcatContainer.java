@@ -28,39 +28,39 @@ public class TomcatContainer implements Container {
     private final Context context;
 
     public TomcatContainer(int port) {
-        this(new PortGenerator(port), new Tomcat(), new HashGenerator(), new ServiceToServletConverter());
+        this(new TomcatConfigurer(port), new Tomcat(), new ServiceToServletConverter());
     }
 
     TomcatContainer(
-        PortGenerator portGenerator,
+        TomcatConfigurer configurer,
         Tomcat tomcat,
-        HashGenerator hashGenerator,
         ServiceToServletConverter converter
     ) {
         this(
-            portGenerator.generatePort(),
-            setUniqueEngineName(tomcat, hashGenerator),
+            tomcat,
             converter,
-            createContext(tomcat)
+            configurer.configure(tomcat)
         );
     }
 
-    TomcatContainer(int port, Tomcat tomcat, ServiceToServletConverter converter, Context context) {
+    TomcatContainer(Tomcat tomcat, ServiceToServletConverter converter, Context context) {
         this.tomcat = tomcat;
         this.converter = converter;
         this.context = context;
-        tomcat.setPort(port);
-        context.setJarScanner(new NullJarScanner());
     }
 
-    private static Tomcat setUniqueEngineName(Tomcat tomcat, HashGenerator hashGenerator) {
+    private static Tomcat configure(Tomcat tomcat, HashGenerator hashGenerator) {
+        tomcat.setPort(0);
+        tomcat.getConnector().setAllowTrace(true);
         final Engine engine = tomcat.getEngine();
         engine.setName(format("%s%d", engine.getName(), hashGenerator.generate(tomcat)));
         return tomcat;
     }
 
     private static Context createContext(Tomcat tomcat) {
-        return tomcat.addWebapp(tomcat.getHost(), "", "/");
+        final Context context = tomcat.addWebapp(tomcat.getHost(), "", "/");
+        context.setJarScanner(new NullJarScanner());
+        return context;
     }
 
     @Override

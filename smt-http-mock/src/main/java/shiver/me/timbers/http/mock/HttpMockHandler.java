@@ -10,4 +10,12 @@ public interface HttpMockHandler {
     HttpMockResponse post();
 
     HttpMockResponse put();
+
+    HttpMockResponse delete();
+
+    HttpMockResponse options();
+
+    HttpMockResponse head();
+
+    HttpMockResponse trace();
 }

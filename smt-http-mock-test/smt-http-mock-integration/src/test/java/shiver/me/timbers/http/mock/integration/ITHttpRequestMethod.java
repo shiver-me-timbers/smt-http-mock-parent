@@ -16,7 +16,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
 
-public class ITHttpRequest {
+public class ITHttpRequestMethod {
 
     private static final int OK = 200;
 
@@ -78,6 +78,74 @@ public class ITHttpRequest {
 
         // When
         final Response actual = createClient(http).put(text(""));
+
+        // Then
+        assertThat(actual.getStatus(), is(OK));
+    }
+
+    @Test
+    public void Can_mock_an_http_delete_request() {
+
+        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockResponse response = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.delete()).willReturn(response);
+        given(response.getStatus()).willReturn(OK);
+
+        // When
+        final Response actual = createClient(http).delete();
+
+        // Then
+        assertThat(actual.getStatus(), is(OK));
+    }
+
+    @Test
+    public void Can_mock_an_http_options_request() {
+
+        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockResponse response = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.options()).willReturn(response);
+        given(response.getStatus()).willReturn(OK);
+
+        // When
+        final Response actual = createClient(http).options();
+
+        // Then
+        assertThat(actual.getStatus(), is(OK));
+    }
+
+    @Test
+    public void Can_mock_an_http_head_request() {
+
+        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockResponse response = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.head()).willReturn(response);
+        given(response.getStatus()).willReturn(OK);
+
+        // When
+        final Response actual = createClient(http).head();
+
+        // Then
+        assertThat(actual.getStatus(), is(OK));
+    }
+
+    @Test
+    public void Can_mock_an_http_trace_request() {
+
+        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockResponse response = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.trace()).willReturn(response);
+        given(response.getStatus()).willReturn(OK);
+
+        // When
+        final Response actual = createClient(http).trace();
 
         // Then
         assertThat(actual.getStatus(), is(OK));

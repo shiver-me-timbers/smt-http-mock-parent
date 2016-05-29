@@ -18,7 +18,11 @@ class HttpMockHandlerChain {
         this(Arrays.<HttpMockRequestHandler>asList(
             new HttpMockGetRequestHandler(),
             new HttpMockPostRequestHandler(),
-            new HttpMockPutRequestHandler()
+            new HttpMockPutRequestHandler(),
+            new HttpMockDeleteRequestHandler(),
+            new HttpMockOptionsRequestHandler(),
+            new HttpMockHeadRequestHandler(),
+            new HttpMockTraceRequestHandler()
         ));
     }
 
