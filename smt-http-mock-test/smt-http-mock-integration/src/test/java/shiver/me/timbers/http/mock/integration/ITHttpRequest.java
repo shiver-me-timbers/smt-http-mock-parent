@@ -14,10 +14,11 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static shiver.me.timbers.data.random.RandomStrings.buildSomeString;
 import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
 
-public class ITHttpRequestMethod {
+public class ITHttpRequest {
 
     private static final int OK = 200;
 
@@ -36,15 +37,17 @@ public class ITHttpRequestMethod {
     @Test
     public void Can_mock_an_http_get_request() {
 
+        final String path = somePath();
+
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.get()).willReturn(response);
+        given(handler.get(path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).get();
+        final Response actual = createClient(http).path(path).request().get();
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -61,7 +64,7 @@ public class ITHttpRequestMethod {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).post(text(null), Response.class);
+        final Response actual = createClient(http).request().post(text(null), Response.class);
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -78,7 +81,7 @@ public class ITHttpRequestMethod {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).put(text(""));
+        final Response actual = createClient(http).request().put(text(""));
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -95,7 +98,7 @@ public class ITHttpRequestMethod {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).method("PATCH");
+        final Response actual = createClient(http).request().method("PATCH");
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -112,7 +115,7 @@ public class ITHttpRequestMethod {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).delete();
+        final Response actual = createClient(http).request().delete();
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -129,7 +132,7 @@ public class ITHttpRequestMethod {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).options();
+        final Response actual = createClient(http).request().options();
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -146,7 +149,7 @@ public class ITHttpRequestMethod {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).head();
+        final Response actual = createClient(http).request().head();
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -163,7 +166,7 @@ public class ITHttpRequestMethod {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).trace();
+        final Response actual = createClient(http).request().trace();
 
         // Then
         assertThat(actual.getStatus(), is(OK));
@@ -182,10 +185,14 @@ public class ITHttpRequestMethod {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).method(method);
+        final Response actual = createClient(http).request().method(method);
 
         // Then
         assertThat(actual.getStatus(), is(OK));
+    }
+
+    private static String somePath() {
+        return "/" + buildSomeString().thatContainsAlphanumericCharacters().withLengthBetween(1, 10).build();
     }
 }
 

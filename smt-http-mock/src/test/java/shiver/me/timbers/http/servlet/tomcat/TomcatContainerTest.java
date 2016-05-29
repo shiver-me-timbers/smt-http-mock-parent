@@ -13,6 +13,7 @@ import shiver.me.timbers.http.Service;
 import shiver.me.timbers.http.servlet.ServiceToServletConverter;
 
 import javax.servlet.Servlet;
+import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -26,6 +27,8 @@ import static shiver.me.timbers.matchers.Matchers.hasField;
 
 public class TomcatContainerTest {
 
+    private static final String TEMP_DIR = ".tomcat_mock";
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -33,13 +36,15 @@ public class TomcatContainerTest {
     private ServiceToServletConverter converter;
     private Context context;
     private TomcatContainer container;
+    private FileCleaner fileCleaner;
 
     @Before
     public void setUp() {
         tomcat = mock(Tomcat.class);
         converter = mock(ServiceToServletConverter.class);
         context = mock(Context.class);
-        container = new TomcatContainer(tomcat, converter, context);
+        fileCleaner = mock(FileCleaner.class);
+        container = new TomcatContainer(tomcat, converter, context, fileCleaner);
     }
 
     @Test
@@ -48,7 +53,7 @@ public class TomcatContainerTest {
         final TomcatConfigurer configurer = mock(TomcatConfigurer.class);
 
         // Given
-        given(configurer.configure(tomcat)).willReturn(context);
+        given(configurer.configure(tomcat, TEMP_DIR)).willReturn(context);
 
         // When
         final TomcatContainer actual = new TomcatContainer(configurer, tomcat, converter);
@@ -69,7 +74,7 @@ public class TomcatContainerTest {
         final String path = someString();
 
         // Given
-        given(context.getName()).willReturn(contextPath);
+        given(context.getPath()).willReturn(contextPath);
         given(service.getName()).willReturn(serviceName);
         given(converter.convert(service)).willReturn(servlet);
         given(tomcat.addServlet(contextPath, serviceName, servlet)).willReturn(wrapper);
@@ -124,13 +129,14 @@ public class TomcatContainerTest {
     }
 
     @Test
-    public void Can_stop_the_container() throws LifecycleException {
+    public void Can_stop_the_container() throws LifecycleException, IOException {
 
         // When
         container.stop();
 
         // Then
         then(tomcat).should().stop();
+        then(fileCleaner).should().cleanUp(TEMP_DIR);
     }
 
     @Test

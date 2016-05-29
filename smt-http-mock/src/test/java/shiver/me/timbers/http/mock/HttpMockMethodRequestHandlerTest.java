@@ -16,18 +16,11 @@ public class HttpMockMethodRequestHandlerTest {
 
     private String method;
     private HttpMockResponse response;
-    private HttpMockMethodRequestHandler requestHandler;
 
     @Before
     public void setUp() {
         method = someString();
         response = mock(HttpMockResponse.class);
-        requestHandler = new HttpMockMethodRequestHandler(method) {
-            @Override
-            protected HttpMockResponse handleMethod(HttpMockHandler handler, Request request) {
-                return response;
-            }
-        };
     }
 
     @Test
@@ -35,12 +28,20 @@ public class HttpMockMethodRequestHandlerTest {
 
         final HttpMockHandler handler = mock(HttpMockHandler.class);
         final Request request = mock(Request.class);
+        final String requestPath = someString();
 
         // Given
         given(request.getMethod()).willReturn(method);
+        given(request.getPath()).willReturn(requestPath);
 
         // When
-        final HttpMockResponse actual = requestHandler.handle(handler, request);
+        final HttpMockResponse actual = new HttpMockMethodRequestHandler(method) {
+            @Override
+            protected HttpMockResponse handleMethod(HttpMockHandler handler, String path) {
+                assertThat(path, is(requestPath));
+                return response;
+            }
+        }.handle(handler, request);
 
         // Then
         assertThat(actual, is(response));
@@ -56,7 +57,12 @@ public class HttpMockMethodRequestHandlerTest {
         given(request.getMethod()).willReturn(someString());
 
         // When
-        final HttpMockResponse actual = requestHandler.handle(handler, request);
+        final HttpMockResponse actual = new HttpMockMethodRequestHandler(method) {
+            @Override
+            protected HttpMockResponse handleMethod(HttpMockHandler handler, String path) {
+                throw new AssertionError("This method should not be called.");
+            }
+        }.handle(handler, request);
 
         // Then
         verifyZeroInteractions(handler);

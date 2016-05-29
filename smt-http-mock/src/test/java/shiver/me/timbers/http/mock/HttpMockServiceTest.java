@@ -38,7 +38,7 @@ public class HttpMockServiceTest {
         final String actual = service.getPath();
 
         // Then
-        assertThat(actual, is("/mock"));
+        assertThat(actual, is("/*"));
     }
 
     @Test

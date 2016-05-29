@@ -23,12 +23,13 @@ class TomcatConfigurer {
         this.hashGenerator = hashGenerator;
     }
 
-    Context configure(Tomcat tomcat) {
+    Context configure(Tomcat tomcat, String tempDir) {
+        tomcat.setBaseDir(tempDir);
         tomcat.setPort(portGenerator.generatePort());
         tomcat.getConnector().setAllowTrace(true);
         final Engine engine = tomcat.getEngine();
         engine.setName(format("%s%d", engine.getName(), hashGenerator.generate(tomcat)));
-        final Context context = tomcat.addWebapp(tomcat.getHost(), "", "/");
+        final Context context = tomcat.addWebapp(tomcat.getHost(), "mock", "/");
         context.setJarScanner(new NullJarScanner());
         return context;
     }

@@ -1,7 +1,5 @@
 package shiver.me.timbers.http.mock;
 
-import shiver.me.timbers.http.Request;
-
 /**
  * @author Karl Bennett
  */
@@ -12,7 +10,7 @@ class HttpMockPostRequestHandler extends HttpMockMethodRequestHandler {
     }
 
     @Override
-    protected HttpMockResponse handleMethod(HttpMockHandler handler, Request request) {
+    protected HttpMockResponse handleMethod(HttpMockHandler handler, String path) {
         return handler.post();
     }
 }

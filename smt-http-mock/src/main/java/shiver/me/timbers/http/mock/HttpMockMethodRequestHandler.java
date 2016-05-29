@@ -16,10 +16,10 @@ abstract class HttpMockMethodRequestHandler implements HttpMockRequestHandler {
     @Override
     public HttpMockResponse handle(HttpMockHandler handler, Request request) {
         if (method.equals(request.getMethod())) {
-            return handleMethod(handler, request);
+            return handleMethod(handler, request.getPath());
         }
         return null;
     }
 
-    protected abstract HttpMockResponse handleMethod(HttpMockHandler handler, Request request);
+    protected abstract HttpMockResponse handleMethod(HttpMockHandler handler, String path);
 }

@@ -19,4 +19,9 @@ class ServletRequestAdaptor implements Request {
     public String getMethod() {
         return servletRequest.getMethod();
     }
+
+    @Override
+    public String getPath() {
+        return servletRequest.getPathInfo();
+    }
 }

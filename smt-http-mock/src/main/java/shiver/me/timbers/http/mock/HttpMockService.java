@@ -27,7 +27,7 @@ class HttpMockService implements Service {
 
     @Override
     public String getPath() {
-        return "/mock";
+        return "/*";
     }
 
     @Override
