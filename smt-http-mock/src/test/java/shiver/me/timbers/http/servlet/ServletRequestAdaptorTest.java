@@ -2,6 +2,7 @@ package shiver.me.timbers.http.servlet;
 
 import org.junit.Before;
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,12 +15,14 @@ import static shiver.me.timbers.data.random.RandomStrings.someString;
 public class ServletRequestAdaptorTest {
 
     private HttpServletRequest request;
+    private ServletHeadersExtractor headersExtractor;
     private ServletRequestAdaptor adaptor;
 
     @Before
     public void setUp() {
         request = mock(HttpServletRequest.class);
-        adaptor = new ServletRequestAdaptor(request);
+        headersExtractor = mock(ServletHeadersExtractor.class);
+        adaptor = new ServletRequestAdaptor(request, headersExtractor);
     }
 
     @Test
@@ -47,6 +50,21 @@ public class ServletRequestAdaptorTest {
 
         // When
         final String actual = adaptor.getPath();
+
+        // Then
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_get_the_requests_headers() {
+
+        final Headers expected = mock(Headers.class);
+
+        // Given
+        given(headersExtractor.extract(request)).willReturn(expected);
+
+        // When
+        final Headers actual = adaptor.getHeaders();
 
         // Then
         assertThat(actual, is(expected));

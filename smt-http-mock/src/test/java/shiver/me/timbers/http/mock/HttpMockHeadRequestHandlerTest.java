@@ -1,6 +1,7 @@
 package shiver.me.timbers.http.mock;
 
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.Request;
 
 import static org.hamcrest.Matchers.is;
@@ -18,16 +19,19 @@ public class HttpMockHeadRequestHandlerTest {
         final Request request = mock(Request.class);
 
         final String path = someString();
+        final Headers headers = mock(Headers.class);
 
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
         given(request.getMethod()).willReturn("HEAD");
         given(request.getPath()).willReturn(path);
+        given(request.getHeaders()).willReturn(headers);
+        given(headers.isEmpty()).willReturn(true);
         given(handler.head(path)).willReturn(expected);
 
         // When
-        final HttpMockResponse actual = new HttpMockHeadRequestHandler().handle(handler, request);
+        final HttpMockResponse actual = new HttpMockHeadRequestHandler(mock(HttpMockHeaderFilter.class)).handle(handler, request);
 
         // Then
         assertThat(actual, is(expected));

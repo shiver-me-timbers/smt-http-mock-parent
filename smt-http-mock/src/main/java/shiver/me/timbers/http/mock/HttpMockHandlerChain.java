@@ -14,23 +14,32 @@ import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 class HttpMockHandlerChain {
 
     private final List<HttpMockRequestHandler> requestHandlers;
+    private final HttpMockHeaderFilter headerFilter;
 
     HttpMockHandlerChain() {
-        this(asList(
-            new HttpMockGetRequestHandler(),
-            new HttpMockPostRequestHandler(),
-            new HttpMockPutRequestHandler(),
-            new HttpMockPatchRequestHandler(),
-            new HttpMockDeleteRequestHandler(),
-            new HttpMockOptionsRequestHandler(),
-            new HttpMockHeadRequestHandler(),
-            new HttpMockTraceRequestHandler(),
-            new HttpMockOtherRequestHandler()
-        ));
+        this(new HttpMockHeaderFilter());
     }
 
-    HttpMockHandlerChain(List<HttpMockRequestHandler> requestHandlers) {
+    private HttpMockHandlerChain(HttpMockHeaderFilter headerFilter) {
+        this(
+            asList(
+                new HttpMockGetRequestHandler(headerFilter),
+                new HttpMockPostRequestHandler(headerFilter),
+                new HttpMockPutRequestHandler(headerFilter),
+                new HttpMockPatchRequestHandler(headerFilter),
+                new HttpMockDeleteRequestHandler(headerFilter),
+                new HttpMockOptionsRequestHandler(headerFilter),
+                new HttpMockHeadRequestHandler(headerFilter),
+                new HttpMockTraceRequestHandler(headerFilter),
+                new HttpMockOtherRequestHandler(headerFilter)
+            ),
+            headerFilter
+        );
+    }
+
+    HttpMockHandlerChain(List<HttpMockRequestHandler> requestHandlers, HttpMockHeaderFilter headerFilter) {
         this.requestHandlers = requestHandlers;
+        this.headerFilter = headerFilter;
     }
 
     public HttpMockResponse handle(HttpMockHandler handler, final Request request) {
@@ -56,5 +65,9 @@ class HttpMockHandlerChain {
                 );
             }
         };
+    }
+
+    void ignoreHeaders(String... names) {
+        this.headerFilter.ignoredHeaders(names);
     }
 }

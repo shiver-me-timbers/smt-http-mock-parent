@@ -35,6 +35,10 @@ class HttpMockService implements Service {
         return handlerChain.handle(handler, request);
     }
 
+    void ignoreHeaders(String... names) {
+        handlerChain.ignoreHeaders(names);
+    }
+
     HttpMockHandler registerHandler(HttpMockHandler handler) {
         return this.handler = handler;
     }

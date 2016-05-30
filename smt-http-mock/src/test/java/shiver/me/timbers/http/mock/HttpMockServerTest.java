@@ -12,6 +12,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
+import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class HttpMockServerTest {
 
@@ -39,13 +40,31 @@ public class HttpMockServerTest {
     }
 
     @Test
-    public void Can_stop_a_mock_http_server() {
+    public void Can_get_the_servers_port() {
+
+        final Integer expected = someInteger();
+
+        // Given
+        given(container.getPort()).willReturn(expected);
 
         // When
-        server.stop();
+        final int actual = server.getPort();
 
         // Then
-        then(container).should().stop();
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_ignore_headers() {
+
+        // Given
+        final String[] names = {someString(), someString(), someString()};
+
+        // When
+        server.ignoreHeaders(names);
+
+        // Then
+        then(service).should().ignoreHeaders(names);
     }
 
     @Test
@@ -64,17 +83,12 @@ public class HttpMockServerTest {
     }
 
     @Test
-    public void Can_get_the_servers_port() {
-
-        final Integer expected = someInteger();
-
-        // Given
-        given(container.getPort()).willReturn(expected);
+    public void Can_stop_a_mock_http_server() {
 
         // When
-        final int actual = server.getPort();
+        server.stop();
 
         // Then
-        assertThat(actual, is(expected));
+        then(container).should().stop();
     }
 }

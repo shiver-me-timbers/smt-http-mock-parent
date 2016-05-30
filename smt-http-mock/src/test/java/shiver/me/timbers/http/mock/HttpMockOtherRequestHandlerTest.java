@@ -2,12 +2,14 @@ package shiver.me.timbers.http.mock;
 
 import org.junit.Before;
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.Request;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
@@ -17,10 +19,12 @@ import static shiver.me.timbers.http.Methods.METHODS;
 public class HttpMockOtherRequestHandlerTest {
 
     private HttpMockOtherRequestHandler requestHandler;
+    private HttpMockHeaderFilter headerFilter;
 
     @Before
     public void setUp() {
-        requestHandler = new HttpMockOtherRequestHandler();
+        headerFilter = mock(HttpMockHeaderFilter.class);
+        requestHandler = new HttpMockOtherRequestHandler(headerFilter);
     }
 
     @Test
@@ -31,18 +35,21 @@ public class HttpMockOtherRequestHandlerTest {
 
         final String method = someString();
         final String path = someString();
+        final Headers headers = mock(Headers.class);
 
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
         given(request.getMethod()).willReturn(method);
         given(request.getPath()).willReturn(path);
+        given(request.getHeaders()).willReturn(headers);
         given(handler.request(method, path)).willReturn(expected);
 
         // When
         final HttpMockResponse actual = requestHandler.handle(handler, request);
 
         // Then
+        then(headerFilter).should().filter(headers);
         assertThat(actual, is(expected));
     }
 

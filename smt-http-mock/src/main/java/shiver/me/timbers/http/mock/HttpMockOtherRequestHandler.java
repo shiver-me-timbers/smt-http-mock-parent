@@ -9,11 +9,19 @@ import static shiver.me.timbers.http.Methods.METHODS;
  */
 class HttpMockOtherRequestHandler implements HttpMockRequestHandler {
 
+    private final HttpMockHeaderFilter headerFilter;
+
+    HttpMockOtherRequestHandler(HttpMockHeaderFilter headerFilter) {
+        this.headerFilter = headerFilter;
+    }
+
     @Override
     public HttpMockResponse handle(HttpMockHandler handler, Request request) {
         if (isHttpMethod(request)) {
             return null;
         }
+
+        headerFilter.filter(request.getHeaders());
 
         return handler.request(request.getMethod(), request.getPath());
     }

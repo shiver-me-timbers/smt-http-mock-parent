@@ -1,5 +1,6 @@
 package shiver.me.timbers.http.servlet;
 
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.Request;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,9 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 class ServletRequestAdaptor implements Request {
 
     private final HttpServletRequest servletRequest;
+    private final ServletHeadersExtractor headersExtractor;
 
     ServletRequestAdaptor(HttpServletRequest servletRequest) {
+        this(servletRequest, new ServletHeadersExtractor());
+    }
+
+    ServletRequestAdaptor(HttpServletRequest servletRequest, ServletHeadersExtractor headersExtractor) {
         this.servletRequest = servletRequest;
+        this.headersExtractor = headersExtractor;
     }
 
     @Override
@@ -23,5 +30,10 @@ class ServletRequestAdaptor implements Request {
     @Override
     public String getPath() {
         return servletRequest.getPathInfo();
+    }
+
+    @Override
+    public Headers getHeaders() {
+        return headersExtractor.extract(servletRequest);
     }
 }

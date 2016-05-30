@@ -9,6 +9,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
@@ -17,12 +18,15 @@ public class HttpMockHandlerChainTest {
 
     private HttpMockRequestHandler requestHandler;
     private HttpMockHandlerChain chain;
+    private HttpMockHeaderFilter headerFilter;
 
     @Before
     public void setUp() {
         requestHandler = mock(HttpMockRequestHandler.class);
+        headerFilter = mock(HttpMockHeaderFilter.class);
         chain = new HttpMockHandlerChain(
-            asList(mock(HttpMockRequestHandler.class), requestHandler, mock(HttpMockRequestHandler.class))
+            asList(mock(HttpMockRequestHandler.class), requestHandler, mock(HttpMockRequestHandler.class)),
+            headerFilter
         );
     }
 
@@ -65,5 +69,18 @@ public class HttpMockHandlerChainTest {
         assertThat(actual.getBodyAsString(),
             is(format("The %s request with path (%s) has not been mocked.", method, path))
         );
+    }
+
+    @Test
+    public void Can_filter_out_ignored_headers() {
+
+        // Given
+        final String[] names = {someString(), someString(), someString()};
+
+        // When
+        chain.ignoreHeaders(names);
+
+        // Then
+        then(headerFilter).should().ignoredHeaders(names);
     }
 }

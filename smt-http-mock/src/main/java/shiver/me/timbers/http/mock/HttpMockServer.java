@@ -26,6 +26,10 @@ public class HttpMockServer {
         container.start();
     }
 
+    public void ignoreHeaders(String... names) {
+        service.ignoreHeaders(names);
+    }
+
     public int getPort() {
         return container.getPort();
     }

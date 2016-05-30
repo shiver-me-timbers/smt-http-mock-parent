@@ -1,11 +1,15 @@
 package shiver.me.timbers.http.mock;
 
+import shiver.me.timbers.http.Headers;
+
 /**
  * @author Karl Bennett
  */
 public interface HttpMockHandler {
 
     HttpMockResponse get(String path);
+
+    HttpMockResponse get(String path, Headers headers);
 
     HttpMockResponse post(String path);
 

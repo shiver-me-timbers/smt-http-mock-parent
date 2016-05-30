@@ -1,6 +1,7 @@
 package shiver.me.timbers.http.mock;
 
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.Request;
 
 import static org.hamcrest.Matchers.is;
@@ -18,16 +19,19 @@ public class HttpMockTraceRequestHandlerTest {
         final Request request = mock(Request.class);
 
         final String path = someString();
+        final Headers headers = mock(Headers.class);
 
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
         given(request.getMethod()).willReturn("TRACE");
         given(request.getPath()).willReturn(path);
+        given(request.getHeaders()).willReturn(headers);
+        given(headers.isEmpty()).willReturn(true);
         given(handler.trace(path)).willReturn(expected);
 
         // When
-        final HttpMockResponse actual = new HttpMockTraceRequestHandler().handle(handler, request);
+        final HttpMockResponse actual = new HttpMockTraceRequestHandler(mock(HttpMockHeaderFilter.class)).handle(handler, request);
 
         // Then
         assertThat(actual, is(expected));

@@ -18,7 +18,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static shiver.me.timbers.data.random.RandomStrings.buildSomeString;
 import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
 import static shiver.me.timbers.http.Methods.DELETE;
 import static shiver.me.timbers.http.Methods.GET;
@@ -30,6 +29,7 @@ import static shiver.me.timbers.http.Methods.TRACE;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 import static shiver.me.timbers.http.StatusCodes.OK;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
+import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
 
 public class ITHttpRequest {
 
@@ -38,6 +38,7 @@ public class ITHttpRequest {
     @BeforeClass
     public static void setUp() {
         http = new HttpMockServer();
+        http.ignoreHeaders("Host", "Connection", "User-Agent", "Accept", "Content-Type", "Content-Length");
     }
 
     @AfterClass
@@ -270,10 +271,6 @@ public class ITHttpRequest {
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), is(notFoundMessage(method, otherPath)));
-    }
-
-    private static String somePath() {
-        return "/" + buildSomeString().thatContainsAlphanumericCharacters().withLengthBetween(1, 10).build();
     }
 
     private static String notFoundMessage(String method, String path) {

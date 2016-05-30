@@ -8,4 +8,6 @@ public interface Request {
     String getMethod();
 
     String getPath();
+
+    Headers getHeaders();
 }

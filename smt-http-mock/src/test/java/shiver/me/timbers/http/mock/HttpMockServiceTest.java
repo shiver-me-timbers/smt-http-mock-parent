@@ -8,7 +8,9 @@ import shiver.me.timbers.http.Response;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
+import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class HttpMockServiceTest {
 
@@ -39,6 +41,19 @@ public class HttpMockServiceTest {
 
         // Then
         assertThat(actual, is("/*"));
+    }
+
+    @Test
+    public void Can_ignore_headers() {
+
+        // Given
+        final String[] names = {someString(), someString(), someString()};
+
+        // When
+        service.ignoreHeaders(names);
+
+        // Then
+        then(handlerChain).should().ignoreHeaders(names);
     }
 
     @Test
