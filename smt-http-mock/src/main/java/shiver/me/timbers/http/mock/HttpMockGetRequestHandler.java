@@ -18,6 +18,6 @@ class HttpMockGetRequestHandler extends HttpMockMethodRequestHandler {
 
     @Override
     protected HttpMockResponse handleMethod(HttpMockHandler handler, String path, Headers headers) {
-        throw new UnsupportedOperationException();
+        return handler.get(path, headers);
     }
 }

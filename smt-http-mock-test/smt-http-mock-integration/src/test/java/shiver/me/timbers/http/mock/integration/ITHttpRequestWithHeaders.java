@@ -7,6 +7,8 @@ import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 import shiver.me.timbers.http.mock.HttpMockServer;
 
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import static org.hamcrest.Matchers.is;
@@ -48,16 +50,21 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
+        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
+            putSingle(name1, value1);
+            putSingle(name2, value2);
+            putSingle(name3, value3);
+        }};
 
         // Given
         given(handler.get(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().get();
+        final Response ok = createClient(http).path(path).request().headers(headerMap).get();
 
         // Then
-        then(handler).should().get(path);
+        then(handler).should().get(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)));
         assertThat(ok.getStatus(), is(OK));
     }
 }

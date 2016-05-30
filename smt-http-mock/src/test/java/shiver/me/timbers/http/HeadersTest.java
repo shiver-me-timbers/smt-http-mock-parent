@@ -1,11 +1,13 @@
 package shiver.me.timbers.http;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import java.util.Collections;
 import java.util.HashSet;
 
 import static java.util.Arrays.asList;
+import static nl.jqno.equalsverifier.Warning.NULL_FIELDS;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -55,5 +57,10 @@ public class HeadersTest {
         // Then
         assertThat(headerSet, equalTo(new HashSet<>(asList(header1, header2, header3))));
         assertThat(headers, hasField("headers", new HashSet<>(asList(header1, header3))));
+    }
+
+    @Test
+    public void Headers_have_equality() {
+        EqualsVerifier.forClass(Headers.class).suppress(NULL_FIELDS).usingGetClass().verify();
     }
 }

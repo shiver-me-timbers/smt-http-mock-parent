@@ -38,7 +38,6 @@ public class Headers {
         final Headers that = (Headers) object;
 
         return headers.equals(that.headers);
-
     }
 
     @Override

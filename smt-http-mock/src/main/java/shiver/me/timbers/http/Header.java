@@ -9,7 +9,7 @@ public class Header {
     private final String value;
 
     public Header(String name, String value) {
-        this.name = name;
+        this.name = name.toLowerCase();
         this.value = value;
     }
 
