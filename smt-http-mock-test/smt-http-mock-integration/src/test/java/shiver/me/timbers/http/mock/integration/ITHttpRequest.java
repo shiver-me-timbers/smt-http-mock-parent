@@ -15,7 +15,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static shiver.me.timbers.data.random.RandomStrings.buildSomeString;
 import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
 import static shiver.me.timbers.http.Methods.DELETE;
@@ -60,6 +62,9 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().get();
 
         // Then
+        then(handler).should().get(path);
+        then(handler).should().get(otherPath);
+        verifyNoMoreInteractions(handler);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), is(notFoundMessage(GET, otherPath)));
@@ -82,6 +87,9 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().post(text(null), Response.class);
 
         // Then
+        then(handler).should().post(path);
+        then(handler).should().post(otherPath);
+        verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), is(notFoundMessage(POST, otherPath)));
@@ -104,6 +112,9 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().put(text(""));
 
         // Then
+        then(handler).should().put(path);
+        then(handler).should().put(otherPath);
+        verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), is(notFoundMessage(PUT, otherPath)));
@@ -126,6 +137,9 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().method(PATCH);
 
         // Then
+        then(handler).should().patch(path);
+        then(handler).should().patch(otherPath);
+        verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), is(notFoundMessage(PATCH, otherPath)));
@@ -148,6 +162,9 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().delete();
 
         // Then
+        then(handler).should().delete(path);
+        then(handler).should().delete(otherPath);
+        verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), is(notFoundMessage(DELETE, otherPath)));
@@ -170,6 +187,9 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().options();
 
         // Then
+        then(handler).should().options(path);
+        then(handler).should().options(otherPath);
+        verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), is(notFoundMessage(OPTIONS, otherPath)));
@@ -192,6 +212,9 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().head();
 
         // Then
+        then(handler).should().head(path);
+        then(handler).should().head(otherPath);
+        verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), isEmptyString());
@@ -214,6 +237,9 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().trace();
 
         // Then
+        then(handler).should().trace(path);
+        then(handler).should().trace(otherPath);
+        verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), is(notFoundMessage(TRACE, otherPath)));
@@ -238,6 +264,9 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().method(method);
 
         // Then
+        then(handler).should().request(method, path);
+        then(handler).should().request(method, otherPath);
+        verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
         assertThat(notFound.readEntity(String.class), is(notFoundMessage(method, otherPath)));
