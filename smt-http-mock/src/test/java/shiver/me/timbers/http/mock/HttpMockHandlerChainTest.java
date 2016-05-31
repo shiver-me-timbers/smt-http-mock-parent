@@ -2,6 +2,7 @@ package shiver.me.timbers.http.mock;
 
 import org.junit.Before;
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.Request;
 
 import static java.lang.String.format;
@@ -56,10 +57,12 @@ public class HttpMockHandlerChainTest {
 
         final String method = someString();
         final String path = someString();
+        final Headers headers = mock(Headers.class);
 
         // Given
         given(request.getMethod()).willReturn(method);
         given(request.getPath()).willReturn(path);
+        given(request.getHeaders()).willReturn(headers);
 
         // When
         final HttpMockResponse actual = chain.handle(handler, request);
@@ -67,7 +70,7 @@ public class HttpMockHandlerChainTest {
         // Then
         assertThat(actual.getStatus(), is(NOT_FOUND));
         assertThat(actual.getBodyAsString(),
-            is(format("The %s request with path (%s) has not been mocked.", method, path))
+            is(format("The %s request with path (%s) and headers (%s) has not been mocked.", method, path, headers))
         );
     }
 

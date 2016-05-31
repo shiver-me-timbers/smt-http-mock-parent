@@ -9,7 +9,6 @@ import shiver.me.timbers.http.mock.HttpMockServer;
 
 import javax.ws.rs.core.Response;
 
-import static java.lang.String.format;
 import static javax.ws.rs.client.Entity.text;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyString;
@@ -19,13 +18,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
-import static shiver.me.timbers.http.Methods.DELETE;
-import static shiver.me.timbers.http.Methods.GET;
-import static shiver.me.timbers.http.Methods.OPTIONS;
 import static shiver.me.timbers.http.Methods.PATCH;
-import static shiver.me.timbers.http.Methods.POST;
-import static shiver.me.timbers.http.Methods.PUT;
-import static shiver.me.timbers.http.Methods.TRACE;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 import static shiver.me.timbers.http.StatusCodes.OK;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
@@ -68,7 +61,6 @@ public class ITHttpRequest {
         verifyNoMoreInteractions(handler);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
-        assertThat(notFound.readEntity(String.class), is(notFoundMessage(GET, otherPath)));
     }
 
     @Test
@@ -93,7 +85,6 @@ public class ITHttpRequest {
         verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
-        assertThat(notFound.readEntity(String.class), is(notFoundMessage(POST, otherPath)));
     }
 
     @Test
@@ -118,7 +109,6 @@ public class ITHttpRequest {
         verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
-        assertThat(notFound.readEntity(String.class), is(notFoundMessage(PUT, otherPath)));
     }
 
     @Test
@@ -143,7 +133,6 @@ public class ITHttpRequest {
         verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
-        assertThat(notFound.readEntity(String.class), is(notFoundMessage(PATCH, otherPath)));
     }
 
     @Test
@@ -168,7 +157,6 @@ public class ITHttpRequest {
         verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
-        assertThat(notFound.readEntity(String.class), is(notFoundMessage(DELETE, otherPath)));
     }
 
     @Test
@@ -193,7 +181,6 @@ public class ITHttpRequest {
         verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
-        assertThat(notFound.readEntity(String.class), is(notFoundMessage(OPTIONS, otherPath)));
     }
 
     @Test
@@ -243,7 +230,6 @@ public class ITHttpRequest {
         verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
-        assertThat(notFound.readEntity(String.class), is(notFoundMessage(TRACE, otherPath)));
     }
 
     @Test
@@ -270,11 +256,6 @@ public class ITHttpRequest {
         verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
-        assertThat(notFound.readEntity(String.class), is(notFoundMessage(method, otherPath)));
-    }
-
-    private static String notFoundMessage(String method, String path) {
-        return format("The %s request with path (%s) has not been mocked.", method, path);
     }
 }
 

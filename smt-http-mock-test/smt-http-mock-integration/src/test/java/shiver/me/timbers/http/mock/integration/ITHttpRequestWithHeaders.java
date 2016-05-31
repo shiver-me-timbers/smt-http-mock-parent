@@ -3,6 +3,7 @@ package shiver.me.timbers.http.mock.integration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 import shiver.me.timbers.http.mock.HttpMockServer;
@@ -17,6 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
+import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 import static shiver.me.timbers.http.StatusCodes.OK;
 import static shiver.me.timbers.http.mock.HttpMock.h;
 import static shiver.me.timbers.http.mock.HttpMock.headers;
@@ -42,6 +44,7 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_get_request_with_headers() {
 
         final String path = somePath();
+        final String otherPath = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -62,10 +65,13 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).get();
+        final Response notFound = createClient(http).path(otherPath).request().get();
 
         // Then
-        then(handler).should().get(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)));
+        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
+        then(handler).should().get(path, headers);
         assertThat(ok.getStatus(), is(OK));
+        assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
 }
 

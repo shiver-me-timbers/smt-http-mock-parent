@@ -1,9 +1,11 @@
-package shiver.me.timbers.http.mock;
+package shiver.me.timbers.http.mock.router;
 
 import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.http.Headers;
-import shiver.me.timbers.http.Request;
+import shiver.me.timbers.http.mock.HttpMockHandler;
+import shiver.me.timbers.http.mock.HttpMockResponse;
+import shiver.me.timbers.http.mock.routers.HttpMockGetRequestRouter;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -11,35 +13,29 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
-public class HttpMockGetRequestHandlerTest {
+public class HttpMockGetRequestRouterTest {
 
-    private HttpMockGetRequestHandler handler;
+    private HttpMockGetRequestRouter router;
 
     @Before
     public void setUp() {
-        handler = new HttpMockGetRequestHandler(mock(HttpMockHeaderFilter.class));
+        router = new HttpMockGetRequestRouter();
     }
 
     @Test
     public void Can_handle_a_get_request() {
 
         final HttpMockHandler handler = mock(HttpMockHandler.class);
-        final Request request = mock(Request.class);
 
         final String path = someString();
-        final Headers headers = mock(Headers.class);
 
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
-        given(request.getMethod()).willReturn("GET");
-        given(request.getPath()).willReturn(path);
-        given(request.getHeaders()).willReturn(headers);
-        given(headers.isEmpty()).willReturn(true);
         given(handler.get(path)).willReturn(expected);
 
         // When
-        final HttpMockResponse actual = this.handler.handle(handler, request);
+        final HttpMockResponse actual = router.route(handler, someString(), path);
 
         // Then
         assertThat(actual, is(expected));
@@ -49,7 +45,6 @@ public class HttpMockGetRequestHandlerTest {
     public void Can_handle_a_get_request_with_headers() {
 
         final HttpMockHandler handler = mock(HttpMockHandler.class);
-        final Request request = mock(Request.class);
 
         final String path = someString();
         final Headers headers = mock(Headers.class);
@@ -57,14 +52,10 @@ public class HttpMockGetRequestHandlerTest {
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
-        given(request.getMethod()).willReturn("GET");
-        given(request.getPath()).willReturn(path);
-        given(request.getHeaders()).willReturn(headers);
-        given(headers.isEmpty()).willReturn(false);
         given(handler.get(path, headers)).willReturn(expected);
 
         // When
-        final HttpMockResponse actual = this.handler.handle(handler, request);
+        final HttpMockResponse actual = router.route(handler, someString(), path, headers);
 
         // Then
         assertThat(actual, is(expected));

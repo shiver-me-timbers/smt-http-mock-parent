@@ -1,11 +1,20 @@
 package shiver.me.timbers.http.mock;
 
 import shiver.me.timbers.http.Request;
+import shiver.me.timbers.http.mock.routers.HttpMockDeleteRequestRouter;
+import shiver.me.timbers.http.mock.routers.HttpMockGetRequestRouter;
+import shiver.me.timbers.http.mock.routers.HttpMockHeadRequestRouter;
+import shiver.me.timbers.http.mock.routers.HttpMockOptionsRequestRouter;
+import shiver.me.timbers.http.mock.routers.HttpMockOtherRequestRouter;
+import shiver.me.timbers.http.mock.routers.HttpMockPatchRequestRouter;
+import shiver.me.timbers.http.mock.routers.HttpMockPostRequestRouter;
+import shiver.me.timbers.http.mock.routers.HttpMockPutRequestRouter;
+import shiver.me.timbers.http.mock.routers.HttpMockTraceRequestRouter;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 
 /**
@@ -22,16 +31,16 @@ class HttpMockHandlerChain {
 
     private HttpMockHandlerChain(HttpMockHeaderFilter headerFilter) {
         this(
-            asList(
-                new HttpMockGetRequestHandler(headerFilter),
-                new HttpMockPostRequestHandler(headerFilter),
-                new HttpMockPutRequestHandler(headerFilter),
-                new HttpMockPatchRequestHandler(headerFilter),
-                new HttpMockDeleteRequestHandler(headerFilter),
-                new HttpMockOptionsRequestHandler(headerFilter),
-                new HttpMockHeadRequestHandler(headerFilter),
-                new HttpMockTraceRequestHandler(headerFilter),
-                new HttpMockOtherRequestHandler(headerFilter)
+            Arrays.<HttpMockRequestHandler>asList(
+                new HttpMockRoutingRequestHandler(headerFilter, new HttpMockGetRequestRouter()),
+                new HttpMockRoutingRequestHandler(headerFilter, new HttpMockPostRequestRouter()),
+                new HttpMockRoutingRequestHandler(headerFilter, new HttpMockPutRequestRouter()),
+                new HttpMockRoutingRequestHandler(headerFilter, new HttpMockPatchRequestRouter()),
+                new HttpMockRoutingRequestHandler(headerFilter, new HttpMockDeleteRequestRouter()),
+                new HttpMockRoutingRequestHandler(headerFilter, new HttpMockOptionsRequestRouter()),
+                new HttpMockRoutingRequestHandler(headerFilter, new HttpMockHeadRequestRouter()),
+                new HttpMockRoutingRequestHandler(headerFilter, new HttpMockTraceRequestRouter()),
+                new HttpMockRoutingRequestHandler(headerFilter, new HttpMockOtherRequestRouter())
             ),
             headerFilter
         );
@@ -42,7 +51,7 @@ class HttpMockHandlerChain {
         this.headerFilter = headerFilter;
     }
 
-    public HttpMockResponse handle(HttpMockHandler handler, final Request request) {
+    HttpMockResponse handle(HttpMockHandler handler, final Request request) {
         for (HttpMockRequestHandler requestHandler : requestHandlers) {
             final HttpMockResponse response = requestHandler.handle(handler, request);
             if (response != null) {
@@ -59,9 +68,10 @@ class HttpMockHandlerChain {
             @Override
             public String getBodyAsString() {
                 return format(
-                    "The %s request with path (%s) has not been mocked.",
+                    "The %s request with path (%s) and headers (%s) has not been mocked.",
                     request.getMethod(),
-                    request.getPath()
+                    request.getPath(),
+                    request.getHeaders()
                 );
             }
         };

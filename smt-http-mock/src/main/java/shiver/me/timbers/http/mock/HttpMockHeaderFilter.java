@@ -5,7 +5,7 @@ import shiver.me.timbers.http.Headers;
 /**
  * @author Karl Bennett
  */
-public class HttpMockHeaderFilter {
+class HttpMockHeaderFilter {
 
     private String[] names;
 
