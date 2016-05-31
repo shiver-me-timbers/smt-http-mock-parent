@@ -4,6 +4,8 @@ import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 
+import static shiver.me.timbers.http.Methods.PATCH;
+
 /**
  * @author Karl Bennett
  */
@@ -11,7 +13,7 @@ public class HttpMockPatchRequestRouter implements HttpMockRequestRouter {
 
     @Override
     public boolean handlesMethod(String method) {
-        return "PATCH".equals(method);
+        return PATCH.equals(method);
     }
 
     @Override

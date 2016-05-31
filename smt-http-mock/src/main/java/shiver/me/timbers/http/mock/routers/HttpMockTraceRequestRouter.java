@@ -4,6 +4,8 @@ import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 
+import static shiver.me.timbers.http.Methods.TRACE;
+
 /**
  * @author Karl Bennett
  */
@@ -11,7 +13,7 @@ public class HttpMockTraceRequestRouter implements HttpMockRequestRouter {
 
     @Override
     public boolean handlesMethod(String method) {
-        return "TRACE".equals(method);
+        return TRACE.equals(method);
     }
 
     @Override
