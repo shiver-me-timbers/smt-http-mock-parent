@@ -23,6 +23,6 @@ public class HttpMockPostRequestRouter implements HttpMockRequestRouter {
 
     @Override
     public HttpMockResponse route(HttpMockHandler handler, String method, String path, Headers headers) {
-        throw new UnsupportedOperationException();
+        return handler.post(path, headers);
     }
 }

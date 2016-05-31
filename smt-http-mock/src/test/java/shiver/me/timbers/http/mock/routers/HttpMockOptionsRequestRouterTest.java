@@ -2,6 +2,7 @@ package shiver.me.timbers.http.mock.routers;
 
 import org.junit.Before;
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 
@@ -63,6 +64,26 @@ public class HttpMockOptionsRequestRouterTest {
 
         // When
         final HttpMockResponse actual = router.route(handler, someString(), path);
+
+        // Then
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_handle_a_options_request_with_headers() {
+
+        final HttpMockHandler handler = mock(HttpMockHandler.class);
+
+        final String path = someString();
+        final Headers headers = mock(Headers.class);
+
+        final HttpMockResponse expected = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.options(path, headers)).willReturn(expected);
+
+        // When
+        final HttpMockResponse actual = router.route(handler, someString(), path, headers);
 
         // Then
         assertThat(actual, is(expected));

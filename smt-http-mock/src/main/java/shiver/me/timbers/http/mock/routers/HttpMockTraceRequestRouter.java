@@ -23,6 +23,6 @@ public class HttpMockTraceRequestRouter implements HttpMockRequestRouter {
 
     @Override
     public HttpMockResponse route(HttpMockHandler handler, String method, String path, Headers headers) {
-        throw new UnsupportedOperationException();
+        return handler.trace(path, headers);
     }
 }

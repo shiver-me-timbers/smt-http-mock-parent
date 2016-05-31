@@ -2,6 +2,7 @@ package shiver.me.timbers.http.mock.routers;
 
 import org.junit.Before;
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 
@@ -50,7 +51,7 @@ public class HttpMockTraceRequestRouterTest {
     }
 
     @Test
-    public void Can_handle_a_get_request() {
+    public void Can_handle_a_trace_request() {
 
         final HttpMockHandler handler = mock(HttpMockHandler.class);
 
@@ -63,6 +64,26 @@ public class HttpMockTraceRequestRouterTest {
 
         // When
         final HttpMockResponse actual = router.route(handler, someString(), path);
+
+        // Then
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_handle_a_trace_request_with_headers() {
+
+        final HttpMockHandler handler = mock(HttpMockHandler.class);
+
+        final String path = someString();
+        final Headers headers = mock(Headers.class);
+
+        final HttpMockResponse expected = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.trace(path, headers)).willReturn(expected);
+
+        // When
+        final HttpMockResponse actual = router.route(handler, someString(), path, headers);
 
         // Then
         assertThat(actual, is(expected));

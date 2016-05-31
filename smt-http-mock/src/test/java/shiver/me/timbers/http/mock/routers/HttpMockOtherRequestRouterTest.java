@@ -2,6 +2,7 @@ package shiver.me.timbers.http.mock.routers;
 
 import org.junit.Before;
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 
@@ -23,7 +24,7 @@ public class HttpMockOtherRequestRouterTest {
     }
 
     @Test
-    public void Can_handle_a_delete_method() {
+    public void Can_handle_a_non_standard_method() {
 
         // When
         final boolean actual = router.handlesMethod(someString());
@@ -33,7 +34,7 @@ public class HttpMockOtherRequestRouterTest {
     }
 
     @Test
-    public void Cannot_handle_any_other_method() {
+    public void Cannot_handle_any_standard_method() {
 
         // When
         final boolean actual = router.handlesMethod(someThing(METHODS.toArray(new String[METHODS.size()])));
@@ -43,7 +44,7 @@ public class HttpMockOtherRequestRouterTest {
     }
 
     @Test
-    public void Can_handle_a_delete_request() {
+    public void Can_handle_a_non_standard_request() {
 
         final HttpMockHandler handler = mock(HttpMockHandler.class);
         final String method = someString();
@@ -56,6 +57,27 @@ public class HttpMockOtherRequestRouterTest {
 
         // When
         final HttpMockResponse actual = router.route(handler, method, path);
+
+        // Then
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_handle_a_non_standard_request_with_headers() {
+
+        final HttpMockHandler handler = mock(HttpMockHandler.class);
+
+        final String path = someString();
+        final String method = someString();
+        final Headers headers = mock(Headers.class);
+
+        final HttpMockResponse expected = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.request(method, path, headers)).willReturn(expected);
+
+        // When
+        final HttpMockResponse actual = router.route(handler, method, path, headers);
 
         // Then
         assertThat(actual, is(expected));

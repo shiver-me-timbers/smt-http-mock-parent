@@ -238,7 +238,6 @@ public class ITHttpRequest {
         final String path = somePath();
         final String otherPath = somePath();
         final String method = someAlphaString(5);
-
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
