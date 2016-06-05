@@ -17,7 +17,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
 import static shiver.me.timbers.http.Methods.PATCH;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 import static shiver.me.timbers.http.StatusCodes.OK;
@@ -237,12 +236,12 @@ public class ITHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final String method = someAlphaString(5);
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final String method = "CUSTOM";
+        final CustomHttpMethodHandler handler = http.mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
-        given(handler.request(method, path)).willReturn(response);
+        given(handler.custom(path)).willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
         // When
@@ -250,8 +249,8 @@ public class ITHttpRequest {
         final Response notFound = createClient(http).path(otherPath).request().method(method);
 
         // Then
-        then(handler).should().request(method, path);
-        then(handler).should().request(method, otherPath);
+        then(handler).should().custom(path);
+        then(handler).should().custom(otherPath);
         verifyNoMoreInteractions(handler);
         assertThat(actual.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));

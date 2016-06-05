@@ -9,5 +9,11 @@ public interface Request {
 
     String getPath();
 
+    boolean hasHeaders();
+
     Headers getHeaders();
+
+    boolean hasBody();
+
+    String getBodyAsString();
 }

@@ -34,7 +34,7 @@ public class HttpMockServer {
         return container.getPort();
     }
 
-    public HttpMockHandler mock(HttpMockHandler handler) {
+    public <T> T mock(T handler) {
         return service.registerHandler(handler);
     }
 

@@ -72,6 +72,7 @@ public class ITHttpRequestWithHeaders {
         // Then
         final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
         then(handler).should().get(path, headers);
+        then(handler).should().get(otherPath, headers);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -106,6 +107,7 @@ public class ITHttpRequestWithHeaders {
         // Then
         final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
         then(handler).should().post(path, headers);
+        then(handler).should().post(otherPath, headers);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -140,6 +142,7 @@ public class ITHttpRequestWithHeaders {
         // Then
         final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
         then(handler).should().put(path, headers);
+        then(handler).should().put(otherPath, headers);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -174,6 +177,7 @@ public class ITHttpRequestWithHeaders {
         // Then
         final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
         then(handler).should().patch(path, headers);
+        then(handler).should().patch(otherPath, headers);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -208,6 +212,7 @@ public class ITHttpRequestWithHeaders {
         // Then
         final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
         then(handler).should().delete(path, headers);
+        then(handler).should().delete(otherPath, headers);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -242,6 +247,7 @@ public class ITHttpRequestWithHeaders {
         // Then
         final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
         then(handler).should().options(path, headers);
+        then(handler).should().options(otherPath, headers);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -276,6 +282,7 @@ public class ITHttpRequestWithHeaders {
         // Then
         final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
         then(handler).should().head(path, headers);
+        then(handler).should().head(otherPath, headers);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -310,6 +317,7 @@ public class ITHttpRequestWithHeaders {
         // Then
         final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
         then(handler).should().trace(path, headers);
+        then(handler).should().trace(otherPath, headers);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -319,8 +327,8 @@ public class ITHttpRequestWithHeaders {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final String method = someAlphaString(5);
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final String method = "CUSTOM";
+        final CustomHttpMethodHandler handler = http.mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -335,7 +343,7 @@ public class ITHttpRequestWithHeaders {
         }};
 
         // Given
-        given(handler.request(method, path, headers(h(name1, value1), h(name2, value2), h(name3, value3))))
+        given(handler.custom(path, headers(h(name1, value1), h(name2, value2), h(name3, value3))))
             .willReturn(response);
         given(response.getStatus()).willReturn(OK);
 
@@ -345,7 +353,8 @@ public class ITHttpRequestWithHeaders {
 
         // Then
         final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().request(method, path, headers);
+        then(handler).should().custom(path, headers);
+        then(handler).should().custom(otherPath, headers);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }

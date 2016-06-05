@@ -9,15 +9,21 @@ import shiver.me.timbers.http.Service;
  */
 class HttpMockService implements Service {
 
-    private final HttpMockHandlerChain handlerChain;
-    private HttpMockHandler handler;
+    private final HttpMockReflectionHandlerRouter router;
+    private final HttpMockHeaderFilter headerFilter;
+    private Object handler;
 
     HttpMockService() {
-        this(new HttpMockHandlerChain());
+        this(new HttpMockHeaderFilter());
     }
 
-    HttpMockService(HttpMockHandlerChain handlerChain) {
-        this.handlerChain = handlerChain;
+    private HttpMockService(HttpMockHeaderFilter headerFilter) {
+        this(new HttpMockReflectionHandlerRouter(headerFilter), headerFilter);
+    }
+
+    HttpMockService(HttpMockReflectionHandlerRouter router, HttpMockHeaderFilter headerFilter) {
+        this.router = router;
+        this.headerFilter = headerFilter;
     }
 
     @Override
@@ -32,14 +38,15 @@ class HttpMockService implements Service {
 
     @Override
     public Response call(Request request) {
-        return handlerChain.handle(handler, request);
+        return router.route(handler, request);
     }
 
     void ignoreHeaders(String... names) {
-        handlerChain.ignoreHeaders(names);
+        headerFilter.ignoredHeaders(names);
     }
 
-    HttpMockHandler registerHandler(HttpMockHandler handler) {
-        return this.handler = handler;
+    @SuppressWarnings("unchecked")
+    <T> T registerHandler(T handler) {
+        return (T) (this.handler = handler);
     }
 }

@@ -11,16 +11,19 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.data.random.RandomThings.someThing;
 
 public class HttpMockServiceTest {
 
     private HttpMockService service;
-    private HttpMockHandlerChain handlerChain;
+    private HttpMockHeaderFilter headerFilter;
+    private HttpMockReflectionHandlerRouter router;
 
     @Before
     public void setUp() {
-        handlerChain = mock(HttpMockHandlerChain.class);
-        service = new HttpMockService(handlerChain);
+        router = mock(HttpMockReflectionHandlerRouter.class);
+        headerFilter = mock(HttpMockHeaderFilter.class);
+        service = new HttpMockService(router, headerFilter);
     }
 
     @Test
@@ -53,7 +56,7 @@ public class HttpMockServiceTest {
         service.ignoreHeaders(names);
 
         // Then
-        then(handlerChain).should().ignoreHeaders(names);
+        then(headerFilter).should().ignoredHeaders(names);
     }
 
     @Test
@@ -65,7 +68,7 @@ public class HttpMockServiceTest {
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
-        given(handlerChain.handle(handler, request)).willReturn(expected);
+        given(router.route(handler, request)).willReturn(expected);
 
         // When
         service.registerHandler(handler);
@@ -76,13 +79,13 @@ public class HttpMockServiceTest {
     }
 
     @Test
-    public void Can_get_the_http_mock_handler() {
+    public void Can_register_the_http_mock_handler() {
 
         // Given
-        final HttpMockHandler expected = mock(HttpMockHandler.class);
+        final Object expected = someThing(Integer.class, Double.class, String.class);
 
         // When
-        final HttpMockHandler actual = service.registerHandler(expected);
+        final Object actual = service.registerHandler(expected);
 
         // Then
         assertThat(actual, is(expected));

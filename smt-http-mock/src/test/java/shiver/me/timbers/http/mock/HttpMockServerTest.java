@@ -13,6 +13,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.data.random.RandomThings.someThing;
 
 public class HttpMockServerTest {
 
@@ -70,13 +71,13 @@ public class HttpMockServerTest {
     @Test
     public void Can_create_a_mock_http_handler() {
 
-        final HttpMockHandler expected = mock(HttpMockHandler.class);
+        final Object expected = someThing(Integer.class, Double.class, String.class);
 
         // Given
         given(service.registerHandler(expected)).willReturn(expected);
 
         // When
-        final HttpMockHandler actual = server.mock(expected);
+        final Object actual = server.mock(expected);
 
         // Then
         assertThat(actual, is(expected));

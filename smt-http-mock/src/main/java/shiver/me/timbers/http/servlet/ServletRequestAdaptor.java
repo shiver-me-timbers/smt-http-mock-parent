@@ -33,7 +33,22 @@ class ServletRequestAdaptor implements Request {
     }
 
     @Override
+    public boolean hasHeaders() {
+        return servletRequest.getHeaderNames().hasMoreElements();
+    }
+
+    @Override
     public Headers getHeaders() {
         return headersExtractor.extract(servletRequest);
+    }
+
+    @Override
+    public boolean hasBody() {
+        return servletRequest.getContentLength() > 0;
+    }
+
+    @Override
+    public String getBodyAsString() {
+        throw new UnsupportedOperationException();
     }
 }
