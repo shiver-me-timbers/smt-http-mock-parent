@@ -10,6 +10,10 @@ public class Headers {
 
     private final Set<Header> headers;
 
+    public Headers(Headers headers) {
+        this(headers.headers);
+    }
+
     public Headers(Set<Header> headers) {
         this.headers = new HashSet<>(headers);
     }

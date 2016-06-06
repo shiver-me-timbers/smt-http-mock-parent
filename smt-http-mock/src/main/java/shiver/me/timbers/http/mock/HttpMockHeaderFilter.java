@@ -13,9 +13,11 @@ class HttpMockHeaderFilter {
         this.names = names;
     }
 
-    void filter(Headers headers) {
+    Headers filter(Headers headers) {
+        final Headers filteredHeaders = new Headers(headers);
         for (String name : names) {
-            headers.remove(name);
+            filteredHeaders.remove(name);
         }
+        return filteredHeaders;
     }
 }

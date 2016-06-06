@@ -1,11 +1,17 @@
 package shiver.me.timbers.http.mock;
 
 import org.junit.Test;
+import shiver.me.timbers.http.Header;
 import shiver.me.timbers.http.Headers;
 
-import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.mock;
+import java.util.HashSet;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.matchers.Matchers.hasField;
 
 public class HttpMockHeaderFilterTest {
 
@@ -13,19 +19,21 @@ public class HttpMockHeaderFilterTest {
     public void Can_filter_headers() {
 
         // Given
-        final Headers headers = mock(Headers.class);
         final String name1 = someString();
         final String name2 = someString();
         final String name3 = someString();
+        final List<Header> headerList = asList(
+            new Header(name1, someString()), new Header(name2, someString()), new Header(name3, someString())
+        );
+        final Headers headers = new Headers(new HashSet<>(headerList));
 
         // When
         final HttpMockHeaderFilter filter = new HttpMockHeaderFilter();
         filter.ignoredHeaders(name1, name2, name3);
-        filter.filter(headers);
+        final Headers actual = filter.filter(headers);
 
         // Then
-        then(headers).should().remove(name1);
-        then(headers).should().remove(name2);
-        then(headers).should().remove(name3);
+        assertThat(headers, hasField("headers", new HashSet<>(headerList)));
+        assertThat(actual.isEmpty(), is(true));
     }
 }

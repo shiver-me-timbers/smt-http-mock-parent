@@ -11,12 +11,6 @@ import java.util.List;
  */
 class HttpMockRequestArgumentFactory {
 
-    private final HttpMockHeaderFilter headerFilter;
-
-    HttpMockRequestArgumentFactory(HttpMockHeaderFilter headerFilter) {
-        this.headerFilter = headerFilter;
-    }
-
     HttpMockArguments create(Request request) {
         final List<Class> types = new ArrayList<>();
         final List<Object> values = new ArrayList<>();
@@ -24,11 +18,9 @@ class HttpMockRequestArgumentFactory {
         types.add(String.class);
         values.add(request.getPath());
 
-        final Headers headers = request.getHeaders();
-        headerFilter.filter(headers);
-        if (!headers.isEmpty()) {
+        if (request.hasHeaders()) {
             types.add(Headers.class);
-            values.add(headers);
+            values.add(request.getHeaders());
         }
         if (request.hasBody()) {
             types.add(String.class);

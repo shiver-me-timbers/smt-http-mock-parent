@@ -17,12 +17,14 @@ public class HttpMockReflectionHandlerRouterTest {
     private HttpMockRequestArgumentFactory argumentFactory;
     private HttpMockRequestMethodFinder methodFinder;
     private HttpMockReflectionHandlerRouter router;
+    private HttpMockFilteredHeadersRequestFactory requestFactory;
 
     @Before
     public void setUp() {
+        requestFactory = mock(HttpMockFilteredHeadersRequestFactory.class);
         argumentFactory = mock(HttpMockRequestArgumentFactory.class);
         methodFinder = mock(HttpMockRequestMethodFinder.class);
-        router = new HttpMockReflectionHandlerRouter(argumentFactory, methodFinder);
+        router = new HttpMockReflectionHandlerRouter(requestFactory, argumentFactory, methodFinder);
     }
 
     @Test
@@ -31,13 +33,15 @@ public class HttpMockReflectionHandlerRouterTest {
         final Object handler = someThing(Integer.class, Double.class, String.class);
         final Request request = mock(Request.class);
 
+        final Request mockRequest = mock(Request.class);
         final HttpMockArguments arguments = mock(HttpMockArguments.class);
         final HttpMockMethodCall method = mock(HttpMockMethodCall.class);
 
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
-        given(argumentFactory.create(request)).willReturn(arguments);
+        given(requestFactory.create(request)).willReturn(mockRequest);
+        given(argumentFactory.create(mockRequest)).willReturn(arguments);
         given(methodFinder.find(handler, arguments)).willReturn(method);
         given(method.invoke(handler)).willReturn(expected);
 
@@ -54,12 +58,14 @@ public class HttpMockReflectionHandlerRouterTest {
         final Object handler = someThing(Integer.class, Double.class, String.class);
         final Request request = mock(Request.class);
 
+        final Request mockRequest = mock(Request.class);
         final HttpMockArguments arguments = mock(HttpMockArguments.class);
 
         final NoSuchMethodException exception = new NoSuchMethodException();
 
         // Given
-        given(argumentFactory.create(request)).willReturn(arguments);
+        given(requestFactory.create(request)).willReturn(mockRequest);
+        given(argumentFactory.create(mockRequest)).willReturn(arguments);
         given(methodFinder.find(handler, arguments)).willThrow(exception);
 
         // When
@@ -77,11 +83,13 @@ public class HttpMockReflectionHandlerRouterTest {
         final Object handler = someThing(Integer.class, Double.class, String.class);
         final Request request = mock(Request.class);
 
+        final Request mockRequest = mock(Request.class);
         final HttpMockArguments arguments = mock(HttpMockArguments.class);
         final HttpMockMethodCall method = mock(HttpMockMethodCall.class);
 
         // Given
-        given(argumentFactory.create(request)).willReturn(arguments);
+        given(requestFactory.create(request)).willReturn(mockRequest);
+        given(argumentFactory.create(mockRequest)).willReturn(arguments);
         given(methodFinder.find(handler, arguments)).willReturn(method);
         given(method.invoke(handler)).willReturn(null);
 
