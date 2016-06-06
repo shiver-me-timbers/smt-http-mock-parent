@@ -15,5 +15,6 @@ limitations under the License.
 -->
 smt-http-mock-parent
 ===========
+[![Build Status](https://travis-ci.org/shiver-me-timbers/smt-http-mock-parent.svg)](https://travis-ci.org/shiver-me-timbers/smt-http-mock-parent) [![Coverage Status](https://coveralls.io/repos/shiver-me-timbers/smt-http-mock-parent/badge.svg?branch=master&service=github)](https://coveralls.io/github/shiver-me-timbers/smt-http-mock-parent?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-http-mock-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-http-mock-parent/)
 
 This is the parent project that groups all the smt-http-mock projects.
