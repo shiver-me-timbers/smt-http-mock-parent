@@ -1,4 +1,4 @@
-smt-http-mock
+smt-http-mock-spring-integration
 ===========
 
-This library can be used to mock HTTP, REST, or SOAP endpoints.
+This project contains integration tests for the smt-http-mock Spring Boot integration.

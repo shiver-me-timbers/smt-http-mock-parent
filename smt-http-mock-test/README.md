@@ -1,4 +1,4 @@
-smt-http-mock
+smt-http-mock-test
 ===========
 
-This library can be used to mock HTTP, REST, or SOAP endpoints.
+This is the parent project that groups the smt-http-mock integration test projects.

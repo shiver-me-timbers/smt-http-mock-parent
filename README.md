@@ -1,4 +1,4 @@
 smt-http-mock-parent
 ===========
 
-This library can be used to mock HTTP, REST, or SOAP endpoints.
+This is the parent project that groups all the smt-http-mock projects.
