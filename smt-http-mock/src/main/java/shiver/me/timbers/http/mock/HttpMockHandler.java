@@ -19,11 +19,15 @@ public interface HttpMockHandler {
 
     HttpMockResponse post(String path, String body);
 
+    HttpMockResponse post(String path, Headers headers, String body);
+
     HttpMockResponse put(String path);
 
     HttpMockResponse put(String path, Headers headers);
 
     HttpMockResponse put(String path, String body);
+
+    HttpMockResponse put(String path, Headers headers, String body);
 
     HttpMockResponse delete(String path);
 
@@ -54,4 +58,6 @@ public interface HttpMockHandler {
     HttpMockResponse patch(String path, Headers headers);
 
     HttpMockResponse patch(String path, String body);
+
+    HttpMockResponse patch(String path, Headers headers, String body);
 }

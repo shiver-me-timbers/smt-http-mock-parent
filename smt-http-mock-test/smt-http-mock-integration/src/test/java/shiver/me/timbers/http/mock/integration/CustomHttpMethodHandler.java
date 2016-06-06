@@ -12,4 +12,6 @@ interface CustomHttpMethodHandler {
     HttpMockResponse custom(String path, Headers headers);
 
     HttpMockResponse custom(String path, String body);
+
+    HttpMockResponse custom(String path, Headers headers, String body);
 }

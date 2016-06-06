@@ -3,20 +3,13 @@ package shiver.me.timbers.http.mock.integration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import shiver.me.timbers.http.Header;
-import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 import shiver.me.timbers.http.mock.HttpMockServer;
 
-import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import static java.util.Map.Entry;
 import static javax.ws.rs.client.Entity.text;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -31,7 +24,10 @@ import static shiver.me.timbers.http.mock.HttpMock.h;
 import static shiver.me.timbers.http.mock.HttpMock.headers;
 import static shiver.me.timbers.http.mock.integration.CustomHttpMethodHandler.CUSTOM;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
+import static shiver.me.timbers.http.mock.integration.RandomHttp.someHeaders;
 import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
+import static shiver.me.timbers.http.mock.integration.RandomHttp.toHeaders;
+import static shiver.me.timbers.http.mock.integration.RandomHttp.toMap;
 
 public class ITHttpRequestWithHeaders {
 
@@ -317,31 +313,6 @@ public class ITHttpRequestWithHeaders {
         then(handler).should().custom(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
-    }
-
-    private static MultivaluedMap<String, Object> someHeaders() {
-        return toMap(
-            someAlphaString(4), someAlphaString(6),
-            someAlphaString(4), someAlphaString(6),
-            someAlphaString(4), someAlphaString(6)
-        );
-    }
-
-    private static MultivaluedMap<String, Object> toMap(String... values) {
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<>();
-        for (int i = 0; i < values.length; ) {
-            headerMap.putSingle(values[i++], values[i++]);
-        }
-        return headerMap;
-    }
-
-    private static Headers toHeaders(MultivaluedMap<String, Object> headerMap) {
-        final Set<Header> headers = new HashSet<>();
-        final Set<Entry<String, List<Object>>> entries = headerMap.entrySet();
-        for (Entry<String, List<Object>> entry : entries) {
-            headers.add(new Header(entry.getKey(), entry.getValue().get(0).toString()));
-        }
-        return new Headers(headers);
     }
 }
 
