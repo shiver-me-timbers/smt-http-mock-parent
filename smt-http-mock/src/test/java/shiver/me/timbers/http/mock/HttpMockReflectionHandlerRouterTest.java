@@ -45,6 +45,11 @@ public class HttpMockReflectionHandlerRouterTest {
     }
 
     @Test
+    public void Creation_just_to_get_coverage() {
+        new HttpMockReflectionHandlerRouter(mock(HttpMockHeaderFilter.class));
+    }
+
+    @Test
     public void Can_handle_an_http_request() throws NoSuchMethodException {
 
         final Object handler = someThing(Integer.class, Double.class, String.class);

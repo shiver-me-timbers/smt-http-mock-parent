@@ -16,10 +16,13 @@
 
 package shiver.me.timbers.http.mock;
 
+import org.hamcrest.Matchers;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import shiver.me.timbers.http.Headers;
-import shiver.me.timbers.http.Request;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.hamcrest.Matchers.is;
@@ -30,13 +33,15 @@ import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class HttpMockMethodCallTest {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Test
     public void Can_invoke_the_handler_method() throws NoSuchMethodException {
 
         final HttpMockArguments arguments = mock(HttpMockArguments.class);
         final TestInterface object = mock(TestInterface.class);
         final Method method = object.getClass().getMethod("test", String.class, Headers.class);
-        final Request request = mock(Request.class);
 
         final String path = someString();
         final Headers headers = mock(Headers.class);
@@ -44,8 +49,6 @@ public class HttpMockMethodCallTest {
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
         // Given
-        given(request.getPath()).willReturn(path);
-        given(request.getHeaders()).willReturn(headers);
         given(arguments.toParameters()).willReturn(new Object[]{path, headers});
         given(object.test(path, headers)).willReturn(expected);
 
@@ -56,8 +59,53 @@ public class HttpMockMethodCallTest {
         assertThat(actual, is(expected));
     }
 
+    @Test
+    public void Can_fail_to_invoke_the_handler_method_because_of_no_access() throws NoSuchMethodException {
+
+        final HttpMockArguments arguments = mock(HttpMockArguments.class);
+        final PrivateTestClass object = new PrivateTestClass();
+        final Method method = object.getClass().getDeclaredMethod("test");
+
+        // Given
+        given(arguments.toParameters()).willReturn(new Object[0]);
+        expectedException.expect(IllegalStateException.class);
+        expectedException.expectCause(Matchers.<Throwable>instanceOf(IllegalAccessException.class));
+
+        // When
+        new HttpMockMethodCall(method, arguments).invoke(object);
+    }
+
+    @Test
+    public void Can_fail_to_invoke_the_handler_method_because_it_throws_an_exception() throws NoSuchMethodException {
+
+        final HttpMockArguments arguments = mock(HttpMockArguments.class);
+        final ThrowingTestClass object = new ThrowingTestClass();
+        final Method method = object.getClass().getMethod("test");
+
+        // Given
+        given(arguments.toParameters()).willReturn(new Object[0]);
+        expectedException.expect(IllegalStateException.class);
+        expectedException.expectCause(Matchers.<Throwable>instanceOf(InvocationTargetException.class));
+
+        // When
+        new HttpMockMethodCall(method, arguments).invoke(object);
+    }
+
     private interface TestInterface {
 
         HttpMockResponse test(String path, Headers headers);
+    }
+
+    private class PrivateTestClass {
+
+        private void test() {
+        }
+    }
+
+    private class ThrowingTestClass {
+
+        public void test() {
+            throw new RuntimeException();
+        }
     }
 }

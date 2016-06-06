@@ -37,7 +37,6 @@ public class HttpMockFilteredHeadersRequestFactoryTest {
 
         final Headers headers = mock(Headers.class);
         final Headers filteredHeaders = mock(Headers.class);
-        final Boolean headersIsEmpty = someBoolean();
         final String method = someString();
         final String path = someString();
         final Boolean hasBody = someBoolean();
@@ -46,7 +45,7 @@ public class HttpMockFilteredHeadersRequestFactoryTest {
         // Given
         given(request.getHeaders()).willReturn(headers);
         given(headerFilter.filter(headers)).willReturn(filteredHeaders);
-        given(filteredHeaders.isEmpty()).willReturn(headersIsEmpty);
+        given(filteredHeaders.isEmpty()).willReturn(true, false);
         given(request.getMethod()).willReturn(method);
         given(request.getPath()).willReturn(path);
         given(request.hasBody()).willReturn(hasBody);
@@ -58,7 +57,8 @@ public class HttpMockFilteredHeadersRequestFactoryTest {
         // Then
         assertThat(actual.getMethod(), is(method));
         assertThat(actual.getPath(), is(path));
-        assertThat(actual.hasHeaders(), is(!headersIsEmpty));
+        assertThat(actual.hasHeaders(), is(false));
+        assertThat(actual.hasHeaders(), is(true));
         assertThat(actual.getHeaders(), is(filteredHeaders));
         assertThat(actual.hasBody(), is(hasBody));
         assertThat(actual.getBodyAsString(), is(body));

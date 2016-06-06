@@ -33,6 +33,11 @@ import static shiver.me.timbers.http.mock.HttpMock.headers;
 public class HttpMockTest {
 
     @Test
+    public void Creation_just_to_get_coverage() {
+        new HttpMock();
+    }
+
+    @Test
     public void Can_create_a_header() {
 
         // Given

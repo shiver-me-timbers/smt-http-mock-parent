@@ -36,7 +36,7 @@ class HttpMockMethodCall {
         try {
             return (HttpMockResponse) method.invoke(object, arguments.toParameters());
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new UnsupportedOperationException();
+            throw new IllegalStateException(e);
         }
     }
 }

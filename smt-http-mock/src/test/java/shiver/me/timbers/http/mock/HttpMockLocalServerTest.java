@@ -45,6 +45,11 @@ public class HttpMockLocalServerTest {
     }
 
     @Test
+    public void Creation_just_to_get_coverage() {
+        new HttpMockLocalServer().stop();
+    }
+
+    @Test
     public void Can_create_a_mock_http_server() {
 
         // When

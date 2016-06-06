@@ -19,11 +19,26 @@ package shiver.me.timbers.http;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class HeaderTest {
+
+    @Test
+    public void Can_get_a_headers_value() {
+
+        // Given
+        final String value = someString();
+
+        // When
+        final String actual = new Header(someString(), value).getValue();
+
+        // Then
+        assertThat(actual, equalTo(value));
+    }
 
     @Test
     public void Head_names_are_always_stored_as_lower_case_so_that_the_case_is_ignored() {
@@ -41,5 +56,19 @@ public class HeaderTest {
     @Test
     public void Header_has_equality() {
         EqualsVerifier.forClass(Header.class).usingGetClass().verify();
+    }
+
+    @Test
+    public void Can_to_string() {
+
+        // Given
+        final String name = someString();
+        final String value = someString();
+
+        // When
+        final String actual = new Header(name, value).toString();
+
+        // Then
+        assertThat(actual, allOf(containsString(name.toLowerCase()), containsString(value)));
     }
 }

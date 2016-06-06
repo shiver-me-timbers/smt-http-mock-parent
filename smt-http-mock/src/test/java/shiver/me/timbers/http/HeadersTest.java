@@ -26,6 +26,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static nl.jqno.equalsverifier.Warning.NULL_FIELDS;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -80,5 +81,19 @@ public class HeadersTest {
     @Test
     public void Headers_have_equality() {
         EqualsVerifier.forClass(Headers.class).suppress(NULL_FIELDS).usingGetClass().verify();
+    }
+
+    @Test
+    public void Can_to_string() {
+        // Given
+        final HashSet<Header> headers = new HashSet<>(asList(
+            mock(Header.class), mock(Header.class), mock(Header.class)
+        ));
+
+        // When
+        final String actual = new Headers(headers).toString();
+
+        // Then
+        assertThat(actual, containsString(headers.toString()));
     }
 }
