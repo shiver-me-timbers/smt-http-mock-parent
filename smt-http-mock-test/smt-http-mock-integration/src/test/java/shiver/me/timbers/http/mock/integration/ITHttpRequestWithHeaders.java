@@ -3,9 +3,16 @@ package shiver.me.timbers.http.mock.integration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import shiver.me.timbers.http.mock.HttpMockHandler;
+import shiver.me.timbers.http.mock.HttpMockDELETE;
+import shiver.me.timbers.http.mock.HttpMockGET;
+import shiver.me.timbers.http.mock.HttpMockHEAD;
+import shiver.me.timbers.http.mock.HttpMockOPTIONS;
+import shiver.me.timbers.http.mock.HttpMockPATCH;
+import shiver.me.timbers.http.mock.HttpMockPOST;
+import shiver.me.timbers.http.mock.HttpMockPUT;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 import shiver.me.timbers.http.mock.HttpMockServer;
+import shiver.me.timbers.http.mock.HttpMockTRACE;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -48,7 +55,7 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_get_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockGET handler = http.mock(mock(HttpMockGET.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -78,7 +85,7 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_post_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockPOST handler = http.mock(mock(HttpMockPOST.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -108,7 +115,7 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_put_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockPUT handler = http.mock(mock(HttpMockPUT.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -138,7 +145,7 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_patch_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockPATCH handler = http.mock(mock(HttpMockPATCH.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -168,7 +175,7 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_delete_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockDELETE handler = http.mock(mock(HttpMockDELETE.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -198,7 +205,7 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_options_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockOPTIONS handler = http.mock(mock(HttpMockOPTIONS.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -228,7 +235,7 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_head_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockHEAD handler = http.mock(mock(HttpMockHEAD.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -258,7 +265,7 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_trace_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockTRACE handler = http.mock(mock(HttpMockTRACE.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);

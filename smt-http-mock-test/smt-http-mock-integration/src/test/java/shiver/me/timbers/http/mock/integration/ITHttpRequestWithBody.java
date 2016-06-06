@@ -3,7 +3,9 @@ package shiver.me.timbers.http.mock.integration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import shiver.me.timbers.http.mock.HttpMockHandler;
+import shiver.me.timbers.http.mock.HttpMockPATCH;
+import shiver.me.timbers.http.mock.HttpMockPOST;
+import shiver.me.timbers.http.mock.HttpMockPUT;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 import shiver.me.timbers.http.mock.HttpMockServer;
 
@@ -44,7 +46,7 @@ public class ITHttpRequestWithBody {
         final String path = somePath();
         final String body = someString();
         final String otherBody = someString();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockPOST handler = http.mock(mock(HttpMockPOST.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -68,7 +70,7 @@ public class ITHttpRequestWithBody {
         final String path = somePath();
         final String body = someString();
         final String otherBody = someString();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockPUT handler = http.mock(mock(HttpMockPUT.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -92,7 +94,7 @@ public class ITHttpRequestWithBody {
         final String path = somePath();
         final String body = someString();
         final String otherBody = someString();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockPATCH handler = http.mock(mock(HttpMockPATCH.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given

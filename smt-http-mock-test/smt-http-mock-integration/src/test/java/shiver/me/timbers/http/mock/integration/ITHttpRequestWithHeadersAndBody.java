@@ -3,7 +3,9 @@ package shiver.me.timbers.http.mock.integration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import shiver.me.timbers.http.mock.HttpMockHandler;
+import shiver.me.timbers.http.mock.HttpMockPATCH;
+import shiver.me.timbers.http.mock.HttpMockPOST;
+import shiver.me.timbers.http.mock.HttpMockPUT;
 import shiver.me.timbers.http.mock.HttpMockResponse;
 import shiver.me.timbers.http.mock.HttpMockServer;
 
@@ -60,7 +62,7 @@ public class ITHttpRequestWithHeadersAndBody {
         final String value3 = someAlphaString(6);
         final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
         final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockPOST handler = http.mock(mock(HttpMockPOST.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -100,7 +102,7 @@ public class ITHttpRequestWithHeadersAndBody {
         final String value3 = someAlphaString(6);
         final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
         final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockPUT handler = http.mock(mock(HttpMockPUT.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -140,7 +142,7 @@ public class ITHttpRequestWithHeadersAndBody {
         final String value3 = someAlphaString(6);
         final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
         final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockPATCH handler = http.mock(mock(HttpMockPATCH.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
