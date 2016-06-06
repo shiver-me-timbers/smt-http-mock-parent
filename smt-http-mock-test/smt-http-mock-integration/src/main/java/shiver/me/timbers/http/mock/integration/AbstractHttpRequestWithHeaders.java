@@ -36,11 +36,6 @@ import static shiver.me.timbers.http.mock.integration.RandomHttp.toMap;
 
 public abstract class AbstractHttpRequestWithHeaders {
 
-    private final HttpMockServer http;
-
-    AbstractHttpRequestWithHeaders() {
-        this.http = http();
-    }
 
     protected abstract HttpMockServer http();
 
@@ -48,7 +43,7 @@ public abstract class AbstractHttpRequestWithHeaders {
     public void Can_mock_an_http_get_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockGET handler = http.mock(mock(HttpMockGET.class));
+        final HttpMockGET handler = http().mock(mock(HttpMockGET.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -64,8 +59,8 @@ public abstract class AbstractHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).get();
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).get();
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).get();
+        final Response notFound = createClient(http()).path(path).request().headers(otherHeaderMap).get();
 
         // Then
         then(handler).should().get(path, toHeaders(headerMap));
@@ -78,7 +73,7 @@ public abstract class AbstractHttpRequestWithHeaders {
     public void Can_mock_an_http_post_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockPOST handler = http.mock(mock(HttpMockPOST.class));
+        final HttpMockPOST handler = http().mock(mock(HttpMockPOST.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -94,8 +89,8 @@ public abstract class AbstractHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).post(text(null), Response.class);
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).post(text(null), Response.class);
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).post(text(null), Response.class);
+        final Response notFound = createClient(http()).path(path).request().headers(otherHeaderMap).post(text(null), Response.class);
 
         // Then
         then(handler).should().post(path, toHeaders(headerMap));
@@ -108,7 +103,7 @@ public abstract class AbstractHttpRequestWithHeaders {
     public void Can_mock_an_http_put_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockPUT handler = http.mock(mock(HttpMockPUT.class));
+        final HttpMockPUT handler = http().mock(mock(HttpMockPUT.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -124,8 +119,8 @@ public abstract class AbstractHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).put(text(""));
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).put(text(""));
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).put(text(""));
+        final Response notFound = createClient(http()).path(path).request().headers(otherHeaderMap).put(text(""));
 
         // Then
         then(handler).should().put(path, toHeaders(headerMap));
@@ -138,7 +133,7 @@ public abstract class AbstractHttpRequestWithHeaders {
     public void Can_mock_an_http_patch_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockPATCH handler = http.mock(mock(HttpMockPATCH.class));
+        final HttpMockPATCH handler = http().mock(mock(HttpMockPATCH.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -154,8 +149,8 @@ public abstract class AbstractHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).method(PATCH);
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).method(PATCH);
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).method(PATCH);
+        final Response notFound = createClient(http()).path(path).request().headers(otherHeaderMap).method(PATCH);
 
         // Then
         then(handler).should().patch(path, toHeaders(headerMap));
@@ -168,7 +163,7 @@ public abstract class AbstractHttpRequestWithHeaders {
     public void Can_mock_an_http_delete_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockDELETE handler = http.mock(mock(HttpMockDELETE.class));
+        final HttpMockDELETE handler = http().mock(mock(HttpMockDELETE.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -184,8 +179,8 @@ public abstract class AbstractHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).delete();
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).delete();
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).delete();
+        final Response notFound = createClient(http()).path(path).request().headers(otherHeaderMap).delete();
 
         // Then
         then(handler).should().delete(path, toHeaders(headerMap));
@@ -198,7 +193,7 @@ public abstract class AbstractHttpRequestWithHeaders {
     public void Can_mock_an_http_options_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockOPTIONS handler = http.mock(mock(HttpMockOPTIONS.class));
+        final HttpMockOPTIONS handler = http().mock(mock(HttpMockOPTIONS.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -214,8 +209,8 @@ public abstract class AbstractHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).options();
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).options();
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).options();
+        final Response notFound = createClient(http()).path(path).request().headers(otherHeaderMap).options();
 
         // Then
         then(handler).should().options(path, toHeaders(headerMap));
@@ -228,7 +223,7 @@ public abstract class AbstractHttpRequestWithHeaders {
     public void Can_mock_an_http_head_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockHEAD handler = http.mock(mock(HttpMockHEAD.class));
+        final HttpMockHEAD handler = http().mock(mock(HttpMockHEAD.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -244,8 +239,8 @@ public abstract class AbstractHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).head();
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).head();
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).head();
+        final Response notFound = createClient(http()).path(path).request().headers(otherHeaderMap).head();
 
         // Then
         then(handler).should().head(path, toHeaders(headerMap));
@@ -258,7 +253,7 @@ public abstract class AbstractHttpRequestWithHeaders {
     public void Can_mock_an_http_trace_request_with_headers() {
 
         final String path = somePath();
-        final HttpMockTRACE handler = http.mock(mock(HttpMockTRACE.class));
+        final HttpMockTRACE handler = http().mock(mock(HttpMockTRACE.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -274,8 +269,8 @@ public abstract class AbstractHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).trace();
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).trace();
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).trace();
+        final Response notFound = createClient(http()).path(path).request().headers(otherHeaderMap).trace();
 
         // Then
         then(handler).should().trace(path, toHeaders(headerMap));
@@ -288,7 +283,7 @@ public abstract class AbstractHttpRequestWithHeaders {
     public void Can_mock_an_http_non_standard_request_with_headers() {
 
         final String path = somePath();
-        final CustomHttpMethodHandler handler = http.mock(mock(CustomHttpMethodHandler.class));
+        final CustomHttpMethodHandler handler = http().mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
@@ -305,8 +300,8 @@ public abstract class AbstractHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).method(CUSTOM);
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).method(CUSTOM);
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).method(CUSTOM);
+        final Response notFound = createClient(http()).path(path).request().headers(otherHeaderMap).method(CUSTOM);
 
         // Then
         then(handler).should().custom(path, toHeaders(headerMap));

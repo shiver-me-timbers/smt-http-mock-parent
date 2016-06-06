@@ -31,12 +31,6 @@ import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
 
 public abstract class AbstractHttpRequest {
 
-    private final HttpMockServer http;
-
-    AbstractHttpRequest() {
-        this.http = http();
-    }
-
     protected abstract HttpMockServer http();
 
     @Test
@@ -44,7 +38,7 @@ public abstract class AbstractHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final HttpMockGET handler = http.mock(mock(HttpMockGET.class));
+        final HttpMockGET handler = http().mock(mock(HttpMockGET.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -52,8 +46,8 @@ public abstract class AbstractHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().get();
-        final Response notFound = createClient(http).path(otherPath).request().get();
+        final Response ok = createClient(http()).path(path).request().get();
+        final Response notFound = createClient(http()).path(otherPath).request().get();
 
         // Then
         then(handler).should().get(path);
@@ -68,7 +62,7 @@ public abstract class AbstractHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final HttpMockPOST handler = http.mock(mock(HttpMockPOST.class));
+        final HttpMockPOST handler = http().mock(mock(HttpMockPOST.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -76,8 +70,8 @@ public abstract class AbstractHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).path(path).request().post(text(null), Response.class);
-        final Response notFound = createClient(http).path(otherPath).request().post(text(null), Response.class);
+        final Response actual = createClient(http()).path(path).request().post(text(null), Response.class);
+        final Response notFound = createClient(http()).path(otherPath).request().post(text(null), Response.class);
 
         // Then
         then(handler).should().post(path);
@@ -92,7 +86,7 @@ public abstract class AbstractHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final HttpMockPUT handler = http.mock(mock(HttpMockPUT.class));
+        final HttpMockPUT handler = http().mock(mock(HttpMockPUT.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -100,8 +94,8 @@ public abstract class AbstractHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).path(path).request().put(text(""));
-        final Response notFound = createClient(http).path(otherPath).request().put(text(""));
+        final Response actual = createClient(http()).path(path).request().put(text(""));
+        final Response notFound = createClient(http()).path(otherPath).request().put(text(""));
 
         // Then
         then(handler).should().put(path);
@@ -116,7 +110,7 @@ public abstract class AbstractHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final HttpMockPATCH handler = http.mock(mock(HttpMockPATCH.class));
+        final HttpMockPATCH handler = http().mock(mock(HttpMockPATCH.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -124,8 +118,8 @@ public abstract class AbstractHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).path(path).request().method(PATCH);
-        final Response notFound = createClient(http).path(otherPath).request().method(PATCH);
+        final Response actual = createClient(http()).path(path).request().method(PATCH);
+        final Response notFound = createClient(http()).path(otherPath).request().method(PATCH);
 
         // Then
         then(handler).should().patch(path);
@@ -140,7 +134,7 @@ public abstract class AbstractHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final HttpMockDELETE handler = http.mock(mock(HttpMockDELETE.class));
+        final HttpMockDELETE handler = http().mock(mock(HttpMockDELETE.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -148,8 +142,8 @@ public abstract class AbstractHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).path(path).request().delete();
-        final Response notFound = createClient(http).path(otherPath).request().delete();
+        final Response actual = createClient(http()).path(path).request().delete();
+        final Response notFound = createClient(http()).path(otherPath).request().delete();
 
         // Then
         then(handler).should().delete(path);
@@ -164,7 +158,7 @@ public abstract class AbstractHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final HttpMockOPTIONS handler = http.mock(mock(HttpMockOPTIONS.class));
+        final HttpMockOPTIONS handler = http().mock(mock(HttpMockOPTIONS.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -172,8 +166,8 @@ public abstract class AbstractHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).path(path).request().options();
-        final Response notFound = createClient(http).path(otherPath).request().options();
+        final Response actual = createClient(http()).path(path).request().options();
+        final Response notFound = createClient(http()).path(otherPath).request().options();
 
         // Then
         then(handler).should().options(path);
@@ -188,7 +182,7 @@ public abstract class AbstractHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final HttpMockHEAD handler = http.mock(mock(HttpMockHEAD.class));
+        final HttpMockHEAD handler = http().mock(mock(HttpMockHEAD.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -196,8 +190,8 @@ public abstract class AbstractHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).path(path).request().head();
-        final Response notFound = createClient(http).path(otherPath).request().head();
+        final Response actual = createClient(http()).path(path).request().head();
+        final Response notFound = createClient(http()).path(otherPath).request().head();
 
         // Then
         then(handler).should().head(path);
@@ -213,7 +207,7 @@ public abstract class AbstractHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final HttpMockTRACE handler = http.mock(mock(HttpMockTRACE.class));
+        final HttpMockTRACE handler = http().mock(mock(HttpMockTRACE.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -221,8 +215,8 @@ public abstract class AbstractHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).path(path).request().trace();
-        final Response notFound = createClient(http).path(otherPath).request().trace();
+        final Response actual = createClient(http()).path(path).request().trace();
+        final Response notFound = createClient(http()).path(otherPath).request().trace();
 
         // Then
         then(handler).should().trace(path);
@@ -237,7 +231,7 @@ public abstract class AbstractHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final CustomHttpMethodHandler handler = http.mock(mock(CustomHttpMethodHandler.class));
+        final CustomHttpMethodHandler handler = http().mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -245,8 +239,8 @@ public abstract class AbstractHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).path(path).request().method(CUSTOM);
-        final Response notFound = createClient(http).path(otherPath).request().method(CUSTOM);
+        final Response actual = createClient(http()).path(path).request().method(CUSTOM);
+        final Response notFound = createClient(http()).path(otherPath).request().method(CUSTOM);
 
         // Then
         then(handler).should().custom(path);

@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=shiver.me.timbers.http.mock.HttpMockServerConfiguration

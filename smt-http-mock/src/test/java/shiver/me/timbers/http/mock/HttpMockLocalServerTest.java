@@ -15,24 +15,24 @@ import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 import static shiver.me.timbers.data.random.RandomThings.someThing;
 
-public class HttpMockServerTest {
+public class HttpMockLocalServerTest {
 
     private Container container;
     private HttpMockService service;
-    private HttpMockServer server;
+    private HttpMockLocalServer server;
 
     @Before
     public void setUp() {
         container = mock(Container.class);
         service = mock(HttpMockService.class);
-        server = new HttpMockServer(container, service);
+        server = new HttpMockLocalServer(container, service);
     }
 
     @Test
     public void Can_create_a_mock_http_server() {
 
         // When
-        new HttpMockServer(container, service);
+        new HttpMockLocalServer(container, service);
 
         // Then
         final InOrder order = inOrder(container, service);

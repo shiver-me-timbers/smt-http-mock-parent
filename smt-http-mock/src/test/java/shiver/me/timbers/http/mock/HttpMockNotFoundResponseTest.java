@@ -41,7 +41,7 @@ public class HttpMockNotFoundResponseTest {
     @Test
     public void Can_get_the_method_not_allowed_response_body_as_a_string() {
 
-        final String httpMethod = someString();
+        final String httpMethod = someString(5);
         final List<Class> types = asList((Class) Integer.class, Double.class, String.class);
         final List<Object> parameters = asList((Object) someInteger(), someDouble(), someString(8));
 

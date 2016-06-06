@@ -18,7 +18,7 @@ public class ServiceServletAdaptor extends GenericServlet {
     private final Service service;
     private final ServletResponseWriter responseWriter;
 
-    ServiceServletAdaptor(Service service) {
+    public ServiceServletAdaptor(Service service) {
         this(service, new ServletResponseWriter());
     }
 

@@ -25,12 +25,6 @@ import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
 
 public abstract class AbstractHttpRequestWithBody {
 
-    private final HttpMockServer http;
-
-    AbstractHttpRequestWithBody() {
-        this.http = http();
-    }
-
     protected abstract HttpMockServer http();
 
     @Test
@@ -39,7 +33,7 @@ public abstract class AbstractHttpRequestWithBody {
         final String path = somePath();
         final String body = someString();
         final String otherBody = someString();
-        final HttpMockPOST handler = http.mock(mock(HttpMockPOST.class));
+        final HttpMockPOST handler = http().mock(mock(HttpMockPOST.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -47,8 +41,8 @@ public abstract class AbstractHttpRequestWithBody {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().post(text(body));
-        final Response notFound = createClient(http).path(path).request().post(text(otherBody));
+        final Response ok = createClient(http()).path(path).request().post(text(body));
+        final Response notFound = createClient(http()).path(path).request().post(text(otherBody));
 
         // Then
         then(handler).should().post(path, body);
@@ -63,7 +57,7 @@ public abstract class AbstractHttpRequestWithBody {
         final String path = somePath();
         final String body = someString();
         final String otherBody = someString();
-        final HttpMockPUT handler = http.mock(mock(HttpMockPUT.class));
+        final HttpMockPUT handler = http().mock(mock(HttpMockPUT.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -71,8 +65,8 @@ public abstract class AbstractHttpRequestWithBody {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().put(text(body));
-        final Response notFound = createClient(http).path(path).request().put(text(otherBody));
+        final Response ok = createClient(http()).path(path).request().put(text(body));
+        final Response notFound = createClient(http()).path(path).request().put(text(otherBody));
 
         // Then
         then(handler).should().put(path, body);
@@ -87,7 +81,7 @@ public abstract class AbstractHttpRequestWithBody {
         final String path = somePath();
         final String body = someString();
         final String otherBody = someString();
-        final HttpMockPATCH handler = http.mock(mock(HttpMockPATCH.class));
+        final HttpMockPATCH handler = http().mock(mock(HttpMockPATCH.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -95,8 +89,8 @@ public abstract class AbstractHttpRequestWithBody {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().method(PATCH, text(body));
-        final Response notFound = createClient(http).path(path).request().method(PATCH, text(otherBody));
+        final Response ok = createClient(http()).path(path).request().method(PATCH, text(body));
+        final Response notFound = createClient(http()).path(path).request().method(PATCH, text(otherBody));
 
         // Then
         then(handler).should().patch(path, body);
@@ -111,7 +105,7 @@ public abstract class AbstractHttpRequestWithBody {
         final String path = somePath();
         final String body = someString();
         final String otherBody = someString();
-        final CustomHttpMethodHandler handler = http.mock(mock(CustomHttpMethodHandler.class));
+        final CustomHttpMethodHandler handler = http().mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -119,8 +113,8 @@ public abstract class AbstractHttpRequestWithBody {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().method(CUSTOM, text(body));
-        final Response notFound = createClient(http).path(path).request().method(CUSTOM, text(otherBody));
+        final Response ok = createClient(http()).path(path).request().method(CUSTOM, text(body));
+        final Response notFound = createClient(http()).path(path).request().method(CUSTOM, text(otherBody));
 
         // Then
         then(handler).should().custom(path, body);

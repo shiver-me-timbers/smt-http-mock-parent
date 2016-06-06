@@ -24,6 +24,7 @@ public class TomcatConfigurerTest {
     public void Can_configure_a_tomcat() {
 
         final PortGenerator portGenerator = mock(PortGenerator.class);
+        final String contextPath = someString();
         final HashGenerator hashGenerator = mock(HashGenerator.class);
         final Tomcat tomcat = mock(Tomcat.class);
         final String baseDir = someString();
@@ -42,11 +43,11 @@ public class TomcatConfigurerTest {
         given(engine.getName()).willReturn(engineName);
         given(hashGenerator.generate(tomcat)).willReturn(hash);
         given(tomcat.getHost()).willReturn(host);
-        given(tomcat.addWebapp(host, "mock", "/")).willReturn(context);
+        given(tomcat.addWebapp(host, contextPath, "/")).willReturn(context);
         given(tomcat.getConnector()).willReturn(connector);
 
         // When
-        new TomcatConfigurer(portGenerator, hashGenerator).configure(tomcat, baseDir);
+        new TomcatConfigurer(portGenerator, contextPath, hashGenerator).configure(tomcat, baseDir);
 
         // Then
         final InOrder order = inOrder(tomcat);

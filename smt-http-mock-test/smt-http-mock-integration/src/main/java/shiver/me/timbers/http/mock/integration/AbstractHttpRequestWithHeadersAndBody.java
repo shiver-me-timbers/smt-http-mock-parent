@@ -32,12 +32,6 @@ import static shiver.me.timbers.http.mock.integration.RandomHttp.toMap;
 
 public abstract class AbstractHttpRequestWithHeadersAndBody {
 
-    private final HttpMockServer http;
-
-    AbstractHttpRequestWithHeadersAndBody() {
-        this.http = http();
-    }
-
     protected abstract HttpMockServer http();
 
     @Test
@@ -55,7 +49,7 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
         final String value3 = someAlphaString(6);
         final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
         final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
-        final HttpMockPOST handler = http.mock(mock(HttpMockPOST.class));
+        final HttpMockPOST handler = http().mock(mock(HttpMockPOST.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -64,10 +58,10 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).post(text(body));
-        final Response invalidPath = createClient(http).path(otherPath).request().headers(headerMap).post(text(body));
-        final Response invalidHeaders = createClient(http).path(path).request().headers(otherHeaderMap).post(text(body));
-        final Response invalidBody = createClient(http).path(path).request().headers(headerMap).post(text(otherBody));
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).post(text(body));
+        final Response invalidPath = createClient(http()).path(otherPath).request().headers(headerMap).post(text(body));
+        final Response invalidHeaders = createClient(http()).path(path).request().headers(otherHeaderMap).post(text(body));
+        final Response invalidBody = createClient(http()).path(path).request().headers(headerMap).post(text(otherBody));
 
         // Then
         then(handler).should().post(path, toHeaders(headerMap), body);
@@ -95,7 +89,7 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
         final String value3 = someAlphaString(6);
         final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
         final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
-        final HttpMockPUT handler = http.mock(mock(HttpMockPUT.class));
+        final HttpMockPUT handler = http().mock(mock(HttpMockPUT.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -104,10 +98,10 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).put(text(body));
-        final Response invalidPath = createClient(http).path(otherPath).request().headers(headerMap).put(text(body));
-        final Response invalidHeaders = createClient(http).path(path).request().headers(otherHeaderMap).put(text(body));
-        final Response invalidBody = createClient(http).path(path).request().headers(headerMap).put(text(otherBody));
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).put(text(body));
+        final Response invalidPath = createClient(http()).path(otherPath).request().headers(headerMap).put(text(body));
+        final Response invalidHeaders = createClient(http()).path(path).request().headers(otherHeaderMap).put(text(body));
+        final Response invalidBody = createClient(http()).path(path).request().headers(headerMap).put(text(otherBody));
 
         // Then
         then(handler).should().put(path, toHeaders(headerMap), body);
@@ -135,7 +129,7 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
         final String value3 = someAlphaString(6);
         final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
         final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
-        final HttpMockPATCH handler = http.mock(mock(HttpMockPATCH.class));
+        final HttpMockPATCH handler = http().mock(mock(HttpMockPATCH.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -144,10 +138,10 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).method(PATCH, text(body));
-        final Response invalidPath = createClient(http).path(otherPath).request().headers(headerMap).method(PATCH, text(body));
-        final Response invalidHeaders = createClient(http).path(path).request().headers(otherHeaderMap).method(PATCH, text(body));
-        final Response invalidBody = createClient(http).path(path).request().headers(headerMap).method(PATCH, text(otherBody));
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).method(PATCH, text(body));
+        final Response invalidPath = createClient(http()).path(otherPath).request().headers(headerMap).method(PATCH, text(body));
+        final Response invalidHeaders = createClient(http()).path(path).request().headers(otherHeaderMap).method(PATCH, text(body));
+        final Response invalidBody = createClient(http()).path(path).request().headers(headerMap).method(PATCH, text(otherBody));
 
         // Then
         then(handler).should().patch(path, toHeaders(headerMap), body);
@@ -175,7 +169,7 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
         final String value3 = someAlphaString(6);
         final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
         final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
-        final CustomHttpMethodHandler handler = http.mock(mock(CustomHttpMethodHandler.class));
+        final CustomHttpMethodHandler handler = http().mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -184,10 +178,10 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).method(CUSTOM, text(body));
-        final Response invalidPath = createClient(http).path(otherPath).request().headers(headerMap).method(CUSTOM, text(body));
-        final Response invalidHeaders = createClient(http).path(path).request().headers(otherHeaderMap).method(CUSTOM, text(body));
-        final Response invalidBody = createClient(http).path(path).request().headers(headerMap).method(CUSTOM, text(otherBody));
+        final Response ok = createClient(http()).path(path).request().headers(headerMap).method(CUSTOM, text(body));
+        final Response invalidPath = createClient(http()).path(otherPath).request().headers(headerMap).method(CUSTOM, text(body));
+        final Response invalidHeaders = createClient(http()).path(path).request().headers(otherHeaderMap).method(CUSTOM, text(body));
+        final Response invalidBody = createClient(http()).path(path).request().headers(headerMap).method(CUSTOM, text(otherBody));
 
         // Then
         then(handler).should().custom(path, toHeaders(headerMap), body);

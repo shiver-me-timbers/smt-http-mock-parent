@@ -12,14 +12,16 @@ import static java.lang.String.format;
 class TomcatConfigurer {
 
     private final PortGenerator portGenerator;
+    private final String contextPath;
     private final HashGenerator hashGenerator;
 
-    TomcatConfigurer(int port) {
-        this(new PortGenerator(port), new HashGenerator());
+    TomcatConfigurer(int port, String contextPath) {
+        this(new PortGenerator(port), contextPath, new HashGenerator());
     }
 
-    TomcatConfigurer(PortGenerator portGenerator, HashGenerator hashGenerator) {
+    TomcatConfigurer(PortGenerator portGenerator, String contextPath, HashGenerator hashGenerator) {
         this.portGenerator = portGenerator;
+        this.contextPath = contextPath;
         this.hashGenerator = hashGenerator;
     }
 
@@ -29,7 +31,7 @@ class TomcatConfigurer {
         tomcat.getConnector().setAllowTrace(true);
         final Engine engine = tomcat.getEngine();
         engine.setName(format("%s%d", engine.getName(), hashGenerator.generate(tomcat)));
-        final Context context = tomcat.addWebapp(tomcat.getHost(), "mock", "/");
+        final Context context = tomcat.addWebapp(tomcat.getHost(), contextPath, "/");
         context.setJarScanner(new NullJarScanner());
         return context;
     }

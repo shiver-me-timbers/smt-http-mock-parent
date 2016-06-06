@@ -21,15 +21,15 @@
 
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
-        <artifactId>smt-http-mock-parent</artifactId>
+        <artifactId>smt-http-mock-test</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smt-http-mock-test</artifactId>
+    <artifactId>smt-http-mock-spring-integration</artifactId>
 
     <version>1.0-SNAPSHOT</version>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
 
@@ -38,27 +38,13 @@
     <dependencies>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-http-mock-spring</artifactId>
+            <artifactId>smt-http-mock-integration</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-http-mock</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>2.23</version>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
-
-    <modules>
-        <module>smt-http-mock-integration</module>
-        <module>smt-http-mock-spring-integration</module>
-    </modules>
 </project>

@@ -1,44 +1,14 @@
 package shiver.me.timbers.http.mock;
 
-import shiver.me.timbers.http.Container;
-import shiver.me.timbers.http.servlet.tomcat.TomcatContainer;
-
 /**
  * @author Karl Bennett
  */
-public class HttpMockServer {
+public interface HttpMockServer {
+    void ignoreHeaders(String... names);
 
-    private final Container container;
-    private final HttpMockService service;
+    int getPort();
 
-    public HttpMockServer() {
-        this(0);
-    }
+    <T> T mock(T handler);
 
-    private HttpMockServer(int port) {
-        this(new TomcatContainer(port), new HttpMockService());
-    }
-
-    HttpMockServer(Container container, HttpMockService service) {
-        this.container = container;
-        this.service = service;
-        container.register(service);
-        container.start();
-    }
-
-    public void ignoreHeaders(String... names) {
-        service.ignoreHeaders(names);
-    }
-
-    public int getPort() {
-        return container.getPort();
-    }
-
-    public <T> T mock(T handler) {
-        return service.registerHandler(handler);
-    }
-
-    public void stop() {
-        container.stop();
-    }
+    void stop();
 }

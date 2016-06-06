@@ -25,40 +25,52 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smt-http-mock-test</artifactId>
+    <artifactId>smt-http-mock-spring</artifactId>
 
     <version>1.0-SNAPSHOT</version>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
 
-    <description>This library can be used to mock HTTP, REST, or SOAP endpoints.</description>
+    <description>
+        This library can be used to mock HTTP, REST, or SOAP endpoints within Spring integration tests.
+    </description>
+
+    <properties>
+        <tomcat.version>8.0.35</tomcat.version>
+    </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-http-mock-spring</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-http-mock</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>2.23</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.shiver-me-timbers</groupId>
+            <artifactId>smt-random</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.shiver-me-timbers</groupId>
+            <artifactId>smt-matchers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>nl.jqno.equalsverifier</groupId>
+            <artifactId>equalsverifier</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <modules>
-        <module>smt-http-mock-integration</module>
-        <module>smt-http-mock-spring-integration</module>
-    </modules>
 </project>

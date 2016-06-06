@@ -108,6 +108,7 @@
 
     <modules>
         <module>smt-http-mock</module>
+        <module>smt-http-mock-spring</module>
         <module>smt-http-mock-test</module>
     </modules>
 

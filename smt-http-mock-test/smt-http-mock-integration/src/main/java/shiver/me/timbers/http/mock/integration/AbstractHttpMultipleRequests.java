@@ -26,12 +26,6 @@ import static shiver.me.timbers.http.mock.integration.RandomHttp.toMap;
 
 public abstract class AbstractHttpMultipleRequests {
 
-    private final HttpMockServer http;
-
-    AbstractHttpMultipleRequests() {
-        this.http = http();
-    }
-
     protected abstract HttpMockServer http();
 
     @Test
@@ -47,7 +41,7 @@ public abstract class AbstractHttpMultipleRequests {
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
         final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
+        final HttpMockHandler handler = http().mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
         // Given
@@ -60,11 +54,11 @@ public abstract class AbstractHttpMultipleRequests {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response pathResponse = createClient(http).path(path).request().get();
-        final Response otherPathResponse = createClient(http).path(otherPath).request().get();
-        final Response pathAndHeadersResponse = createClient(http).path(path).request().headers(headerMap).get();
-        final Response pathAndBodyResponse = createClient(http).path(path).request().post(text(body));
-        final Response pathHeaders_andBodyResponse = createClient(http).path(path).request().headers(headerMap).post(text(body));
+        final Response pathResponse = createClient(http()).path(path).request().get();
+        final Response otherPathResponse = createClient(http()).path(otherPath).request().get();
+        final Response pathAndHeadersResponse = createClient(http()).path(path).request().headers(headerMap).get();
+        final Response pathAndBodyResponse = createClient(http()).path(path).request().post(text(body));
+        final Response pathHeaders_andBodyResponse = createClient(http()).path(path).request().headers(headerMap).post(text(body));
 
         // Then
         then(handler).should().get(path);

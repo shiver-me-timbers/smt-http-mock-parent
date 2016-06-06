@@ -31,8 +31,8 @@ public class TomcatContainer implements Container {
     private final Context context;
     private final FileCleaner fileCleaner;
 
-    public TomcatContainer(int port) {
-        this(new TomcatConfigurer(port), new Tomcat(), new ServiceToServletConverter());
+    public TomcatContainer(int port, String contextPath) {
+        this(new TomcatConfigurer(port, contextPath), new Tomcat(), new ServiceToServletConverter());
     }
 
     TomcatContainer(

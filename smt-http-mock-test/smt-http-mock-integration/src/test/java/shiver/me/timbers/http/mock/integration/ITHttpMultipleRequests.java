@@ -2,6 +2,7 @@ package shiver.me.timbers.http.mock.integration;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import shiver.me.timbers.http.mock.HttpMockLocalServer;
 import shiver.me.timbers.http.mock.HttpMockServer;
 
 public class ITHttpMultipleRequests extends AbstractHttpMultipleRequests {
@@ -10,7 +11,7 @@ public class ITHttpMultipleRequests extends AbstractHttpMultipleRequests {
 
     @BeforeClass
     public static void setUp() {
-        http = new HttpMockServer();
+        http = new HttpMockLocalServer();
         http.ignoreHeaders("Host", "Connection", "User-Agent", "Accept", "Content-Type", "Content-Length");
     }
 
