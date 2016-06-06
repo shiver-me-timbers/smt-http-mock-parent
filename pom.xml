@@ -86,31 +86,25 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random</artifactId>
-            <version>1.7</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-matchers</artifactId>
-            <version>1.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>nl.jqno.equalsverifier</groupId>
-            <artifactId>equalsverifier</artifactId>
-            <version>2.1</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.shiver-me-timbers</groupId>
+                <artifactId>smt-random</artifactId>
+                <version>1.7</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.shiver-me-timbers</groupId>
+                <artifactId>smt-matchers</artifactId>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>nl.jqno.equalsverifier</groupId>
+                <artifactId>equalsverifier</artifactId>
+                <version>2.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <modules>
         <module>smt-http-mock</module>
