@@ -10,20 +10,20 @@ import java.io.IOException;
  */
 class ServletResponseWriter {
 
-    private final StreamWriter streamWriter;
+    private final Streams streams;
 
     ServletResponseWriter() {
-        this(new StreamWriter());
+        this(new Streams());
     }
 
-    ServletResponseWriter(StreamWriter streamWriter) {
-        this.streamWriter = streamWriter;
+    ServletResponseWriter(Streams streams) {
+        this.streams = streams;
     }
 
     void write(HttpServletResponse servletResponse, Response response) {
         servletResponse.setStatus(response.getStatus());
         try {
-            streamWriter.write(response.getBodyAsString(), servletResponse.getOutputStream());
+            streams.write(response.getBodyAsString(), servletResponse.getOutputStream());
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }

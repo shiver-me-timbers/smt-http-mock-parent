@@ -29,6 +29,7 @@ import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 import static shiver.me.timbers.http.StatusCodes.OK;
 import static shiver.me.timbers.http.mock.HttpMock.h;
 import static shiver.me.timbers.http.mock.HttpMock.headers;
+import static shiver.me.timbers.http.mock.integration.CustomHttpMethodHandler.CUSTOM;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
 import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
 
@@ -291,7 +292,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_non_standard_request_with_headers() {
 
         final String path = somePath();
-        final String method = "CUSTOM";
         final CustomHttpMethodHandler handler = http.mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -309,8 +309,8 @@ public class ITHttpRequestWithHeaders {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response ok = createClient(http).path(path).request().headers(headerMap).method(method);
-        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).method(method);
+        final Response ok = createClient(http).path(path).request().headers(headerMap).method(CUSTOM);
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).method(CUSTOM);
 
         // Then
         then(handler).should().custom(path, toHeaders(headerMap));

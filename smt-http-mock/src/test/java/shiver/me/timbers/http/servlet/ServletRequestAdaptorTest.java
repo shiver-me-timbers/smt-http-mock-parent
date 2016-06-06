@@ -1,10 +1,14 @@
 package shiver.me.timbers.http.servlet;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import shiver.me.timbers.http.Headers;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Enumeration;
 
 import static org.hamcrest.Matchers.is;
@@ -17,15 +21,20 @@ import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class ServletRequestAdaptorTest {
 
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
+
     private HttpServletRequest request;
     private ServletHeadersExtractor headersExtractor;
+    private Streams streams;
     private ServletRequestAdaptor adaptor;
 
     @Before
     public void setUp() {
         request = mock(HttpServletRequest.class);
         headersExtractor = mock(ServletHeadersExtractor.class);
-        adaptor = new ServletRequestAdaptor(request, headersExtractor);
+        streams = mock(Streams.class);
+        adaptor = new ServletRequestAdaptor(request, headersExtractor, streams);
     }
 
     @Test
@@ -116,5 +125,37 @@ public class ServletRequestAdaptorTest {
 
         // Then
         assertThat(actual, is(false));
+    }
+
+    @Test
+    public void Can_get_the_requests_body_as_a_string() throws IOException {
+
+        final ServletInputStream stream = mock(ServletInputStream.class);
+
+        final String expected = someString();
+
+        // Given
+        given(request.getInputStream()).willReturn(stream);
+        given(streams.readToString(stream)).willReturn(expected);
+
+        // When
+        final String actual = adaptor.getBodyAsString();
+
+        // Then
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_fail_to_get_the_requests_body_as_a_string() throws IOException {
+
+        final IOException exception = new IOException();
+
+        // Given
+        given(request.getInputStream()).willThrow(exception);
+        expectedException.expect(IllegalStateException.class);
+        expectedException.expectCause(is(exception));
+
+        // When
+        adaptor.getBodyAsString();
     }
 }

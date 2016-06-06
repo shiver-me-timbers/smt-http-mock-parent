@@ -22,12 +22,12 @@ public class ServletResponseWriterTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private ServletResponseWriter writer;
-    private StreamWriter streamWriter;
+    private Streams streams;
 
     @Before
     public void setUp() {
-        streamWriter = mock(StreamWriter.class);
-        writer = new ServletResponseWriter(streamWriter);
+        streams = mock(Streams.class);
+        writer = new ServletResponseWriter(streams);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ServletResponseWriterTest {
 
         // Then
         then(servletResponse).should().setStatus(response.getStatus());
-        then(streamWriter).should().write(body, outputStream);
+        then(streams).should().write(body, outputStream);
     }
 
     @Test

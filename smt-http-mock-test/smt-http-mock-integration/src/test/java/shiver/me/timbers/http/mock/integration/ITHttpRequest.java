@@ -20,6 +20,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static shiver.me.timbers.http.Methods.PATCH;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 import static shiver.me.timbers.http.StatusCodes.OK;
+import static shiver.me.timbers.http.mock.integration.CustomHttpMethodHandler.CUSTOM;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
 import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
 
@@ -236,7 +237,6 @@ public class ITHttpRequest {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final String method = "CUSTOM";
         final CustomHttpMethodHandler handler = http.mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
@@ -245,8 +245,8 @@ public class ITHttpRequest {
         given(response.getStatus()).willReturn(OK);
 
         // When
-        final Response actual = createClient(http).path(path).request().method(method);
-        final Response notFound = createClient(http).path(otherPath).request().method(method);
+        final Response actual = createClient(http).path(path).request().method(CUSTOM);
+        final Response notFound = createClient(http).path(otherPath).request().method(CUSTOM);
 
         // Then
         then(handler).should().custom(path);
