@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static shiver.me.timbers.data.random.RandomStrings.someString;
 import static shiver.me.timbers.data.random.RandomThings.someThing;
 import static shiver.me.timbers.matchers.Matchers.hasField;
 
@@ -67,6 +68,10 @@ public class HttpMockReflectionHandlerRouterTest {
         given(requestFactory.create(request)).willReturn(mockRequest);
         given(argumentFactory.create(mockRequest)).willReturn(arguments);
         given(methodFinder.find(handler, arguments)).willThrow(exception);
+        // These argument mocks are required to stop the logging from exploding.
+        given(arguments.getHttpMethod()).willReturn(someString());
+        given(arguments.toParameterTypes()).willReturn(new Class[0]);
+        given(arguments.toParameters()).willReturn(new Object[0]);
 
         // When
         final HttpMockResponse actual = router.route(handler, request);
@@ -74,7 +79,6 @@ public class HttpMockReflectionHandlerRouterTest {
         // Then
         assertThat(actual, instanceOf(HttpMockMethodNotAllowedResponse.class));
         assertThat(actual, hasField("arguments", arguments));
-        assertThat(actual, hasField("cause", exception));
     }
 
     @Test
@@ -92,6 +96,10 @@ public class HttpMockReflectionHandlerRouterTest {
         given(argumentFactory.create(mockRequest)).willReturn(arguments);
         given(methodFinder.find(handler, arguments)).willReturn(method);
         given(method.invoke(handler)).willReturn(null);
+        // These argument mocks are required to stop the logging from exploding.
+        given(arguments.getHttpMethod()).willReturn(someString());
+        given(arguments.toParameterTypes()).willReturn(new Class[0]);
+        given(arguments.toParameters()).willReturn(new Object[0]);
 
         // When
         final HttpMockResponse actual = router.route(handler, request);

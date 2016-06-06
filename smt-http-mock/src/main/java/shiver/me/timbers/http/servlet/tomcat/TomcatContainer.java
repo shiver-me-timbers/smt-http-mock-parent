@@ -2,6 +2,8 @@ package shiver.me.timbers.http.servlet.tomcat;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import shiver.me.timbers.http.Container;
 import shiver.me.timbers.http.Service;
@@ -21,6 +23,8 @@ public class TomcatContainer implements Container {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
     }
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Tomcat tomcat;
     private final ServiceToServletConverter converter;
@@ -55,6 +59,12 @@ public class TomcatContainer implements Container {
     public void register(Service service) {
         tomcat.addServlet(context.getPath(), service.getName(), converter.convert(service))
             .addMapping(service.getPath());
+        log.info(
+            "Service ({}) registered with name ({}) and mapped to path ({}).",
+            service.getClass().getName(),
+            service.getName(),
+            service.getPath()
+        );
     }
 
     @Override

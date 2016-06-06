@@ -1,6 +1,8 @@
 package shiver.me.timbers.http.mock;
 
+import static java.lang.String.format;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
+import static shiver.me.timbers.http.mock.HttpMockResponses.buildRequest;
 import static shiver.me.timbers.http.mock.HttpMockResponses.buildSignature;
 
 /**
@@ -21,7 +23,10 @@ class HttpMockNotFoundResponse implements HttpMockResponse {
 
     @Override
     public String getBodyAsString() {
-        return "No result returned from mock method with the signature: " +
-            buildSignature(arguments.getHttpMethod(), arguments.toParameterTypes());
+        return format(
+            "No result returned from mock method with the signature \"%s\" for request \"%s\".",
+            buildSignature(arguments.getHttpMethod(), arguments.toParameterTypes()),
+            buildRequest(arguments.getHttpMethod(), arguments.toParameters())
+        );
     }
 }

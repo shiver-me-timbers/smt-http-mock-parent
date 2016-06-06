@@ -1,6 +1,8 @@
 package shiver.me.timbers.http.mock;
 
+import static java.lang.String.format;
 import static shiver.me.timbers.http.StatusCodes.METHOD_NOT_ALLOWED;
+import static shiver.me.timbers.http.mock.HttpMockResponses.buildRequest;
 import static shiver.me.timbers.http.mock.HttpMockResponses.buildSignature;
 
 /**
@@ -9,11 +11,9 @@ import static shiver.me.timbers.http.mock.HttpMockResponses.buildSignature;
 class HttpMockMethodNotAllowedResponse implements HttpMockResponse {
 
     private final HttpMockArguments arguments;
-    private final Throwable cause; // TODO Add logging.
 
-    HttpMockMethodNotAllowedResponse(HttpMockArguments arguments, Throwable cause) {
+    HttpMockMethodNotAllowedResponse(HttpMockArguments arguments) {
         this.arguments = arguments;
-        this.cause = cause;
     }
 
     @Override
@@ -23,7 +23,10 @@ class HttpMockMethodNotAllowedResponse implements HttpMockResponse {
 
     @Override
     public String getBodyAsString() {
-        return "No http mock method found with the signature: " +
-            buildSignature(arguments.getHttpMethod(), arguments.toParameterTypes());
+        return format(
+            "No http mock method found with the signature \"%s\" for request \"%s\".",
+            buildSignature(arguments.getHttpMethod(), arguments.toParameterTypes()),
+            buildRequest(arguments.getHttpMethod(), arguments.toParameters())
+        );
     }
 }

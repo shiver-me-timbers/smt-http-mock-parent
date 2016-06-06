@@ -3,6 +3,7 @@ package shiver.me.timbers.http.mock.integration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import shiver.me.timbers.http.Header;
 import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
@@ -11,7 +12,11 @@ import shiver.me.timbers.http.mock.HttpMockServer;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import static java.util.Map.Entry;
 import static javax.ws.rs.client.Entity.text;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -46,7 +51,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_get_request_with_headers() {
 
         final String path = somePath();
-        final String otherPath = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -55,11 +59,8 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
-            putSingle(name1, value1);
-            putSingle(name2, value2);
-            putSingle(name3, value3);
-        }};
+        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.get(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -67,12 +68,11 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).get();
-        final Response notFound = createClient(http).path(otherPath).request().headers(headerMap).get();
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).get();
 
         // Then
-        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().get(path, headers);
-        then(handler).should().get(otherPath, headers);
+        then(handler).should().get(path, toHeaders(headerMap));
+        then(handler).should().get(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -81,7 +81,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_post_request_with_headers() {
 
         final String path = somePath();
-        final String otherPath = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -90,11 +89,8 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
-            putSingle(name1, value1);
-            putSingle(name2, value2);
-            putSingle(name3, value3);
-        }};
+        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.post(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -102,12 +98,11 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).post(text(null), Response.class);
-        final Response notFound = createClient(http).path(otherPath).request().headers(headerMap).post(text(null), Response.class);
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).post(text(null), Response.class);
 
         // Then
-        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().post(path, headers);
-        then(handler).should().post(otherPath, headers);
+        then(handler).should().post(path, toHeaders(headerMap));
+        then(handler).should().post(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -116,7 +111,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_put_request_with_headers() {
 
         final String path = somePath();
-        final String otherPath = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -125,11 +119,8 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
-            putSingle(name1, value1);
-            putSingle(name2, value2);
-            putSingle(name3, value3);
-        }};
+        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.put(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -137,12 +128,11 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).put(text(""));
-        final Response notFound = createClient(http).path(otherPath).request().headers(headerMap).put(text(""));
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).put(text(""));
 
         // Then
-        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().put(path, headers);
-        then(handler).should().put(otherPath, headers);
+        then(handler).should().put(path, toHeaders(headerMap));
+        then(handler).should().put(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -151,7 +141,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_patch_request_with_headers() {
 
         final String path = somePath();
-        final String otherPath = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -160,11 +149,8 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
-            putSingle(name1, value1);
-            putSingle(name2, value2);
-            putSingle(name3, value3);
-        }};
+        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.patch(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -172,12 +158,11 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).method(PATCH);
-        final Response notFound = createClient(http).path(otherPath).request().headers(headerMap).method(PATCH);
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).method(PATCH);
 
         // Then
-        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().patch(path, headers);
-        then(handler).should().patch(otherPath, headers);
+        then(handler).should().patch(path, toHeaders(headerMap));
+        then(handler).should().patch(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -186,7 +171,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_delete_request_with_headers() {
 
         final String path = somePath();
-        final String otherPath = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -195,11 +179,8 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
-            putSingle(name1, value1);
-            putSingle(name2, value2);
-            putSingle(name3, value3);
-        }};
+        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.delete(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -207,12 +188,11 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).delete();
-        final Response notFound = createClient(http).path(otherPath).request().headers(headerMap).delete();
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).delete();
 
         // Then
-        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().delete(path, headers);
-        then(handler).should().delete(otherPath, headers);
+        then(handler).should().delete(path, toHeaders(headerMap));
+        then(handler).should().delete(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -221,7 +201,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_options_request_with_headers() {
 
         final String path = somePath();
-        final String otherPath = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -230,11 +209,8 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
-            putSingle(name1, value1);
-            putSingle(name2, value2);
-            putSingle(name3, value3);
-        }};
+        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.options(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -242,12 +218,11 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).options();
-        final Response notFound = createClient(http).path(otherPath).request().headers(headerMap).options();
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).options();
 
         // Then
-        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().options(path, headers);
-        then(handler).should().options(otherPath, headers);
+        then(handler).should().options(path, toHeaders(headerMap));
+        then(handler).should().options(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -256,7 +231,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_head_request_with_headers() {
 
         final String path = somePath();
-        final String otherPath = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -265,11 +239,8 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
-            putSingle(name1, value1);
-            putSingle(name2, value2);
-            putSingle(name3, value3);
-        }};
+        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.head(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -277,12 +248,11 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).head();
-        final Response notFound = createClient(http).path(otherPath).request().headers(headerMap).head();
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).head();
 
         // Then
-        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().head(path, headers);
-        then(handler).should().head(otherPath, headers);
+        then(handler).should().head(path, toHeaders(headerMap));
+        then(handler).should().head(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -291,7 +261,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_trace_request_with_headers() {
 
         final String path = somePath();
-        final String otherPath = somePath();
         final HttpMockHandler handler = http.mock(mock(HttpMockHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
         final String name1 = someAlphaString(4);
@@ -300,11 +269,8 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
-            putSingle(name1, value1);
-            putSingle(name2, value2);
-            putSingle(name3, value3);
-        }};
+        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.trace(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -312,12 +278,11 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).trace();
-        final Response notFound = createClient(http).path(otherPath).request().headers(headerMap).trace();
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).trace();
 
         // Then
-        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().trace(path, headers);
-        then(handler).should().trace(otherPath, headers);
+        then(handler).should().trace(path, toHeaders(headerMap));
+        then(handler).should().trace(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
@@ -326,7 +291,6 @@ public class ITHttpRequestWithHeaders {
     public void Can_mock_an_http_non_standard_request_with_headers() {
 
         final String path = somePath();
-        final String otherPath = somePath();
         final String method = "CUSTOM";
         final CustomHttpMethodHandler handler = http.mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
@@ -336,11 +300,8 @@ public class ITHttpRequestWithHeaders {
         final String value1 = someAlphaString(6);
         final String value2 = someAlphaString(6);
         final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<String, Object>() {{
-            putSingle(name1, value1);
-            putSingle(name2, value2);
-            putSingle(name3, value3);
-        }};
+        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.custom(path, headers(h(name1, value1), h(name2, value2), h(name3, value3))))
@@ -349,14 +310,38 @@ public class ITHttpRequestWithHeaders {
 
         // When
         final Response ok = createClient(http).path(path).request().headers(headerMap).method(method);
-        final Response notFound = createClient(http).path(otherPath).request().headers(headerMap).method(method);
+        final Response notFound = createClient(http).path(path).request().headers(otherHeaderMap).method(method);
 
         // Then
-        final Headers headers = headers(h(name1, value1), h(name2, value2), h(name3, value3));
-        then(handler).should().custom(path, headers);
-        then(handler).should().custom(otherPath, headers);
+        then(handler).should().custom(path, toHeaders(headerMap));
+        then(handler).should().custom(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
+    }
+
+    private static MultivaluedMap<String, Object> someHeaders() {
+        return toMap(
+            someAlphaString(4), someAlphaString(6),
+            someAlphaString(4), someAlphaString(6),
+            someAlphaString(4), someAlphaString(6)
+        );
+    }
+
+    private static MultivaluedMap<String, Object> toMap(String... values) {
+        final MultivaluedMap<String, Object> headerMap = new MultivaluedHashMap<>();
+        for (int i = 0; i < values.length; ) {
+            headerMap.putSingle(values[i++], values[i++]);
+        }
+        return headerMap;
+    }
+
+    private static Headers toHeaders(MultivaluedMap<String, Object> headerMap) {
+        final Set<Header> headers = new HashSet<>();
+        final Set<Entry<String, List<Object>>> entries = headerMap.entrySet();
+        for (Entry<String, List<Object>> entry : entries) {
+            headers.add(new Header(entry.getKey(), entry.getValue().get(0).toString()));
+        }
+        return new Headers(headers);
     }
 }
 

@@ -1,11 +1,15 @@
 package shiver.me.timbers.http.mock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import shiver.me.timbers.http.Request;
 
 /**
  * @author Karl Bennett
  */
 class HttpMockReflectionHandlerRouter {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final HttpMockFilteredHeadersRequestFactory requestFactory;
     private final HttpMockRequestArgumentFactory argumentFactory;
@@ -30,6 +34,10 @@ class HttpMockReflectionHandlerRouter {
     }
 
     HttpMockResponse route(Object handler, Request request) {
+        log.info(
+            "Received handler {} and request ({} {}).",
+            handler.getClass().getSimpleName(), request.getMethod(), request.getPath()
+        );
         final HttpMockArguments arguments = argumentFactory.create(requestFactory.create(request));
 
         try {
@@ -38,9 +46,13 @@ class HttpMockReflectionHandlerRouter {
                 return response;
             }
 
-            return new HttpMockNotFoundResponse(arguments);
+            final HttpMockNotFoundResponse notFoundResponse = new HttpMockNotFoundResponse(arguments);
+            log.error(notFoundResponse.getBodyAsString());
+            return notFoundResponse;
         } catch (NoSuchMethodException e) {
-            return new HttpMockMethodNotAllowedResponse(arguments, e);
+            final HttpMockMethodNotAllowedResponse response = new HttpMockMethodNotAllowedResponse(arguments);
+            log.error(response.getBodyAsString(), e);
+            return response;
         }
     }
 }
