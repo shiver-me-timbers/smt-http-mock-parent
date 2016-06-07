@@ -43,16 +43,15 @@ import static shiver.me.timbers.matchers.Matchers.hasField;
 
 public class TomcatContainerTest {
 
-    private static final String TEMP_DIR = ".tomcat_mock";
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     private Tomcat tomcat;
     private ServiceToServletConverter converter;
     private Context context;
-    private TomcatContainer container;
     private FileCleaner fileCleaner;
+    private String tempDir;
+    private TomcatContainer container;
 
     @Before
     public void setUp() {
@@ -60,7 +59,8 @@ public class TomcatContainerTest {
         converter = mock(ServiceToServletConverter.class);
         context = mock(Context.class);
         fileCleaner = mock(FileCleaner.class);
-        container = new TomcatContainer(tomcat, converter, context, fileCleaner);
+        tempDir = someString();
+        container = new TomcatContainer(tomcat, converter, context, fileCleaner, tempDir);
     }
 
     @Test
@@ -69,10 +69,10 @@ public class TomcatContainerTest {
         final TomcatConfigurer configurer = mock(TomcatConfigurer.class);
 
         // Given
-        given(configurer.configure(tomcat, TEMP_DIR)).willReturn(context);
+        given(configurer.configure(tomcat, tempDir)).willReturn(context);
 
         // When
-        final TomcatContainer actual = new TomcatContainer(configurer, tomcat, converter);
+        final TomcatContainer actual = new TomcatContainer(configurer, tomcat, converter, tempDir);
 
         // Then
         assertThat(actual, hasField("context", context));
@@ -152,7 +152,7 @@ public class TomcatContainerTest {
 
         // Then
         then(tomcat).should().stop();
-        then(fileCleaner).should().cleanUp(TEMP_DIR);
+        then(fileCleaner).should().cleanUp(tempDir);
     }
 
     @Test

@@ -46,29 +46,32 @@ public class TomcatContainer implements Container {
     private final ServiceToServletConverter converter;
     private final Context context;
     private final FileCleaner fileCleaner;
+    private final String tempDir;
 
     public TomcatContainer(int port, String contextPath) {
-        this(new TomcatConfigurer(port, contextPath), new Tomcat(), new ServiceToServletConverter());
+        this(port, contextPath, TEMP_DIR);
+    }
+
+    public TomcatContainer(int port, String contextPath, String tempDir) {
+        this(new TomcatConfigurer(port, contextPath), new Tomcat(), new ServiceToServletConverter(), tempDir);
+    }
+
+    TomcatContainer(TomcatConfigurer configurer, Tomcat tomcat, ServiceToServletConverter converter, String tempDir) {
+        this(tomcat, converter, configurer.configure(tomcat, tempDir), new FileCleaner(), tempDir);
     }
 
     TomcatContainer(
-        TomcatConfigurer configurer,
         Tomcat tomcat,
-        ServiceToServletConverter converter
+        ServiceToServletConverter converter,
+        Context context,
+        FileCleaner fileCleaner,
+        String tempDir
     ) {
-        this(
-            tomcat,
-            converter,
-            configurer.configure(tomcat, TEMP_DIR),
-            new FileCleaner()
-        );
-    }
-
-    TomcatContainer(Tomcat tomcat, ServiceToServletConverter converter, Context context, FileCleaner fileCleaner) {
         this.tomcat = tomcat;
         this.converter = converter;
         this.context = context;
         this.fileCleaner = fileCleaner;
+        this.tempDir = tempDir;
     }
 
     @Override
@@ -105,7 +108,7 @@ public class TomcatContainer implements Container {
             @Override
             public Void call() throws Exception {
                 tomcat.stop();
-                fileCleaner.cleanUp(TEMP_DIR);
+                fileCleaner.cleanUp(tempDir);
                 return null;
             }
         });
