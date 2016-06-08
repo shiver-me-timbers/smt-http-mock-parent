@@ -16,6 +16,7 @@
 
 package shiver.me.timbers.http.mock.integration;
 
+import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.http.mock.HttpMockPATCH;
 import shiver.me.timbers.http.mock.HttpMockPOST;
@@ -42,14 +43,22 @@ import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
 
 public abstract class AbstractHttpRequestWithBody {
 
+    private String path;
+    private String body;
+    private String otherBody;
+
     protected abstract HttpMockServer http();
+
+    @Before
+    public void setup() {
+        path = somePath();
+        body = someString(13);
+        otherBody = someString(13);
+    }
 
     @Test
     public void Can_mock_an_http_post_request_with_a_body() {
 
-        final String path = somePath();
-        final String body = someString();
-        final String otherBody = someString();
         final HttpMockPOST handler = http().mock(mock(HttpMockPOST.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
@@ -71,9 +80,6 @@ public abstract class AbstractHttpRequestWithBody {
     @Test
     public void Can_mock_an_http_put_request_with_a_body() {
 
-        final String path = somePath();
-        final String body = someString();
-        final String otherBody = someString();
         final HttpMockPUT handler = http().mock(mock(HttpMockPUT.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
@@ -96,9 +102,6 @@ public abstract class AbstractHttpRequestWithBody {
     public void Can_mock_an_http_patch_request_with_a_body() {
         assumeJava8();
 
-        final String path = somePath();
-        final String body = someString();
-        final String otherBody = someString();
         final HttpMockPATCH handler = http().mock(mock(HttpMockPATCH.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 
@@ -121,9 +124,6 @@ public abstract class AbstractHttpRequestWithBody {
     public void Can_mock_a_non_standard_http_request_with_a_body() {
         assumeJava8();
 
-        final String path = somePath();
-        final String body = someString();
-        final String otherBody = someString();
         final CustomHttpMethodHandler handler = http().mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
 

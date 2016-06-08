@@ -16,6 +16,7 @@
 
 package shiver.me.timbers.http.mock.integration;
 
+import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.http.mock.HttpMockDELETE;
 import shiver.me.timbers.http.mock.HttpMockGET;
@@ -53,22 +54,36 @@ import static shiver.me.timbers.http.mock.integration.RandomHttp.toMap;
 public abstract class AbstractHttpRequestWithHeaders {
 
 
+    private String path;
+    private String name1;
+    private String name2;
+    private String name3;
+    private String value1;
+    private String value2;
+    private String value3;
+    private MultivaluedMap<String, Object> headerMap;
+    private MultivaluedMap<String, Object> otherHeaderMap;
+
     protected abstract HttpMockServer http();
+
+    @Before
+    public void setup() {
+        path = somePath();
+        name1 = someAlphaString(4);
+        name2 = someAlphaString(4);
+        name3 = someAlphaString(4);
+        value1 = someAlphaString(6);
+        value2 = someAlphaString(6);
+        value3 = someAlphaString(6);
+        headerMap = toMap(name1, value1, name2, value2, name3, value3);
+        otherHeaderMap = someHeaders();
+    }
 
     @Test
     public void Can_mock_an_http_get_request_with_headers() {
 
-        final String path = somePath();
         final HttpMockGET handler = http().mock(mock(HttpMockGET.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
-        final String name1 = someAlphaString(4);
-        final String name2 = someAlphaString(4);
-        final String name3 = someAlphaString(4);
-        final String value1 = someAlphaString(6);
-        final String value2 = someAlphaString(6);
-        final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.get(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -88,17 +103,8 @@ public abstract class AbstractHttpRequestWithHeaders {
     @Test
     public void Can_mock_an_http_post_request_with_headers() {
 
-        final String path = somePath();
         final HttpMockPOST handler = http().mock(mock(HttpMockPOST.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
-        final String name1 = someAlphaString(4);
-        final String name2 = someAlphaString(4);
-        final String name3 = someAlphaString(4);
-        final String value1 = someAlphaString(6);
-        final String value2 = someAlphaString(6);
-        final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.post(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -118,17 +124,8 @@ public abstract class AbstractHttpRequestWithHeaders {
     @Test
     public void Can_mock_an_http_put_request_with_headers() {
 
-        final String path = somePath();
         final HttpMockPUT handler = http().mock(mock(HttpMockPUT.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
-        final String name1 = someAlphaString(4);
-        final String name2 = someAlphaString(4);
-        final String name3 = someAlphaString(4);
-        final String value1 = someAlphaString(6);
-        final String value2 = someAlphaString(6);
-        final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.put(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -148,17 +145,8 @@ public abstract class AbstractHttpRequestWithHeaders {
     @Test
     public void Can_mock_an_http_patch_request_with_headers() {
 
-        final String path = somePath();
         final HttpMockPATCH handler = http().mock(mock(HttpMockPATCH.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
-        final String name1 = someAlphaString(4);
-        final String name2 = someAlphaString(4);
-        final String name3 = someAlphaString(4);
-        final String value1 = someAlphaString(6);
-        final String value2 = someAlphaString(6);
-        final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.patch(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -178,17 +166,8 @@ public abstract class AbstractHttpRequestWithHeaders {
     @Test
     public void Can_mock_an_http_delete_request_with_headers() {
 
-        final String path = somePath();
         final HttpMockDELETE handler = http().mock(mock(HttpMockDELETE.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
-        final String name1 = someAlphaString(4);
-        final String name2 = someAlphaString(4);
-        final String name3 = someAlphaString(4);
-        final String value1 = someAlphaString(6);
-        final String value2 = someAlphaString(6);
-        final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.delete(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -208,17 +187,8 @@ public abstract class AbstractHttpRequestWithHeaders {
     @Test
     public void Can_mock_an_http_options_request_with_headers() {
 
-        final String path = somePath();
         final HttpMockOPTIONS handler = http().mock(mock(HttpMockOPTIONS.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
-        final String name1 = someAlphaString(4);
-        final String name2 = someAlphaString(4);
-        final String name3 = someAlphaString(4);
-        final String value1 = someAlphaString(6);
-        final String value2 = someAlphaString(6);
-        final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.options(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -238,17 +208,8 @@ public abstract class AbstractHttpRequestWithHeaders {
     @Test
     public void Can_mock_an_http_head_request_with_headers() {
 
-        final String path = somePath();
         final HttpMockHEAD handler = http().mock(mock(HttpMockHEAD.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
-        final String name1 = someAlphaString(4);
-        final String name2 = someAlphaString(4);
-        final String name3 = someAlphaString(4);
-        final String value1 = someAlphaString(6);
-        final String value2 = someAlphaString(6);
-        final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.head(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -268,17 +229,8 @@ public abstract class AbstractHttpRequestWithHeaders {
     @Test
     public void Can_mock_an_http_trace_request_with_headers() {
 
-        final String path = somePath();
         final HttpMockTRACE handler = http().mock(mock(HttpMockTRACE.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
-        final String name1 = someAlphaString(4);
-        final String name2 = someAlphaString(4);
-        final String name3 = someAlphaString(4);
-        final String value1 = someAlphaString(6);
-        final String value2 = someAlphaString(6);
-        final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.trace(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
@@ -298,17 +250,8 @@ public abstract class AbstractHttpRequestWithHeaders {
     @Test
     public void Can_mock_an_http_non_standard_request_with_headers() {
 
-        final String path = somePath();
         final CustomHttpMethodHandler handler = http().mock(mock(CustomHttpMethodHandler.class));
         final HttpMockResponse response = mock(HttpMockResponse.class);
-        final String name1 = someAlphaString(4);
-        final String name2 = someAlphaString(4);
-        final String name3 = someAlphaString(4);
-        final String value1 = someAlphaString(6);
-        final String value2 = someAlphaString(6);
-        final String value3 = someAlphaString(6);
-        final MultivaluedMap<String, Object> headerMap = toMap(name1, value1, name2, value2, name3, value3);
-        final MultivaluedMap<String, Object> otherHeaderMap = someHeaders();
 
         // Given
         given(handler.custom(path, headers(h(name1, value1), h(name2, value2), h(name3, value3))))

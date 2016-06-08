@@ -45,11 +45,11 @@ public abstract class AbstractHttpMultipleRequests {
     protected abstract HttpMockServer http();
 
     @Test
-    public void Can_mock_an_http_post_request_with_headers_and_a_body() {
+    public void Can_mock_multiple_http_requests() {
 
         final String path = somePath();
         final String otherPath = somePath();
-        final String body = someString();
+        final String body = someString(13);
         final String name1 = someAlphaString(4);
         final String name2 = someAlphaString(4);
         final String name3 = someAlphaString(4);
