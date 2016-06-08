@@ -22,6 +22,7 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
@@ -86,14 +87,16 @@ public class HeadersTest {
     @Test
     public void Can_to_string() {
         // Given
-        final HashSet<Header> headers = new HashSet<>(asList(
-            mock(Header.class), mock(Header.class), mock(Header.class)
-        ));
-
+        final Header header1 = mock(Header.class);
+        final Header header2 = mock(Header.class);
+        final Header header3 = mock(Header.class);
+        final Set<Header> headers = new HashSet<>(asList(header1, header2, header3));
         // When
         final String actual = new Headers(headers).toString();
 
         // Then
-        assertThat(actual, containsString(headers.toString()));
+        assertThat(actual, containsString(header1.toString()));
+        assertThat(actual, containsString(header2.toString()));
+        assertThat(actual, containsString(header3.toString()));
     }
 }
