@@ -35,6 +35,19 @@
 
     <description>This is the parent project for the smt-http-mock integration test projects.</description>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -55,6 +68,7 @@
     <modules>
         <module>smt-http-mock-integration</module>
         <module>smt-http-mock-spring-integration</module>
+        <module>smt-http-mock-tomcat7-integration</module>
         <module>smt-http-mock-tomcat8-integration</module>
     </modules>
 </project>

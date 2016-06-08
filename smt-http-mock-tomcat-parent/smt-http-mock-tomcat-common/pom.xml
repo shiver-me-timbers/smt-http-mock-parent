@@ -35,10 +35,6 @@
 
     <description>This project contains the smt-http-mock tomcat8 implementation.</description>
 
-    <properties>
-        <tomcat.version>8.0.35</tomcat.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>

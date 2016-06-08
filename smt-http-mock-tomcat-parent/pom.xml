@@ -66,6 +66,7 @@
 
     <modules>
         <module>smt-http-mock-tomcat-common</module>
+        <module>smt-http-mock-tomcat7</module>
         <module>smt-http-mock-tomcat8</module>
     </modules>
 </project>
