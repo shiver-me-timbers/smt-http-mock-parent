@@ -26,8 +26,6 @@
 
     <artifactId>smt-http-mock-test</artifactId>
 
-    <version>1.1-SNAPSHOT</version>
-
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>

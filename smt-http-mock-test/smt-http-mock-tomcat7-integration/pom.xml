@@ -26,8 +26,6 @@
 
     <artifactId>smt-http-mock-tomcat7-integration</artifactId>
 
-    <version>1.1-SNAPSHOT</version>
-
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
