@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.http.servlet.tomcat;
+package shiver.me.timbers.http.mock;
 
 import org.junit.Test;
 
-import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
-
-public class ITTomcat8Container {
+public class HttpMockTomcat8ServerTest {
 
     @Test
-    public void Can_create_a_container_with_just_a_port_and_context() {
-        new Tomcat8Container(0, someAlphaString(5)).stop();
+    public void Can_start_an_http_mock_tomcat8_server() {
+        new HttpMockTomcat8Server().stop();
     }
 }

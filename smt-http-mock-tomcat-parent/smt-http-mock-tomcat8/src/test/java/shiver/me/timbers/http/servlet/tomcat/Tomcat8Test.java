@@ -20,32 +20,28 @@ import org.apache.catalina.Context;
 import org.apache.catalina.Engine;
 import org.apache.catalina.Host;
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.LifecycleState;
-import org.apache.catalina.Server;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.JarScanner;
 import org.junit.Before;
 import org.junit.Test;
-import shiver.me.timbers.data.random.RandomIntegers;
 
 import javax.servlet.Servlet;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static shiver.me.timbers.data.random.RandomEnums.someEnum;
-import static shiver.me.timbers.data.random.RandomIntegers.*;
+import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 import static shiver.me.timbers.matchers.Matchers.hasField;
 
 public class Tomcat8Test {
 
     private Tomcat tomcat;
-    private Tomcat8 tomcat8;
+    private CommonTomcat<Host, JarScanner, LifecycleException> tomcat8;
 
     @Before
     public void setUp() {

@@ -32,10 +32,6 @@ public class Tomcat8Container extends TomcatContainer<Host, JarScanner, Lifecycl
     }
 
     private Tomcat8Container(int port, String contextPath, String tempDir) {
-        this(port, contextPath, tempDir, new Tomcat());
-    }
-
-    private Tomcat8Container(int port, String contextPath, String tempDir, Tomcat tomcat) {
-        super(new Tomcat8Configurer(port, contextPath), new Tomcat8(tomcat), new ServiceToServletConverter(), tempDir);
+        super(new Tomcat8Configurer(port, contextPath), new Tomcat8(new Tomcat()), new ServiceToServletConverter(), tempDir);
     }
 }

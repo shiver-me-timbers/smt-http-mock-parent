@@ -30,6 +30,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
@@ -110,6 +111,20 @@ public class TomcatContainerTest {
     }
 
     @Test
+    public void Can_fail_to_start_the_container() {
+
+        final RuntimeException exception = new RuntimeException();
+
+        // Given
+        willThrow(exception).given(tomcat).start();
+        expectedException.expect(IllegalStateException.class);
+        expectedException.expectCause(is(exception));
+
+        // When
+        container.start();
+    }
+
+    @Test
     public void Can_get_the_port() {
 
         final CommonConnector connector = mock(CommonConnector.class);
@@ -135,5 +150,19 @@ public class TomcatContainerTest {
         // Then
         then(tomcat).should().stop();
         then(fileCleaner).should().cleanUp(tempDir);
+    }
+
+    @Test
+    public void Can_fail_to_stop_the_container() {
+
+        final RuntimeException exception = new RuntimeException();
+
+        // Given
+        willThrow(exception).given(tomcat).stop();
+        expectedException.expect(IllegalStateException.class);
+        expectedException.expectCause(is(exception));
+
+        // When
+        container.stop();
     }
 }

@@ -31,7 +31,6 @@ import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomDoubles.someDouble;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
 import static shiver.me.timbers.data.random.RandomStrings.someAlphaNumericString;
-import static shiver.me.timbers.data.random.RandomStrings.someString;
 import static shiver.me.timbers.http.StatusCodes.METHOD_NOT_ALLOWED;
 
 public class HttpMockMethodNotAllowedResponseTest {

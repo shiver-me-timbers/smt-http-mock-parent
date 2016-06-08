@@ -18,7 +18,6 @@ package shiver.me.timbers.http.mock.integration;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import shiver.me.timbers.http.mock.HttpMockContainerServer;
 import shiver.me.timbers.http.mock.HttpMockServer;
 import shiver.me.timbers.http.mock.HttpMockTomcat8Server;
 

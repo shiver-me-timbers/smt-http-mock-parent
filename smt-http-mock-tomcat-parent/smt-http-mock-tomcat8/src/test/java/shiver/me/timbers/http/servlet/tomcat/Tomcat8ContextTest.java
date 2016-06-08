@@ -31,7 +31,7 @@ import static shiver.me.timbers.data.random.RandomStrings.someString;
 public class Tomcat8ContextTest {
 
     private Context context;
-    private Tomcat8Context tomcat8Context;
+    private CommonContext<JarScanner> tomcat8Context;
 
     @Before
     public void setUp() {

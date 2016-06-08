@@ -47,6 +47,11 @@ public class TomcatConfigurerTest {
     }
 
     @Test
+    public void Create_for_coverage() {
+        new TomcatConfigurer<>(someInteger(), contextPath, jarScannerFactory);
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void Can_configure_a_new_tomcat() {
 

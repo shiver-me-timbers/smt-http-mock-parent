@@ -18,7 +18,6 @@ package shiver.me.timbers.http.servlet.tomcat;
 
 import org.junit.Test;
 
-import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class Tomcat8ConfigurerTest {
@@ -26,6 +25,6 @@ public class Tomcat8ConfigurerTest {
     @Test
     @SuppressWarnings("unchecked")
     public void Can_create_a_configurer() {
-        new TomcatConfigurer<>(0, someString(), mock(JarScannerFactory.class));
+        new Tomcat8Configurer(0, someString());
     }
 }
