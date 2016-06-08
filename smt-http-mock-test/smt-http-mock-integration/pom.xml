@@ -53,9 +53,5 @@
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-matchers</artifactId>
         </dependency>
-        <dependency>
-            <groupId>nl.jqno.equalsverifier</groupId>
-            <artifactId>equalsverifier</artifactId>
-        </dependency>
     </dependencies>
 </project>
