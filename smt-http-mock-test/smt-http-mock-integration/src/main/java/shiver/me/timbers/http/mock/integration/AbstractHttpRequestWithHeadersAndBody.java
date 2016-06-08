@@ -41,6 +41,7 @@ import static shiver.me.timbers.http.mock.HttpMock.h;
 import static shiver.me.timbers.http.mock.HttpMock.headers;
 import static shiver.me.timbers.http.mock.integration.CustomHttpMethodHandler.CUSTOM;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
+import static shiver.me.timbers.http.mock.integration.JavaVersion.assumeJava8;
 import static shiver.me.timbers.http.mock.integration.RandomHttp.someHeaders;
 import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
 import static shiver.me.timbers.http.mock.integration.RandomHttp.toHeaders;
@@ -132,6 +133,7 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
 
     @Test
     public void Can_mock_an_http_patch_request_with_headers_and_a_body() {
+        assumeJava8();
 
         final String path = somePath();
         final String otherPath = somePath();
@@ -172,6 +174,7 @@ public abstract class AbstractHttpRequestWithHeadersAndBody {
 
     @Test
     public void Can_mock_a_non_standard_http_request_with_headers_and_a_body() {
+        assumeJava8();
 
         final String path = somePath();
         final String otherPath = somePath();

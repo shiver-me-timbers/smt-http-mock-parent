@@ -37,6 +37,7 @@ import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 import static shiver.me.timbers.http.StatusCodes.OK;
 import static shiver.me.timbers.http.mock.integration.CustomHttpMethodHandler.CUSTOM;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
+import static shiver.me.timbers.http.mock.integration.JavaVersion.assumeJava8;
 import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
 
 public abstract class AbstractHttpRequestWithBody {
@@ -93,6 +94,7 @@ public abstract class AbstractHttpRequestWithBody {
 
     @Test
     public void Can_mock_an_http_patch_request_with_a_body() {
+        assumeJava8();
 
         final String path = somePath();
         final String body = someString();
@@ -117,6 +119,7 @@ public abstract class AbstractHttpRequestWithBody {
 
     @Test
     public void Can_mock_a_non_standard_http_request_with_a_body() {
+        assumeJava8();
 
         final String path = somePath();
         final String body = someString();
