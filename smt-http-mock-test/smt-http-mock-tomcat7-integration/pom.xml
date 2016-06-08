@@ -21,12 +21,12 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-http-mock-test</artifactId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>smt-http-mock-tomcat7-integration</artifactId>
 
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -42,13 +42,13 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-http-mock-tomcat7</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-http-mock-integration</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <!-- We have to manual set the tomcat version here because the parent pom has it's version of the dependencies. -->
