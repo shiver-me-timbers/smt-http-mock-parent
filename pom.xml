@@ -114,6 +114,7 @@
     <modules>
         <module>smt-http-mock</module>
         <module>smt-http-mock-spring</module>
+        <module>smt-http-mock-tomcat-parent</module>
     </modules>
 
     <scm>

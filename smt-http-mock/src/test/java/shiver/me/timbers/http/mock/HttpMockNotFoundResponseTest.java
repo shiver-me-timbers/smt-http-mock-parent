@@ -30,7 +30,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomDoubles.someDouble;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
-import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.data.random.RandomStrings.someAlphaNumericString;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 
 public class HttpMockNotFoundResponseTest {
@@ -57,9 +57,9 @@ public class HttpMockNotFoundResponseTest {
     @Test
     public void Can_get_the_method_not_allowed_response_body_as_a_string() {
 
-        final String httpMethod = someString(5);
+        final String httpMethod = someAlphaNumericString(5);
         final List<Class> types = asList((Class) Integer.class, Double.class, String.class);
-        final List<Object> parameters = asList((Object) someInteger(), someDouble(), someString(8));
+        final List<Object> parameters = asList((Object) someInteger(), someDouble(), someAlphaNumericString(8));
 
         // Given
         given(arguments.getHttpMethod()).willReturn(httpMethod);

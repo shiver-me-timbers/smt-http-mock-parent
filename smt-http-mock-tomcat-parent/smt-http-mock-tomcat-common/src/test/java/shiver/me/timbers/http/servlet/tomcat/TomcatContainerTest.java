@@ -1,0 +1,139 @@
+/*
+ * Copyright 2016 Karl Bennett
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package shiver.me.timbers.http.servlet.tomcat;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import shiver.me.timbers.http.Service;
+import shiver.me.timbers.http.servlet.ServiceToServletConverter;
+
+import javax.servlet.Servlet;
+import java.io.IOException;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
+import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
+import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.matchers.Matchers.hasField;
+
+public class TomcatContainerTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
+    private CommonTomcat<Object, Object, RuntimeException> tomcat;
+    private ServiceToServletConverter converter;
+    private CommonContext<Object> context;
+    private FileCleaner fileCleaner;
+    private String tempDir;
+    private TomcatContainer<Object, Object, RuntimeException> container;
+
+    @Before
+    @SuppressWarnings("unchecked")
+    public void setUp() {
+        tomcat = mock(CommonTomcat.class);
+        converter = mock(ServiceToServletConverter.class);
+        context = mock(CommonContext.class);
+        fileCleaner = mock(FileCleaner.class);
+        tempDir = someString();
+        container = new TomcatContainer<>(tomcat, converter, context, fileCleaner, tempDir);
+    }
+
+    @Test
+    public void Can_create_a_tomcat_container() {
+
+        @SuppressWarnings("unchecked")
+        final TomcatConfigurer<Object, Object, RuntimeException> configurer = mock(TomcatConfigurer.class);
+
+        // Given
+        given(configurer.configure(tomcat, tempDir)).willReturn(context);
+
+        // When
+        final TomcatContainer actual = new TomcatContainer<>(configurer, tomcat, converter, tempDir);
+
+        // Then
+        assertThat(actual, hasField("context", context));
+    }
+
+    @Test
+    public void Can_register_a_service() {
+
+        final Service service = mock(Service.class);
+
+        final String contextPath = someString();
+        final String serviceName = someString();
+        final Servlet servlet = mock(Servlet.class);
+        final CommonWrapper wrapper = mock(CommonWrapper.class);
+        final String path = someString();
+
+        // Given
+        given(context.getPath()).willReturn(contextPath);
+        given(service.getName()).willReturn(serviceName);
+        given(converter.convert(service)).willReturn(servlet);
+        given(tomcat.addServlet(contextPath, serviceName, servlet)).willReturn(wrapper);
+        given(service.getPath()).willReturn(path);
+
+        // When
+        container.register(service);
+
+        // Then
+        then(wrapper).should().addMapping(path);
+    }
+
+    @Test
+    public void Can_start_the_container() {
+
+        // When
+        container.start();
+
+        // Then
+        then(tomcat).should().start();
+    }
+
+    @Test
+    public void Can_get_the_port() {
+
+        final CommonConnector connector = mock(CommonConnector.class);
+        final int expected = someInteger();
+
+        // Given
+        given(tomcat.getConnector()).willReturn(connector);
+        given(connector.getLocalPort()).willReturn(expected);
+
+        // When
+        final int actual = container.getPort();
+
+        // Then
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_stop_the_container() throws IOException {
+
+        // When
+        container.stop();
+
+        // Then
+        then(tomcat).should().stop();
+        then(fileCleaner).should().cleanUp(tempDir);
+    }
+}

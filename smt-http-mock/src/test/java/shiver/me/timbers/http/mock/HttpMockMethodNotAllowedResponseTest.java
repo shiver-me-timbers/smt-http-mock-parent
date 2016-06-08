@@ -30,6 +30,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomDoubles.someDouble;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
+import static shiver.me.timbers.data.random.RandomStrings.someAlphaNumericString;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 import static shiver.me.timbers.http.StatusCodes.METHOD_NOT_ALLOWED;
 
@@ -57,9 +58,9 @@ public class HttpMockMethodNotAllowedResponseTest {
     @Test
     public void Can_get_the_method_not_allowed_response_body_as_a_string() {
 
-        final String httpMethod = someString(5);
+        final String httpMethod = someAlphaNumericString(5);
         final List<Class> types = asList((Class) Integer.class, Double.class, String.class);
-        final List<Object> parameters = asList((Object) someInteger(), someDouble(), someString());
+        final List<Object> parameters = asList((Object) someInteger(), someDouble(), someAlphaNumericString());
 
         // Given
         given(arguments.getHttpMethod()).willReturn(httpMethod);

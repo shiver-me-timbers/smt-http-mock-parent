@@ -33,7 +33,7 @@
 
     <name>${project.artifactId}</name>
 
-    <description>This library can be used to mock HTTP, REST, or SOAP endpoints.</description>
+    <description>This project contains the integration tests for the mt-http-mock-spring project.</description>
 
     <dependencies>
         <dependency>

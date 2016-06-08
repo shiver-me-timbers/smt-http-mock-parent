@@ -21,41 +21,51 @@
 
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
-        <artifactId>smt-http-mock-test</artifactId>
+        <artifactId>smt-http-mock-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smt-http-mock-integration</artifactId>
+    <artifactId>smt-http-mock-tomcat-parent</artifactId>
 
     <version>1.0-SNAPSHOT</version>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
 
-    <description>This project contains the integration tests for the mt-http-mock project.</description>
+    <description>This is the parent project for the smt-http-mock tomcat implementations.</description>
 
     <dependencies>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-http-mock-spring</artifactId>
+            <artifactId>smt-http-mock</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-random</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-matchers</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <modules>
+        <module>smt-http-mock-tomcat-common</module>
+        <module>smt-http-mock-tomcat8</module>
+    </modules>
 </project>
