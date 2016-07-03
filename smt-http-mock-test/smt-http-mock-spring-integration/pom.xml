@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-http-mock-test</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1</version>
     </parent>
 
     <artifactId>smt-http-mock-spring-integration</artifactId>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-http-mock-integration</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
