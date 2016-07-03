@@ -14,29 +14,25 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.http.mock.integration;
+package shiver.me.timbers.http.servlet;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import shiver.me.timbers.http.mock.HttpMockServer;
-import shiver.me.timbers.http.mock.HttpMockTomcat7Server;
+import shiver.me.timbers.http.Header;
+import shiver.me.timbers.http.Headers;
 
-public class ITHttpRequest extends AbstractHttpRequest {
+import javax.servlet.http.HttpServletResponse;
 
-    private static HttpMockServer http;
+/**
+ * @author Karl Bennett
+ */
+class HeadersWriter {
 
-    @BeforeClass
-    public static void setUp() {
-        http = new HttpMockTomcat7Server();
-    }
+    void write(Headers headers, HttpServletResponse response) {
+        if (headers == null) {
+            return;
+        }
 
-    @AfterClass
-    public static void tearDown() {
-        http.stop();
-    }
-
-    @Override
-    protected HttpMockServer http() {
-        return http;
+        for (Header header : headers) {
+            response.addHeader(header.getName(), header.getValue());
+        }
     }
 }

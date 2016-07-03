@@ -16,6 +16,7 @@
 
 package shiver.me.timbers.http.mock.integration;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.http.mock.HttpMockDELETE;
@@ -32,7 +33,10 @@ import shiver.me.timbers.http.mock.HttpMockTRACE;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import static java.util.Collections.singletonList;
 import static javax.ws.rs.client.Entity.text;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -58,13 +62,25 @@ public abstract class AbstractHttpRequestWithHeaders {
     private String name1;
     private String name2;
     private String name3;
+    private String name4;
     private String value1;
     private String value2;
     private String value3;
+    private String value4;
     private MultivaluedMap<String, Object> headerMap;
     private MultivaluedMap<String, Object> otherHeaderMap;
 
     protected abstract HttpMockServer http();
+
+    @Before
+    public void httpSetUp() {
+        http().ignoreHeaders("Host", "Connection", "User-Agent", "Accept", "Content-Type", "Content-Length");
+    }
+
+    @After
+    public void httpTearDown() {
+        http().mock(null);
+    }
 
     @Before
     public void setup() {
@@ -72,9 +88,11 @@ public abstract class AbstractHttpRequestWithHeaders {
         name1 = someAlphaString(4);
         name2 = someAlphaString(4);
         name3 = someAlphaString(4);
+        name4 = someAlphaString(4);
         value1 = someAlphaString(6);
         value2 = someAlphaString(6);
         value3 = someAlphaString(6);
+        value4 = someAlphaString(6);
         headerMap = toMap(name1, value1, name2, value2, name3, value3);
         otherHeaderMap = someHeaders();
     }
@@ -88,6 +106,7 @@ public abstract class AbstractHttpRequestWithHeaders {
         // Given
         given(handler.get(path, headers(h(name1, value1), h(name2, value2), h(name3, value3)))).willReturn(response);
         given(response.getStatus()).willReturn(OK);
+        given(response.getHeaders()).willReturn(headers(h(name4, value4)));
 
         // When
         final Response ok = createClient(http()).path(path).request().headers(headerMap).get();
@@ -97,6 +116,7 @@ public abstract class AbstractHttpRequestWithHeaders {
         then(handler).should().get(path, toHeaders(headerMap));
         then(handler).should().get(path, toHeaders(otherHeaderMap));
         assertThat(ok.getStatus(), is(OK));
+        assertThat(ok.getHeaders(), hasEntry(equalToIgnoringCase(name4), is(singletonList((Object) value4))));
         assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
 

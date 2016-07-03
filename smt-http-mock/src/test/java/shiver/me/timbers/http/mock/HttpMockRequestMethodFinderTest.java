@@ -16,16 +16,25 @@
 
 package shiver.me.timbers.http.mock;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.matchers.Matchers.hasField;
 
 public class HttpMockRequestMethodFinderTest {
+
+    private HttpMockRequestMethodFinder finder;
+
+    @Before
+    public void setUp() {
+        finder = new HttpMockRequestMethodFinder();
+    }
 
     @Test
     public void Can_find_a_method() throws NoSuchMethodException {
@@ -46,11 +55,21 @@ public class HttpMockRequestMethodFinderTest {
         given(arguments.toParameterTypes()).willReturn(args);
 
         // When
-        final HttpMockMethodCall actual = new HttpMockRequestMethodFinder().find(object, arguments);
+        final MethodCall<HttpMockResponse> actual = finder.find(object, arguments);
 
         // Then
         assertThat(actual, hasField("method", test));
         assertThat(actual, hasField("arguments", arguments));
+    }
+
+    @Test
+    public void Cannot_find_a_method_for_a_null_object() throws NoSuchMethodException {
+
+        // When
+        final MethodCall<HttpMockResponse> actual = finder.find(null, mock(HttpMockArguments.class));
+
+        // Then
+        assertThat(actual, instanceOf(NullHttpMockMethodCall.class));
     }
 
     private interface TestInterface {

@@ -16,6 +16,7 @@
 
 package shiver.me.timbers.http.mock.integration;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.http.mock.HttpMockPATCH;
@@ -48,6 +49,16 @@ public abstract class AbstractHttpRequestWithBody {
     private String otherBody;
 
     protected abstract HttpMockServer http();
+
+    @After
+    public void httpTearDown() {
+        http().mock(null);
+    }
+
+    @Before
+    public void httpSetUp() {
+        http().ignoreHeaders("Host", "Connection", "User-Agent", "Accept", "Content-Type", "Content-Length");
+    }
 
     @Before
     public void setup() {

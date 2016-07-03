@@ -18,6 +18,7 @@ package shiver.me.timbers.http.mock;
 
 import org.junit.Before;
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class HttpMockNotFoundResponseTest {
     }
 
     @Test
-    public void Can_get_the_method_not_allowed_responses_status() {
+    public void Can_get_the_not_found_responses_status() {
 
         // When
         final int actual = response.getStatus();
@@ -55,7 +56,17 @@ public class HttpMockNotFoundResponseTest {
     }
 
     @Test
-    public void Can_get_the_method_not_allowed_response_body_as_a_string() {
+    public void Can_get_the_not_found_responses_headers() {
+
+        // When
+        final Headers actual = response.getHeaders();
+
+        // Then
+        assertThat(actual, equalTo(new Headers()));
+    }
+
+    @Test
+    public void Can_get_the_not_found_response_body_as_a_string() {
 
         final String httpMethod = someAlphaNumericString(5);
         final List<Class> types = asList((Class) Integer.class, Double.class, String.class);

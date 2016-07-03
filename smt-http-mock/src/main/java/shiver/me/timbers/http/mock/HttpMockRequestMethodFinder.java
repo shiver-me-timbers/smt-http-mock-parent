@@ -21,7 +21,11 @@ package shiver.me.timbers.http.mock;
  */
 class HttpMockRequestMethodFinder {
 
-    HttpMockMethodCall find(Object object, HttpMockArguments arguments) throws NoSuchMethodException {
+    MethodCall<HttpMockResponse> find(Object object, HttpMockArguments arguments) throws NoSuchMethodException {
+        if (object == null) {
+            return new NullHttpMockMethodCall();
+        }
+
         return new HttpMockMethodCall(
             object.getClass().getMethod(arguments.getHttpMethod().toLowerCase(), arguments.toParameterTypes()),
             arguments

@@ -23,5 +23,7 @@ public interface Response {
 
     int getStatus();
 
+    Headers getHeaders();
+
     String getBodyAsString();
 }

@@ -21,7 +21,7 @@ import org.junit.BeforeClass;
 import shiver.me.timbers.http.mock.HttpMockServer;
 import shiver.me.timbers.http.mock.HttpMockTomcat7Server;
 
-public class ITHttpRequest extends AbstractHttpRequest {
+public class ITHttpNoMock extends AbstractHttpNoMock {
 
     private static HttpMockServer http;
 

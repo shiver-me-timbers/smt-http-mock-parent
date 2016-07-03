@@ -16,6 +16,8 @@
 
 package shiver.me.timbers.http.mock.integration;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.http.mock.HttpMockDELETE;
 import shiver.me.timbers.http.mock.HttpMockGET;
@@ -38,16 +40,28 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
 import static shiver.me.timbers.http.Methods.PATCH;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 import static shiver.me.timbers.http.StatusCodes.OK;
 import static shiver.me.timbers.http.mock.integration.CustomHttpMethodHandler.CUSTOM;
 import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
 import static shiver.me.timbers.http.mock.integration.RandomHttp.somePath;
+import static shiver.me.timbers.http.mock.integration.RandomHttp.someQuery;
 
 public abstract class AbstractHttpRequest {
 
     protected abstract HttpMockServer http();
+
+    @Before
+    public void httpSetUp() {
+        http().ignoreHeaders("Host", "Connection", "User-Agent", "Accept", "Content-Type", "Content-Length");
+    }
+
+    @After
+    public void httpTearDown() {
+        http().mock(null);
+    }
 
     @Test
     public void Can_mock_an_http_get_request() {
@@ -68,6 +82,32 @@ public abstract class AbstractHttpRequest {
         // Then
         then(handler).should().get(path);
         then(handler).should().get(otherPath);
+        verifyNoMoreInteractions(handler);
+        assertThat(ok.getStatus(), is(OK));
+        assertThat(notFound.getStatus(), is(NOT_FOUND));
+    }
+
+    @Test
+    public void Can_mock_an_http_get_request_with_a_query_string() {
+
+        final String path = somePath();
+        final String name = someAlphaString(5);
+        final String value = someAlphaString(8);
+        final String query = someQuery(name, value);
+        final HttpMockGET handler = http().mock(mock(HttpMockGET.class));
+        final HttpMockResponse response = mock(HttpMockResponse.class);
+
+        // Given
+        given(handler.get(path + query)).willReturn(response);
+        given(response.getStatus()).willReturn(OK);
+
+        // When
+        final Response ok = createClient(http()).path(path).queryParam(name, value).request().get();
+        final Response notFound = createClient(http()).path(path).request().get();
+
+        // Then
+        then(handler).should().get(path + query);
+        then(handler).should().get(path);
         verifyNoMoreInteractions(handler);
         assertThat(ok.getStatus(), is(OK));
         assertThat(notFound.getStatus(), is(NOT_FOUND));

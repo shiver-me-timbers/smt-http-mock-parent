@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static java.lang.String.format;
 import static shiver.me.timbers.data.random.RandomStrings.buildSomeString;
 import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
 
@@ -33,6 +34,10 @@ class RandomHttp {
 
     static String somePath() {
         return "/" + buildSomeString().thatContainsAlphanumericCharacters().withLengthBetween(1, 10).build();
+    }
+
+    static String someQuery(String name, String value) {
+        return format("?%s=%s", name, value);
     }
 
     static MultivaluedMap<String, Object> someHeaders() {

@@ -71,10 +71,28 @@ public class ServletRequestAdaptorTest {
     @Test
     public void Can_get_the_requests_path() {
 
+        final String pathInfo = someString();
+        final String queryString = someString();
+
+        // Given
+        given(request.getPathInfo()).willReturn(pathInfo);
+        given(request.getQueryString()).willReturn(queryString);
+
+        // When
+        final String actual = adaptor.getPath();
+
+        // Then
+        assertThat(actual, is(pathInfo + "?" + queryString));
+    }
+
+    @Test
+    public void Can_get_the_requests_path_with_no_query_string() {
+
         final String expected = someString();
 
         // Given
         given(request.getPathInfo()).willReturn(expected);
+        given(request.getQueryString()).willReturn(null);
 
         // When
         final String actual = adaptor.getPath();

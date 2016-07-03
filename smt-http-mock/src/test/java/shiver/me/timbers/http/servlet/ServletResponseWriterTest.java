@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import shiver.me.timbers.http.Headers;
 import shiver.me.timbers.http.Response;
 
 import javax.servlet.ServletOutputStream;
@@ -38,12 +39,14 @@ public class ServletResponseWriterTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private ServletResponseWriter writer;
+    private HeadersWriter headersWriter;
     private Streams streams;
 
     @Before
     public void setUp() {
         streams = mock(Streams.class);
-        writer = new ServletResponseWriter(streams);
+        headersWriter = mock(HeadersWriter.class);
+        writer = new ServletResponseWriter(headersWriter, streams);
     }
 
     @Test
@@ -52,10 +55,12 @@ public class ServletResponseWriterTest {
         final HttpServletResponse servletResponse = mock(HttpServletResponse.class);
         final Response response = mock(Response.class);
 
+        final Headers headers = mock(Headers.class);
         final String body = someString();
         final ServletOutputStream outputStream = mock(ServletOutputStream.class);
 
         // Given
+        given(response.getHeaders()).willReturn(headers);
         given(response.getBodyAsString()).willReturn(body);
         given(servletResponse.getOutputStream()).willReturn(outputStream);
 
@@ -64,6 +69,7 @@ public class ServletResponseWriterTest {
 
         // Then
         then(servletResponse).should().setStatus(response.getStatus());
+        then(headersWriter).should().write(headers, servletResponse);
         then(streams).should().write(body, outputStream);
     }
 
@@ -73,10 +79,12 @@ public class ServletResponseWriterTest {
         final HttpServletResponse servletResponse = mock(HttpServletResponse.class);
         final Response response = mock(Response.class);
 
+        final Headers headers = mock(Headers.class);
         final String body = someString();
         final IOException exception = new IOException();
 
         // Given
+        given(response.getHeaders()).willReturn(headers);
         given(response.getBodyAsString()).willReturn(body);
         given(servletResponse.getOutputStream()).willThrow(exception);
         expectedException.expect(IllegalArgumentException.class);

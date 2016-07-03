@@ -17,14 +17,19 @@
 package shiver.me.timbers.http;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
  * @author Karl Bennett
  */
-public class Headers {
+public class Headers implements Iterable<Header> {
 
     private final Set<Header> headers;
+
+    public Headers() {
+        this(new HashSet<Header>());
+    }
 
     public Headers(Headers headers) {
         this(headers.headers);
@@ -44,6 +49,11 @@ public class Headers {
                 headers.remove(header);
             }
         }
+    }
+
+    @Override
+    public Iterator<Header> iterator() {
+        return new HashSet<>(headers).iterator();
     }
 
     @Override

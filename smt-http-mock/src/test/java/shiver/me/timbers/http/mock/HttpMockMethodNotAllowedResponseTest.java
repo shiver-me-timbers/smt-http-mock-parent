@@ -18,6 +18,7 @@ package shiver.me.timbers.http.mock;
 
 import org.junit.Before;
 import org.junit.Test;
+import shiver.me.timbers.http.Headers;
 
 import java.util.List;
 
@@ -52,6 +53,16 @@ public class HttpMockMethodNotAllowedResponseTest {
 
         // Then
         assertThat(actual, is(METHOD_NOT_ALLOWED));
+    }
+
+    @Test
+    public void Can_get_the_method_not_allowed_responses_headers() {
+
+        // When
+        final Headers actual = response.getHeaders();
+
+        // Then
+        assertThat(actual, equalTo(new Headers()));
     }
 
     @Test

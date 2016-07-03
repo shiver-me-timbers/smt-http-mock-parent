@@ -48,7 +48,7 @@ class ServletRequestAdaptor implements Request {
 
     @Override
     public String getPath() {
-        return servletRequest.getPathInfo();
+        return servletRequest.getPathInfo() + emptyIfNull(servletRequest.getQueryString());
     }
 
     @Override
@@ -73,5 +73,12 @@ class ServletRequestAdaptor implements Request {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    private static String emptyIfNull(String string) {
+        if (string == null) {
+            return "";
+        }
+        return "?" + string;
     }
 }

@@ -16,24 +16,20 @@
 
 package shiver.me.timbers.http.mock.integration;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import shiver.me.timbers.http.mock.HttpMockServer;
-import shiver.me.timbers.http.mock.HttpMockTomcat7Server;
 
-public class ITHttpRequest extends AbstractHttpRequest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = HttpMockConfiguration.class)
+@WebIntegrationTest({"server.port=0", "management.port=0"})
+public class ITHttpNoMock extends AbstractHttpNoMock {
 
-    private static HttpMockServer http;
-
-    @BeforeClass
-    public static void setUp() {
-        http = new HttpMockTomcat7Server();
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        http.stop();
-    }
+    @Autowired
+    private HttpMockServer http;
 
     @Override
     protected HttpMockServer http() {

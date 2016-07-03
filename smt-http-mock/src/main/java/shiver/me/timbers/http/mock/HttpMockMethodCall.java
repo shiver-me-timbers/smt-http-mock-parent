@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 /**
  * @author Karl Bennett
  */
-class HttpMockMethodCall {
+class HttpMockMethodCall implements MethodCall<HttpMockResponse> {
 
     private final Method method;
     private final HttpMockArguments arguments;
@@ -32,7 +32,8 @@ class HttpMockMethodCall {
         this.arguments = arguments;
     }
 
-    HttpMockResponse invoke(Object object) {
+    @Override
+    public HttpMockResponse invoke(Object object) {
         try {
             return (HttpMockResponse) method.invoke(object, arguments.toParameters());
         } catch (IllegalAccessException | InvocationTargetException e) {

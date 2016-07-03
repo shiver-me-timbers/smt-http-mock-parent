@@ -28,7 +28,6 @@ public class ITHttpRequestWithHeaders extends AbstractHttpRequestWithHeaders {
     @BeforeClass
     public static void setUp() {
         http = new HttpMockTomcat7Server();
-        http.ignoreHeaders("Host", "Connection", "User-Agent", "Accept", "Content-Type", "Content-Length");
     }
 
     @AfterClass

@@ -16,6 +16,8 @@
 
 package shiver.me.timbers.http.mock;
 
+import shiver.me.timbers.http.Headers;
+
 import static java.lang.String.format;
 import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
 import static shiver.me.timbers.http.mock.HttpMockResponses.buildRequest;
@@ -35,6 +37,11 @@ class HttpMockNotFoundResponse implements HttpMockResponse {
     @Override
     public int getStatus() {
         return NOT_FOUND;
+    }
+
+    @Override
+    public Headers getHeaders() {
+        return new Headers();
     }
 
     @Override

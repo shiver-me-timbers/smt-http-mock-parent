@@ -16,27 +16,28 @@
 
 package shiver.me.timbers.http.mock.integration;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.Test;
 import shiver.me.timbers.http.mock.HttpMockServer;
-import shiver.me.timbers.http.mock.HttpMockTomcat7Server;
 
-public class ITHttpRequest extends AbstractHttpRequest {
+import javax.ws.rs.core.Response;
 
-    private static HttpMockServer http;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static shiver.me.timbers.http.StatusCodes.NOT_FOUND;
+import static shiver.me.timbers.http.mock.integration.HttpClients.createClient;
 
-    @BeforeClass
-    public static void setUp() {
-        http = new HttpMockTomcat7Server();
-    }
+public abstract class AbstractHttpNoMock {
 
-    @AfterClass
-    public static void tearDown() {
-        http.stop();
-    }
+    protected abstract HttpMockServer http();
 
-    @Override
-    protected HttpMockServer http() {
-        return http;
+    @Test
+    public void Can_mock_nothing() {
+
+        // When
+        final Response notFound = createClient(http()).request().get();
+
+        // Then
+        assertThat(notFound.getStatus(), is(NOT_FOUND));
     }
 }
+

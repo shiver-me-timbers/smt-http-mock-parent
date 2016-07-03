@@ -14,29 +14,15 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.http.mock.integration;
+package shiver.me.timbers.http.mock;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import shiver.me.timbers.http.mock.HttpMockServer;
-import shiver.me.timbers.http.mock.HttpMockTomcat7Server;
-
-public class ITHttpRequest extends AbstractHttpRequest {
-
-    private static HttpMockServer http;
-
-    @BeforeClass
-    public static void setUp() {
-        http = new HttpMockTomcat7Server();
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        http.stop();
-    }
+/**
+ * @author Karl Bennett
+ */
+class NullHttpMockMethodCall implements MethodCall<HttpMockResponse> {
 
     @Override
-    protected HttpMockServer http() {
-        return http;
+    public HttpMockResponse invoke(Object object) {
+        return null;
     }
 }

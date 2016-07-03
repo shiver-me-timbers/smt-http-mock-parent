@@ -27,17 +27,20 @@ import java.io.IOException;
 class ServletResponseWriter {
 
     private final Streams streams;
+    private final HeadersWriter headersWriter;
 
     ServletResponseWriter() {
-        this(new Streams());
+        this(new HeadersWriter(), new Streams());
     }
 
-    ServletResponseWriter(Streams streams) {
+    ServletResponseWriter(HeadersWriter headersWriter, Streams streams) {
         this.streams = streams;
+        this.headersWriter = headersWriter;
     }
 
     void write(HttpServletResponse servletResponse, Response response) {
         servletResponse.setStatus(response.getStatus());
+        headersWriter.write(response.getHeaders(), servletResponse);
         try {
             streams.write(response.getBodyAsString(), servletResponse.getOutputStream());
         } catch (IOException e) {

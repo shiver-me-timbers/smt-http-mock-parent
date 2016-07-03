@@ -57,7 +57,8 @@ public class HttpMockReflectionHandlerRouterTest {
 
         final Request mockRequest = mock(Request.class);
         final HttpMockArguments arguments = mock(HttpMockArguments.class);
-        final HttpMockMethodCall method = mock(HttpMockMethodCall.class);
+        @SuppressWarnings("unchecked")
+        final MethodCall<HttpMockResponse> method = mock(MethodCall.class);
 
         final HttpMockResponse expected = mock(HttpMockResponse.class);
 
@@ -110,7 +111,8 @@ public class HttpMockReflectionHandlerRouterTest {
 
         final Request mockRequest = mock(Request.class);
         final HttpMockArguments arguments = mock(HttpMockArguments.class);
-        final HttpMockMethodCall method = mock(HttpMockMethodCall.class);
+        @SuppressWarnings("unchecked")
+        final MethodCall<HttpMockResponse> method = mock(HttpMockMethodCall.class);
 
         // Given
         given(requestFactory.create(request)).willReturn(mockRequest);
@@ -124,6 +126,34 @@ public class HttpMockReflectionHandlerRouterTest {
 
         // When
         final HttpMockResponse actual = router.route(handler, request);
+
+        // Then
+        assertThat(actual, instanceOf(HttpMockNotFoundResponse.class));
+        assertThat(actual, hasField("arguments", arguments));
+    }
+
+    @Test
+    public void Can_handle_a_null_handler() throws NoSuchMethodException {
+
+        final Request request = mock(Request.class);
+
+        final Request mockRequest = mock(Request.class);
+        final HttpMockArguments arguments = mock(HttpMockArguments.class);
+        @SuppressWarnings("unchecked")
+        final MethodCall<HttpMockResponse> method = mock(HttpMockMethodCall.class);
+
+        // Given
+        given(requestFactory.create(request)).willReturn(mockRequest);
+        given(argumentFactory.create(mockRequest)).willReturn(arguments);
+        given(methodFinder.find(null, arguments)).willReturn(method);
+        given(method.invoke(null)).willReturn(null);
+        // These argument mocks are required to stop the logging from exploding.
+        given(arguments.getHttpMethod()).willReturn(someString());
+        given(arguments.toParameterTypes()).willReturn(new Class[0]);
+        given(arguments.toParameters()).willReturn(new Object[0]);
+
+        // When
+        final HttpMockResponse actual = router.route(null, request);
 
         // Then
         assertThat(actual, instanceOf(HttpMockNotFoundResponse.class));

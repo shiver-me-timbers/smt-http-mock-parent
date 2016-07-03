@@ -19,7 +19,6 @@ package shiver.me.timbers.http;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +27,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static nl.jqno.equalsverifier.Warning.NULL_FIELDS;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -41,7 +41,7 @@ public class HeadersTest {
     public void Can_check_that_headers_are_empty() {
 
         // When
-        final boolean actual = new Headers(Collections.<Header>emptySet()).isEmpty();
+        final boolean actual = new Headers().isEmpty();
 
         // Then
         assertThat(actual, is(true));
@@ -55,6 +55,25 @@ public class HeadersTest {
 
         // Then
         assertThat(actual, is(false));
+    }
+
+    @Test
+    public void Can_iterate_over_headers() {
+
+        // Given
+        final Header header1 = mock(Header.class);
+        final Header header2 = mock(Header.class);
+        final Header header3 = mock(Header.class);
+        final List<Header> headerList = asList(header1, header2, header3);
+        final Headers headers = new Headers(new HashSet<>(headerList));
+
+        // When
+        final Headers actual = new Headers(headers);
+
+        // Then
+        for (Header header : actual) {
+            assertThat(headerList, hasItem(header));
+        }
     }
 
     @Test

@@ -52,7 +52,7 @@ class HttpMockReflectionHandlerRouter {
     HttpMockResponse route(Object handler, Request request) {
         log.info(
             "Received handler {} and request ({} {}).",
-            handler.getClass().getSimpleName(), request.getMethod(), request.getPath()
+            handler == null ? null : handler.getClass().getSimpleName(), request.getMethod(), request.getPath()
         );
         final HttpMockArguments arguments = argumentFactory.create(requestFactory.create(request));
 

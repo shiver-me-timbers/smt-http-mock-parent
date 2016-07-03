@@ -31,6 +31,11 @@ class HttpMockHeaderFilter {
 
     Headers filter(Headers headers) {
         final Headers filteredHeaders = new Headers(headers);
+
+        if (names == null) {
+            return filteredHeaders;
+        }
+
         for (String name : names) {
             filteredHeaders.remove(name);
         }

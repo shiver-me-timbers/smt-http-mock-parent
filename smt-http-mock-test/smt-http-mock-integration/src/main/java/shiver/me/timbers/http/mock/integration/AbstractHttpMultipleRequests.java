@@ -16,6 +16,8 @@
 
 package shiver.me.timbers.http.mock.integration;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import shiver.me.timbers.http.mock.HttpMockHandler;
 import shiver.me.timbers.http.mock.HttpMockResponse;
@@ -43,6 +45,16 @@ import static shiver.me.timbers.http.mock.integration.RandomHttp.toMap;
 public abstract class AbstractHttpMultipleRequests {
 
     protected abstract HttpMockServer http();
+
+    @Before
+    public void httpSetUp() {
+        http().ignoreHeaders("Host", "Connection", "User-Agent", "Accept", "Content-Type", "Content-Length");
+    }
+
+    @After
+    public void httpTearDown() {
+        http().mock(null);
+    }
 
     @Test
     public void Can_mock_multiple_http_requests() {
